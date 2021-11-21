@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Add Anunt</h1>
+<div mat-dialog-content>
+
+
+    <div *ngIf="!hasCerereBeenSaved; else anuntSaved">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Adaugare cerere</mat-label>
+            <mat-select [(ngModel)]="cerereNoua.typeCerere">
+                <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
+                    {{tipCerere}}
+                </mat-option>
+
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <ng-template #anuntSaved>
+        <div>
+            Cererea a fost salvata
+        </div>
+    </ng-template>
+
+</div>
+<div mat-dialog-actions>
+
+    <button *ngIf="!hasCerereBeenSaved" mat-button (click)="onNoClick()">Cancel</button>
+    <!-- [mat-dialog-close]="data.animal" -->
+    <button *ngIf="!hasCerereBeenSaved" mat-button color="primary" (click)="saveCerere()">Save cerere</button>
+    <button *ngIf="hasCerereBeenSaved" [mat-dialog-close]="data.rezultat">Ok</button>
+</div>

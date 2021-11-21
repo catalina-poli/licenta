@@ -1,0 +1,48 @@
+<div>
+    <h2>Cererile</h2>
+
+    <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addCerere()">Add cerere</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date posted</th>
+                <th>Type</th>
+                <th>User associated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of cererile">
+                <td>{{c.id}}</td>
+                <td>{{c.dateCreated | date: 'yyyy-MM-dd'}}</td>
+                <td>{{c.typeCerere}}</td>
+                <td>
+                    <span *ngIf="c.userAssociated; else una">
+                        {{c.userAssociated.email}}
+                    </span>
+                    <ng-template #una>
+                        <span>
+                            User not associated
+                        </span>
+                    </ng-template>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+
+        <!-- <mat-form-field appearance="fill">
+            <mat-label>Adaugare cerere</mat-label>
+            <mat-select [(ngModel)]="cerereNoua.typeCerere">
+                <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
+                    {{tipCerere}}
+                  </mat-option>
+                
+            </mat-select>
+        </mat-form-field> -->
+
+        <!-- <button (click)="save()">Save</button> -->
+    </div>
+</div>

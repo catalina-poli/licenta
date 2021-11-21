@@ -1,0 +1,37 @@
+<div>
+
+
+    <div *ngIf="anuntEditare">
+        <h3>Editare anunt</h3>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Titlu anunt modificat</mat-label>
+                <input matInput type="text" placeholder="Titlu anunt modificat" [(ngModel)]="anuntEditare.titlu">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Continut</mat-label>
+                <input matInput type="text" placeholder="Continut anunt modificat" [(ngModel)]="anuntEditare.continut">
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="warn" (click)="updateAnunt()">Update</button>
+        &nbsp;
+        <button mat-raised-button color="primary" (click)="updateAnuntCancel()">Cancel</button>
+    </div>
+
+    <div *ngIf="anunt; else loadingScreen">
+        <h2>Anunt: {{anunt.titlu}}</h2>
+
+        <button (click)="editAnunt(anunt)">Editare</button>
+        <button (click)="sendPdfRequestServer(anunt)">Generate PDF</button>
+    </div>
+    <ng-template #loadingScreen>
+        <div>
+            Loading...
+        </div>
+    </ng-template>
+
+
+
+</div>
