@@ -4,6 +4,7 @@
 
     <div *ngIf="!hasAnuntBeenSaved; else anuntSaved">
         <div>
+            <p *ngIf="errors_titlu_required">Eroare titlu required</p>
             <mat-form-field appearance="fill">
                 <mat-label>Titlu anunt</mat-label>
                 <input matInput type="text" [(ngModel)]="anuntNou.titlu">

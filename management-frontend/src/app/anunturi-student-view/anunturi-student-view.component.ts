@@ -53,8 +53,14 @@ export class AnunturiStudentViewComponent implements OnInit {
 
   sendPdfRequestServer(anunt: Anunt) {
 
-    let headers = new HttpHeaders();
+    let headers =
+    new HttpHeaders({
+      // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      'Authorization': 'Bearer ' + localStorage.getItem("CHEIE_OAUTH")
+    });
+  headers.set('Accept', 'application/pdf');
     const url: string = 'http://localhost:8080/rest/anunturi/generate-anunt-pdf/' + anunt.id;
+
     headers = headers.set('Accept', 'application/pdf');
     this.httpClient.get(url, { headers: headers, responseType: 'blob' }).subscribe(
       (data: Blob) => {

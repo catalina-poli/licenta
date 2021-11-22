@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
   // send the access token with a request
-  configureHeaderOptionsForOAuth(){
+  configureHeaderOptionsForOAuth() {
     let headers =
       new HttpHeaders({
         // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -18,6 +18,20 @@ export class LoginService {
       });
     const options = {
       headers: headers
+    }
+    return options;
+  }
+
+  configureHeaderOptionsForOAuthPdf() {
+    let headers =
+      new HttpHeaders({
+        // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem("CHEIE_OAUTH")
+      });
+    headers.set('Accept', 'application/pdf');
+    const options = {
+      headers: headers,
+      responseType: 'blob'
     }
     return options;
   }
@@ -43,7 +57,7 @@ export class LoginService {
     }
 
 
-    
+
 
     return this.httpClient.post('http://localhost:8080/oauth/token', params2, options);
     // .map(res => res.json())
