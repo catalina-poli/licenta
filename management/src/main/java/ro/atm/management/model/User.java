@@ -1,33 +1,53 @@
 package ro.atm.management.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import ro.atm.management.converters.StatusAttributeConverter;
+
 @Entity
 @Table(name = "users")
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String email;
-	
-	@Column(name="is_active")
+
+	@Column(name = "is_active")
 	private Integer isActive;
-	
+
 	@JsonIgnore
 	private String password;
-	
-	@Column(name="user_type")
+
+	@Column(name = "user_type")
 	private String userType;
 
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, 
+	inverseJoinColumns = {
+			@JoinColumn(name = "role_id") })
+	private Set<Role> userRoles;
+
+	
+	@Column(name="status")
+	@Convert(converter = StatusAttributeConverter.class)
+	private Status status;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -68,11 +88,28 @@ public class User {
 		this.userType = userType;
 	}
 
+	public Set<Role> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<Role> userRoles) {
+		this.userRoles = userRoles;
+	}
+	
+	
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", isActive=" + isActive + ", password=" + password
 				+ ", userType=" + userType + "]";
 	}
-	
-	
+
 }
