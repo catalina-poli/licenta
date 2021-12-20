@@ -22,6 +22,18 @@ export class LoginService {
     return options;
   }
 
+  // configureHeaderOptionsForOAuthPOST() {
+  //   let headers =
+  //     new HttpHeaders({
+  //       'Authorization': 'Bearer ' + localStorage.getItem("CHEIE_OAUTH")
+  //     });
+  //   const options = {
+  //     headers: headers
+  //   }
+  //   return options;
+  // }
+
+
   configureHeaderOptionsForOAuthPdf() {
     let headers =
       new HttpHeaders({

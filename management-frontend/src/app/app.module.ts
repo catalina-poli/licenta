@@ -27,6 +27,7 @@ import { AddAnuntComponent } from './add-anunt/add-anunt.component';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
+import { GroupComponent } from './group/group.component';
 
 
 
@@ -45,7 +46,8 @@ import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.com
     AddAnuntComponent,
     AddCerereComponent,
     CereriFlowComponent,
-    CereriFlowViewComponent
+    CereriFlowViewComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,

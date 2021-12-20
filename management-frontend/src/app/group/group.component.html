@@ -1,0 +1,67 @@
+<div>
+    <h2>Groups</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Group name</th>
+                <th>In charge</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let g of groups">
+                <td>
+                    {{g.id}}
+                </td>
+                <td>
+                    {{g.numeGrup}}
+                </td>
+                <td>
+                    <span *ngIf="g.userInCharge; else noUserInCharge">
+                        {{g.userInCharge.email}}
+                    </span>
+                    <ng-template #noUserInCharge>
+                        <span>
+                            No user asssociated with the group
+                        </span>
+                    </ng-template>
+
+                </td>
+                <td>
+                    <button (click)="viewStudents(g)">View students</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="students.length > 0">
+        <h3>Students in groups</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>User id</th>
+                    <th>User email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of students"> 
+                    <td>
+                        {{s.id}}
+                    </td>
+                    <td>
+                        {{s.email}}
+                    </td>
+                    <td>
+                        <button (click)="removeUserFromGroups(s)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Add student to group</h3>
+        <select [(ngModel)]="selectedStudent">
+            <option [ngValue]="u" *ngFor="let u of users">{{u.email}}</option>
+        </select>
+        <button (click)="addUserToGroup()">Add user</button>
+    </div>
+</div>

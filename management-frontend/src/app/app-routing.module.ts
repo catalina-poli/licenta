@@ -6,6 +6,7 @@ import { AnunturiComponent } from './anunturi/anunturi.component';
 import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
+import { GroupComponent } from './group/group.component';
 import { LoginComponent } from './login/login.component';
 import { UseriComponent } from './useri/useri.component';
 
@@ -38,6 +39,10 @@ const routes: Routes = [
   },{
     path: 'cereri-flow-view/:id',
     component: CereriFlowViewComponent
+  },
+  {
+    path: 'groups',
+    component: GroupComponent
   }
 ];
 
