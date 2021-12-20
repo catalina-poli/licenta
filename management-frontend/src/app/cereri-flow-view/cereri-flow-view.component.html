@@ -1,0 +1,26 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Superior
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Motiv
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let f of flowItems">
+            <td>{{f.id}}</td>
+            <td>{{f.superior.email}}</td>
+            <td>{{f.status ? 'ACCEPTAT' : 'RESPINS'}}</td>
+            <td>{{f.motiv}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -25,6 +25,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { AddAnuntComponent } from './add-anunt/add-anunt.component';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
+import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
+import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
 
 
 
@@ -41,7 +43,9 @@ import { AddCerereComponent } from './add-cerere/add-cerere.component';
     LoginComponent,
     ConfirmareComponent,
     AddAnuntComponent,
-    AddCerereComponent
+    AddCerereComponent,
+    CereriFlowComponent,
+    CereriFlowViewComponent
   ],
   imports: [
     BrowserModule,

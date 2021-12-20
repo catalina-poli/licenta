@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
 import { LoginService } from './login.service';
+import { Cerere } from './model/cerere';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,13 @@ export class CereriService {
 
   constructor(private serviciuHttpClient: HttpClient, private loginService : LoginService, public dialog: MatDialog) { }
 
-  findAllCereri(){
-    return this.serviciuHttpClient.get<any[]>('http://localhost:8080/rest/cerere/all', this.loginService.configureHeaderOptionsForOAuth());
+  findAllCereri() : Observable<Cerere[]>{
+    return this.serviciuHttpClient.get<Cerere[]>('http://localhost:8080/rest/cerere/all', this.loginService.configureHeaderOptionsForOAuth());
+  }
+
+  findById(id : number) : Observable<Cerere>{
+    return this.serviciuHttpClient.get<Cerere>('http://localhost:8080/rest/cerere/by-id/'+id, this.loginService.configureHeaderOptionsForOAuth());
+
   }
 
   saveCerere(cerere : any){

@@ -3,6 +3,13 @@
 
     <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addCerere()">Add cerere</button>
 
+    <div>
+        <select [(ngModel)]="filtruTipCerere" (change)="selectOptiuneFiltru()">
+            <option [ngValue]="'all'">All</option>
+            <option *ngFor="let t of tipuri" [ngValue]="t">{{t}}</option>
+        </select>
+    </div>
+
     <table border="1">
         <thead>
             <tr>
@@ -10,10 +17,11 @@
                 <th>Date posted</th>
                 <th>Type</th>
                 <th>User associated</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let c of cererile">
+            <tr *ngFor="let c of cererileAfisate">
                 <td>{{c.id}}</td>
                 <td>{{c.dateCreated | date: 'yyyy-MM-dd'}}</td>
                 <td>{{c.typeCerere}}</td>
@@ -27,6 +35,9 @@
                         </span>
                     </ng-template>
 
+                </td>
+                <td>
+                    <a [routerLink]="['/cerere-flow', c.id]">View</a>
                 </td>
             </tr>
         </tbody>

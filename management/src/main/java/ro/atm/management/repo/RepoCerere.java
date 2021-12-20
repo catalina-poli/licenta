@@ -13,5 +13,6 @@ public interface RepoCerere extends CrudRepository<Cerere, Integer> {
 
 	public List<Cerere> findByUserAssociated(User userAssociated);
 	public List<Cerere> findByTypeCerere(String typeCerere);
+	public List<Cerere> findAllByOrderByDateCreatedDesc();
 
 }

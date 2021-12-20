@@ -1,0 +1,29 @@
+<div *ngIf="cerere">
+
+    <h2>Cerere</h2>
+    <p>
+        ID: <span>{{idCerere}}</span>
+    </p>
+    <div>
+        Tip cerere: <span>{{cerere.typeCerere}}</span>
+    </div>
+    <div>
+        User: <span>{{cerere.userAssociated.email}}</span>
+    </div>
+
+    <div>
+        Date Created: <span>{{cerere.dateCreated | date : 'yyyy-MM-dd'}}</span>
+    </div>
+    <div>
+        Date Start: <span>{{cerere.dateStart | date : 'yyyy-MM-dd'}}</span>
+    </div>
+    <div>
+        Date End: <span>{{cerere.dateEnd | date : 'yyyy-MM-dd'}}</span>
+    </div>
+    <div>
+        <a [routerLink]="['/cereri-flow-view', cerere.id] ">View status</a>
+    </div>
+
+
+    
+</div>

@@ -30,8 +30,8 @@ public class CerereController {
 	private RepoUser repoUser;
 	
 	@GetMapping("/all")
-	public Iterable<Cerere> allCereri(){
-		return repoCerere.findAll();
+	public List<Cerere> allCereri(){
+		return repoCerere.findAllByOrderByDateCreatedDesc();
 	}
 	
 	@GetMapping("/by-id/{idCerere}")

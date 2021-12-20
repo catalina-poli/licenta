@@ -25,6 +25,8 @@ public class FlowCerere {
 	@JoinColumn(name="id_user")
 	private User superior;
 	
+	private Integer status;
+	
 	private String motiv;
 	
 	public Integer getId() {
@@ -59,6 +61,16 @@ public class FlowCerere {
 
 	public void setMotiv(String motiv) {
 		this.motiv = motiv;
+	}
+	
+	
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CereriService } from '../cereri.service';
+import { Cerere } from '../model/cerere';
 
 @Component({
   selector: 'app-cereri',
@@ -9,7 +10,10 @@ import { CereriService } from '../cereri.service';
 })
 export class CereriComponent implements OnInit {
 
-  cererile : any[] = [];
+  filtruTipCerere : string = '';
+
+  cererileAfisate : Cerere[] = [];
+  cererile : Cerere[] = [];
   cerereNoua : any = {
     typeCerere : ''
   };
@@ -18,10 +22,20 @@ export class CereriComponent implements OnInit {
 
   constructor(private cereriService : CereriService) { }
 
+  selectOptiuneFiltru(){
+    console.log('optiune curenta: ', this.filtruTipCerere);
+    if(this.filtruTipCerere == 'all'){
+      this.cererileAfisate = [...this.cererile];
+    }else{
+      this.cererileAfisate = this.cererile.filter(x => x.typeCerere == this.filtruTipCerere);
+    }
+  }
+
   ngOnInit(): void {
   
       this.cereriService.findAllCereri().subscribe(rez => {
         this.cererile = rez;
+        this.cererileAfisate = [...this.cererile];//copie
       });
   }
 
