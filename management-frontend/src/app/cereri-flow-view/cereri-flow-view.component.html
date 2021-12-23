@@ -23,4 +23,17 @@
             <td>{{f.motiv}}</td>
         </tr>
     </tbody>
+    <h3>Useri care trebuie sa dea acceptul</h3>
+    <ul>
+        <li *ngFor="let g of grupuriUtilizatorCerere">
+            <span *ngIf="g.userInCharge">
+                {{g.userInCharge.email}} [{{g.numeGrup}}] <button>Accept</button><button>Refuz</button>
+                <ul *ngIf="g.parentGroup">
+                    <li *ngIf="g.parentGroup.userInCharge">
+                        {{g.parentGroup.userInCharge.email}} [{{g.parentGroup.numeGrup}}] <button>Accept</button><button>Refuz</button>
+                    </li>
+                </ul>
+            </span>
+        </li>
+    </ul>
 </table>

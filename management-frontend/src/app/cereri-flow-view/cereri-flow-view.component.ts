@@ -14,6 +14,7 @@ export class CereriFlowViewComponent implements OnInit {
   idCerere!: number;
   cerere!: Cerere;
   flowItems: any[] = [];
+  grupuriUtilizatorCerere: any[] = [];
 
 
   constructor(private serviceCerere: CereriService, private activatedRoute: ActivatedRoute,
@@ -32,6 +33,16 @@ export class CereriFlowViewComponent implements OnInit {
             console.log('err: ', err);
           }
         );
+      this.serviceCerere.findAllGrupuriForCerere(this.idCerere)
+          .subscribe(
+            rez => {
+              this.grupuriUtilizatorCerere = rez;
+              console.log('Grupurile user-ului: ', this.grupuriUtilizatorCerere);
+            },
+            err => {
+              console.log('err: ', err);
+            }
+          );
       this.flowService.findAllFlowByCerere(this.idCerere)
           .subscribe(
             rez => {

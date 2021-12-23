@@ -17,6 +17,12 @@ export class CereriService {
     return this.serviciuHttpClient.get<Cerere[]>('http://localhost:8080/rest/cerere/all', this.loginService.configureHeaderOptionsForOAuth());
   }
 
+
+  // http://localhost:8080/rest/cerere/get-groups-for-cerere/2
+  findAllGrupuriForCerere(idCererii: number) : Observable<Cerere[]>{
+    return this.serviciuHttpClient.get<any[]>('http://localhost:8080/rest/cerere/get-groups-for-cerere/' + idCererii, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
   findById(id : number) : Observable<Cerere>{
     return this.serviciuHttpClient.get<Cerere>('http://localhost:8080/rest/cerere/by-id/'+id, this.loginService.configureHeaderOptionsForOAuth());
 

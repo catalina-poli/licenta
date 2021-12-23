@@ -23,4 +23,6 @@ export class GroupService {
     // /remove-user/{idUser}/{idGroup}
     return this.serviciuHttpClient.post(`http://localhost:8080/rest/groups/add-user/${idUser}/${idGroup}`, {}, this.loginService.configureHeaderOptionsForOAuth());
   }
+
+  
 }

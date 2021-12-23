@@ -1,6 +1,7 @@
 package ro.atm.management.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.atm.management.model.Cerere;
+import ro.atm.management.model.Group;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
+import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
 
 @CrossOrigin(value = {"http://localhost:4200/"})
@@ -28,6 +31,9 @@ public class CerereController {
 	
 	@Autowired
 	private RepoUser repoUser;
+	
+	@Autowired
+	private RepoGroup repoGroup;
 	
 	@GetMapping("/all")
 	public List<Cerere> allCereri(){
@@ -67,4 +73,23 @@ public class CerereController {
 		cerereNoua.setDateCreated(new Date());
 		return this.repoCerere.save(cerereNoua);
 	}
+	
+	@GetMapping("/get-groups-for-cerere/{idCerere}")
+	public List<Group> getGroupsForCerere(@PathVariable("idCerere")int idCerere){
+		List<Group> rezultat = new ArrayList<>();
+		Cerere cerere = this.repoCerere.findById(idCerere).get();
+		System.out.println("CERERE GASITA: " + cerere);
+		User userAsociat = cerere.getUserAssociated();
+		System.out.println("USER ASOCIAT: " + userAsociat);
+		Iterable<Group> allGroups = this.repoGroup.findAll();
+		for(Group g : allGroups) {
+			System.out.println("\t\tSTUDENTI IN GRUP: " + g.getStudents());
+			if(g.getStudents().contains(userAsociat)) {
+				rezultat.add(g);
+			}
+		}
+//		rezultat = this.repoGroup.findAllByStudents(userAsociat);
+		return rezultat;
+	}
+	
 }
