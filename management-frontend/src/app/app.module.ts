@@ -14,20 +14,22 @@ import { AnunturiStudentComponent } from './anunturi-student/anunturi-student.co
 import { AnunturiStudentViewComponent } from './anunturi-student-view/anunturi-student-view.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTableModule} from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ConfirmareComponent } from './confirmare/confirmare.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { AddAnuntComponent } from './add-anunt/add-anunt.component';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
 import { GroupComponent } from './group/group.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component';
 
 
 
@@ -47,7 +49,8 @@ import { GroupComponent } from './group/group.component';
     AddCerereComponent,
     CereriFlowComponent,
     CereriFlowViewComponent,
-    GroupComponent
+    GroupComponent,
+    CereriFlowMyComponent
   ],
   imports: [
     BrowserModule,
@@ -59,10 +62,12 @@ import { GroupComponent } from './group/group.component';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-    MatSortModule ,
+    MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

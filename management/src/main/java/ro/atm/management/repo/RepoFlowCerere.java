@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.FlowCerere;
+import ro.atm.management.model.User;
 
 @Repository
 public interface RepoFlowCerere extends CrudRepository<FlowCerere, Integer> {
 
 	
 	public List<FlowCerere> findByCerere(Cerere cerere);
+	public List<FlowCerere> findBySuperior(User superior);
 	
 }

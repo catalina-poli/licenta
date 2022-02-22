@@ -7,6 +7,7 @@ import { Anunt } from '../model/anunt';
 import { SortDirection } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { UserService } from '../user.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   resultsLength = 0;
+  // myRoles: any[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -83,7 +85,8 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
   // private serviciuHttpClient  HttpClient;
   constructor(private serviciuHttpClient: HttpClient,
     private serviciuAnunturi: AnunturiService,
-    private changeDetectorRefs: ChangeDetectorRef) {
+    private changeDetectorRefs: ChangeDetectorRef,
+    private userService : UserService) {
     console.log('AnunturiComponent - constructor')
   }
   ngAfterViewInit(): void {
@@ -92,8 +95,8 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-
-
+    // this.myRoles = this.userService.getMyRoles();
+    // console.log('My roles: ', this.myRoles)
     console.log('AnunturiComponent - ngOnInit')
     // this.serviciuAnunturi.findAllAnunturi()
     //   .subscribe(anunturi => {
@@ -130,6 +133,9 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
     });
   }
 
+  canISeeAnuntButton(){
+    return this.userService.canISee(['ADMIN', 'COMANDANT', 'PROFESOR', 'SECRETAR']);
+  }
 
 
 }

@@ -49,7 +49,8 @@ public class AnuntController {
 	private RepoAnuntPagination repoAnuntPagination;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
-	public Iterable<Anunt> getAllAnunturi() {
+	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
+		//Thread.sleep(6000);
 		return repoAnunt.findAll();
 	}
 	@GetMapping("/all-paginated/{page}/{size}/{sort}/{order}")

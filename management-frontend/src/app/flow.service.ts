@@ -15,4 +15,8 @@ export class FlowService {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/flow/by-cerere-id/${idCerere}`, this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  findAllFlowByMe():  Observable<any[]>{
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/cerere/flow/accept-refuse/by-me`, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
 }

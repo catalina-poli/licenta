@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AnunturiStudentViewComponent } from './anunturi-student-view/anunturi-student-view.component';
 import { AnunturiStudentComponent } from './anunturi-student/anunturi-student.component';
 import { AnunturiComponent } from './anunturi/anunturi.component';
+import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component';
 import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'groups',
     component: GroupComponent
+  },
+  {
+    path: 'my-flow-items',
+    component: CereriFlowMyComponent
   }
 ];
 

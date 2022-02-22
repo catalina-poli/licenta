@@ -14,12 +14,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" routerLink="/utilizatorii">Utilizatorii</a>
-        <a class="nav-item nav-link" [routerLink]="['/anunturile']">Anunturile</a>
-        <a class="nav-item nav-link" [routerLink]="['/antunturi-student']">Anunturile Student</a>
-        <a class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
-        <a class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
+        <a  class="nav-item nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a *ngIf="canSee('utilizatori')" class="nav-item nav-link" routerLink="/utilizatorii">Utilizatorii</a>
+        <a *ngIf="canSee('anunturi')" class="nav-item nav-link" [routerLink]="['/anunturile']">Anunturile</a>
+        <a *ngIf="canSee('anunturi-student')" class="nav-item nav-link" [routerLink]="['/antunturi-student']">Anunturile Student</a>
+        <a *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
+        <a *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
         <button (click)="logout()">Logout</button>
 
       </div>

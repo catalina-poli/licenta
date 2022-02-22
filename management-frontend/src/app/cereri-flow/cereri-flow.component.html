@@ -1,29 +1,71 @@
 <div *ngIf="cerere">
 
     <h2>Cerere</h2>
-    <p>
-        ID: <span>{{idCerere}}</span>
-    </p>
-    <div>
-        Tip cerere: <span>{{cerere.typeCerere}}</span>
-    </div>
-    <div>
-        User: <span>{{cerere.userAssociated.email}}</span>
-    </div>
 
-    <div>
-        Date Created: <span>{{cerere.dateCreated | date : 'yyyy-MM-dd'}}</span>
-    </div>
-    <div>
-        Date Start: <span>{{cerere.dateStart | date : 'yyyy-MM-dd'}}</span>
-    </div>
-    <div>
-        Date End: <span>{{cerere.dateEnd | date : 'yyyy-MM-dd'}}</span>
-    </div>
+    <table class="table table-bordered">
+        <thead>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td>ID</td>
+                <td>{{idCerere}}</td>
+            </tr>
+            <tr>
+                <td>Tip Cerere</td>
+                <td>{{cerere.typeCerere}}</td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td>{{cerere.userAssociated.email}}</td>
+            </tr>
+            <tr>
+                <td>Date created</td>
+                <td><span>{{cerere.dateCreated | date : 'yyyy-MM-dd'}}</span></td>
+            </tr>
+            <tr>
+                <td>Date end</td>
+                <td><span>{{cerere.dateEnd | date : 'yyyy-MM-dd'}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+
     <div>
         <a [routerLink]="['/cereri-flow-view', cerere.id] ">View status</a>
     </div>
 
+    <div>
+        <div style="text-align: center;">
+            <h3>Groups</h3>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>Parent Group</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    
+                <tr *ngFor="let g of groups">
+                    <td>
+                        {{g.numeGrup}}
+                    </td>
+
+                    <td [class]="g.parentGroup ? 'b-white' : 'b-gray'">
+                        <span *ngIf="g.parentGroup; else noParentGroup">
+                            {{g.parentGroup.numeGrup}}
+                        </span>
+                        <ng-template #noParentGroup>
+                            <span>No parent group</span>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+
 </div>

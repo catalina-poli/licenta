@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor(private router : Router) {
+  constructor(private router : Router, private userService: UserService) {
     console.log('navigation component loaded')
    }
 
@@ -17,7 +18,32 @@ export class NavigationComponent implements OnInit {
 
   logout(){
     localStorage.removeItem('CHEIE_OAUTH');
+    localStorage.removeItem('MY_DETAILS');
     this.router.navigate(['/login']);
   }
+
+  canSee(navigationItem : string){
+    if(!localStorage.getItem('CHEIE_OAUTH')){
+      // not logged in
+      return false;
+    }
+    if(navigationItem == 'utilizatori'){
+      return this.userService.canISee(['ADMIN'])
+    }
+    if(navigationItem == 'anunturi'){
+      return this.userService.canISee(['ADMIN', 'PROFESOR', 'COMANDANT', 'SECRETAR'])
+    }
+    if(navigationItem == 'anunturi-student'){
+      return this.userService.canISee(['STUDENT']);
+    }
+    if(navigationItem == 'cereri'){
+      return this.userService.canISee(['STUDENT', 'COMANDANT', 'PROFESOR', 'SECRETAR']);
+    }
+    if(navigationItem == 'grupuri'){
+      return this.userService.canISee(['ADMIN']);
+    }
+    return false;
+  }
+  
 
 }

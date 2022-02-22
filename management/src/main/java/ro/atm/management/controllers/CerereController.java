@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.atm.management.model.Cerere;
+import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.Group;
+import ro.atm.management.model.Role;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
+import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
 
@@ -35,9 +38,23 @@ public class CerereController {
 	@Autowired
 	private RepoGroup repoGroup;
 	
+	@Autowired
+	private RepoFlowCerere repoFlow;
+	
 	@GetMapping("/all")
-	public List<Cerere> allCereri(){
-		return repoCerere.findAllByOrderByDateCreatedDesc();
+	public List<Cerere> allCereri(Principal principal){
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		boolean admin = false;
+		for(Role role : userLogat.getUserRoles()) {
+			if(role.getRoleName().equals("ADMIN")) {
+				admin = true;
+				break;
+			}
+		}
+		if(admin) {
+			return repoCerere.findAllByOrderByDateCreatedDesc();
+		}
+		return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(userLogat);
 	}
 	
 	@GetMapping("/by-id/{idCerere}")
@@ -65,13 +82,49 @@ public class CerereController {
 		return this.repoCerere.findByTypeCerere("restanta");
 	}
 	
+	
+	private void saveCerereFlowForCerereAndUserStatus2Pending(Cerere cerereSalvata, User userInCharge) {
+		FlowCerere flow = new FlowCerere();
+		flow.setCerere(cerereSalvata);
+		flow.setMotiv(null);
+		flow.setStatus(2); // 2 - INCOMPLETE / PENDING
+		flow.setSuperior(userInCharge);
+		this.repoFlow.save(flow);
+		
+	}
+	
 	@PostMapping("/save")
 	public Cerere saveCerere(@RequestBody Cerere cerereNoua, Principal principal) {
 		System.out.println("PRINCIPAL: " + principal.getName());
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		cerereNoua.setUserAssociated(userLogat);
 		cerereNoua.setDateCreated(new Date());
-		return this.repoCerere.save(cerereNoua);
+		
+		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
+		// cand o noua cerere este inregistrata, in flow vor fi salvate cererile de aprobare a cerii, 
+		//		urmand ca acestea sa fie aprobate ulterior
+		List<Group> groupsCerere = this.getGroupsForCerere(cerereNoua.getId());
+		for(Group g : groupsCerere) {
+			User userInCharge = g.getUserInCharge();
+			if(userInCharge!= null) {
+				this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, userInCharge);
+			}
+			if(g.getParentGroup() != null) {
+				if(g.getParentGroup().getUserInCharge() != null) {
+					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, g.getParentGroup().getUserInCharge());
+				}
+			}
+			
+		}
+		return cerereSalvata;
+	}
+	
+	@GetMapping("/flow/accept-refuse/by-me")
+	public List<FlowCerere>myFlowCereri(Principal principal){
+		System.out.println("PRINCIPAL: " + principal.getName());
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		List<FlowCerere> myFlowItems = this.repoFlow.findBySuperior(userLogat);
+		return myFlowItems;
 	}
 	
 	@GetMapping("/get-groups-for-cerere/{idCerere}")

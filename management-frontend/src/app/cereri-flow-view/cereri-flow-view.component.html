@@ -19,7 +19,7 @@
         <tr *ngFor="let f of flowItems">
             <td>{{f.id}}</td>
             <td>{{f.superior.email}}</td>
-            <td>{{f.status ? 'ACCEPTAT' : 'RESPINS'}}</td>
+            <td>{{f.status == 2 ? 'PENDING' : f.status == 1 ? 'ACCEPTAT' : 'RESPINS'}}</td>
             <td>{{f.motiv}}</td>
         </tr>
     </tbody>
