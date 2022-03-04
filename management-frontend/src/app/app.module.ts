@@ -30,6 +30,7 @@ import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.com
 import { GroupComponent } from './group/group.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component';
+import { CereriFlowMyStatusDialogComponent } from './cereri-flow-my-status-dialog/cereri-flow-my-status-dialog.component';
 
 
 
@@ -50,7 +51,8 @@ import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component
     CereriFlowComponent,
     CereriFlowViewComponent,
     GroupComponent,
-    CereriFlowMyComponent
+    CereriFlowMyComponent,
+    CereriFlowMyStatusDialogComponent
   ],
   imports: [
     BrowserModule,

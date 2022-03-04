@@ -54,7 +54,7 @@ export class CereriComponent implements OnInit {
   // }
   addCerere() {
     // this.confirmareService.openDialog('hello');
-    this.cereriService.openDialog('Add Anunt').subscribe(result => {
+    this.cereriService.openDialog('Adauga Cerere').subscribe(result => {
       console.log('The dialog was closed: ', result);
       // this.message = result;
       if(result){

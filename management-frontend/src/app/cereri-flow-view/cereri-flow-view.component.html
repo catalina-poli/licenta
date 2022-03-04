@@ -23,6 +23,9 @@
             <td>{{f.motiv}}</td>
         </tr>
     </tbody>
+    <p>
+        <span>Status cerere: {{calculAdmisRespinsPending()}}</span>
+    </p>
     <h3>Useri care trebuie sa dea acceptul</h3>
     <ul>
         <li *ngFor="let g of grupuriUtilizatorCerere">

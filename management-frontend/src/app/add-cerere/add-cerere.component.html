@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Anunt</h1>
+<h1 mat-dialog-title>Adauga Cerere</h1>
 <div mat-dialog-content>
 
 
@@ -24,7 +24,6 @@
 <div mat-dialog-actions>
 
     <button *ngIf="!hasCerereBeenSaved" mat-button (click)="onNoClick()">Cancel</button>
-    <!-- [mat-dialog-close]="data.animal" -->
     <button *ngIf="!hasCerereBeenSaved" mat-button color="primary" (click)="saveCerere()">Save cerere</button>
     <button *ngIf="hasCerereBeenSaved" [mat-dialog-close]="data.rezultat">Ok</button>
 </div>

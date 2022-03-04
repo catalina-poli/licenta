@@ -20,6 +20,43 @@ export class CereriFlowViewComponent implements OnInit {
   constructor(private serviceCerere: CereriService, private activatedRoute: ActivatedRoute,
     private flowService: FlowService) { }
 
+  calculAdmisRespinsPending() : string{
+    let cerereAsAny = this.cerere as any;
+    let intrerupere = cerereAsAny['cerereType']['intrerupere'];
+
+    if(intrerupere == 1){
+      for(let fi of this.flowItems){
+        if(fi['status'] == 0){
+          // this.statusGlobal = false;
+          return 'RESPINS';
+        }
+      }
+    }
+
+    let respinsAll = true;
+    let acceptAll = true;
+    let pendingOne = false;
+    for(let fi of this.flowItems){
+      if(fi['status'] != 0){
+        respinsAll = false;
+      }
+      if(fi['status'] != 1){
+        acceptAll = false;
+      }
+      if(fi['status'] == 2){
+        pendingOne = true;
+      }
+    }
+    if(respinsAll){
+      return 'RESPINS';
+    }
+    if(pendingOne){
+      return 'PENDING';
+    }
+    return 'ACCEPTAT';
+   
+  }
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.idCerere = params['id'];
@@ -48,6 +85,7 @@ export class CereriFlowViewComponent implements OnInit {
             rez => {
               this.flowItems = rez;
               console.log('FLOW ITEMS: ', this.flowItems);
+             
             },
             err => {
               console.log('err: ', err);

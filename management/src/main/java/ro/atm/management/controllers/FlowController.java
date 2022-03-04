@@ -1,5 +1,6 @@
 package ro.atm.management.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +8,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.atm.management.dto.DtoFlow;
+import ro.atm.management.dto.DtoFlowUpdateStatus;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.FlowCerere;
+import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
 import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoUser;
@@ -60,6 +64,21 @@ public class FlowController {
 		flow.setMotiv(dtoFlow.getMotiv());
 		flow.setStatus(dtoFlow.getStatus());
 		return repoFlow.save(flow);
+	}
+	
+	@PutMapping("/update-status")
+	public FlowCerere modifyStatus(@RequestBody DtoFlowUpdateStatus dto, Principal principal) {
+		System.out.println("DtO: " + dto);
+		User userLoggedIn = this.repoUser.findByEmail(principal.getName()).get();
+		FlowCerere flowItem = this.repoFlow.findById(dto.getIdFlowItem()).get();
+		flowItem.setStatus(dto.getStatusItem());
+		flowItem.setMotiv(dto.getMotiv());
+		// the user modifying the flow item should be the valid user that has access to modify the item
+		if(!userLoggedIn.getId().equals(flowItem.getSuperior().getId())) {
+			throw new RuntimeException("Security issue - invalid user");
+		}
+
+		return this.repoFlow.save(flowItem);
 	}
 	
 }

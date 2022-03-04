@@ -37,10 +37,13 @@ export class NavigationComponent implements OnInit {
       return this.userService.canISee(['STUDENT']);
     }
     if(navigationItem == 'cereri'){
-      return this.userService.canISee(['STUDENT', 'COMANDANT', 'PROFESOR', 'SECRETAR']);
+      return this.userService.canISee(['STUDENT', 'COMANDANT', 'PROFESOR', 'SECRETAR', 'ADMIN']);
     }
     if(navigationItem == 'grupuri'){
       return this.userService.canISee(['ADMIN']);
+    }
+    if(navigationItem == 'decizii'){
+      return this.userService.canISee(['ADMIN', 'PROFESOR', 'COMANDANT']);
     }
     return false;
   }

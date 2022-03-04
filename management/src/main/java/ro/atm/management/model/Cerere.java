@@ -32,7 +32,12 @@ public class Cerere {
 	@ManyToOne
 	@JoinColumn(name = "user_id") // foreign key
 	private User userAssociated;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "id_type") // foreign key
+	private CerereType cerereType;
+	
+	
 	@Column(name = "date_start")
 	private Date dateStart;
 	@Column(name = "date_end")
@@ -85,6 +90,16 @@ public class Cerere {
 	public void setDateEnd(Date dateEnd) {
 		this.dateEnd = dateEnd;
 	}
+
+	public CerereType getCerereType() {
+		return cerereType;
+	}
+
+	public void setCerereType(CerereType cerereType) {
+		this.cerereType = cerereType;
+	}
+	
+	
 
 //    user_id int,
 //    foreign key(user_id) references users(id)

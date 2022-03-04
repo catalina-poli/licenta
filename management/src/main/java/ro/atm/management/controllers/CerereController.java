@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.atm.management.model.Cerere;
+import ro.atm.management.model.CerereType;
 import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.Group;
 import ro.atm.management.model.Role;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
+import ro.atm.management.repo.RepoCerereType;
 import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
@@ -40,6 +42,9 @@ public class CerereController {
 	
 	@Autowired
 	private RepoFlowCerere repoFlow;
+	
+	@Autowired
+	private RepoCerereType repoCerereType;
 	
 	@GetMapping("/all")
 	public List<Cerere> allCereri(Principal principal){
@@ -99,6 +104,10 @@ public class CerereController {
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		cerereNoua.setUserAssociated(userLogat);
 		cerereNoua.setDateCreated(new Date());
+		
+		CerereType cerereType = this.repoCerereType.findByTypeCerere(cerereNoua.getTypeCerere());
+		cerereNoua.setCerereType(cerereType);
+		
 		
 		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
 		// cand o noua cerere este inregistrata, in flow vor fi salvate cererile de aprobare a cerii, 

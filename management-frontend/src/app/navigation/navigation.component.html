@@ -20,6 +20,7 @@
         <a *ngIf="canSee('anunturi-student')" class="nav-item nav-link" [routerLink]="['/antunturi-student']">Anunturile Student</a>
         <a *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
         <a *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
+        <a *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
         <button (click)="logout()">Logout</button>
 
       </div>

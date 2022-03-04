@@ -1,1 +1,109 @@
-<p>cereri-flow-my works!</p>
+<div>
+    <h2>Flow cereri - admite / respinge</h2>
+
+
+<div *ngFor= "let cfi of cereriAndFlowItems | keyvalue">
+    <h3>Flow items for cerere: {{cfi.key}}</h3>
+    <table >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tip cerere</th>
+                <th>Utilizator</th>
+                <th>Date start</th>
+                <th>Date end</th>
+                <th>Motiv</th>
+                <th>Status curent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let fi of cfi.value">
+                <td>
+                    {{fi.id}}
+                </td>
+                <td>
+                    {{fi.cerere.typeCerere}}
+                </td>
+                <td>
+                    <span *ngIf="fi.cerere.userAssociated; else noUserAssociated">
+                        {{fi.cerere.userAssociated.email}}
+                    </span>
+                    <ng-template #noUserAssociated>
+                        <span>No user associated</span>
+                    </ng-template>
+                </td>
+                <td>
+                    {{fi.cerere.dateStart}}
+                </td>
+                <td>
+                    {{fi.cerere.dateEnd}}
+                </td>
+                <td>
+                    {{fi.motiv}}
+                </td>
+                <td>
+                    <span>
+                        {{fi.status == 2 ? 'PENDING' : fi.status == 1 ? 'ACCEPTATA' : 'RESPINSA'}}
+                    </span>
+                </td>
+                <td>
+                    <button (click)="rezolva(fi, true)">Admite</button>
+                    <button (click)="rezolva(fi, false)">Respinge</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tip cerere</th>
+                <th>Utilizator</th>
+                <th>Date start</th>
+                <th>Date end</th>
+                <th>Motiv</th>
+                <th>Status curent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let fi of flowItems">
+                <td>
+                    {{fi.id}}
+                </td>
+                <td>
+                    {{fi.cerere.typeCerere}}
+                </td>
+                <td>
+                    <span *ngIf="fi.cerere.userAssociated; else noUserAssociated">
+                        {{fi.cerere.userAssociated.email}}
+                    </span>
+                    <ng-template #noUserAssociated>
+                        <span>No user associated</span>
+                    </ng-template>
+                </td>
+                <td>
+                    {{fi.cerere.dateStart}}
+                </td>
+                <td>
+                    {{fi.cerere.dateEnd}}
+                </td>
+                <td>
+                    {{fi.motiv}}
+                </td>
+                <td>
+                    <span>
+                        {{fi.status == 2 ? 'PENDING' : fi.status == 1 ? 'ACCEPTATA' : 'RESPINSA'}}
+                    </span>
+                </td>
+                <td>
+                    <button (click)="rezolva(fi, true)">Admite</button>
+                    <button (click)="rezolva(fi, false)">Respinge</button>
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
+  
+</div>
