@@ -4,6 +4,7 @@
 
     <div *ngIf="!hasCerereBeenSaved; else anuntSaved">
 
+        
         <mat-form-field appearance="fill">
             <mat-label>Adaugare cerere</mat-label>
             <mat-select [(ngModel)]="cerereNoua.typeCerere">
@@ -13,6 +14,22 @@
 
             </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Users to receive cerere</mat-label>
+            <mat-select multiple [(ngModel)]="usersSelected">
+             
+              <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div>
+        <h3>Users selected</h3>
+        <ul>
+            <li *ngFor="let userSelected of usersSelected">
+                <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
+                {{userSelected.email}} <button (click)="removeFromCerere(userSelected)">Remove</button>
+            </li>
+        </ul>
     </div>
     <ng-template #anuntSaved>
         <div>

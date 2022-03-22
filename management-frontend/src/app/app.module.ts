@@ -31,6 +31,12 @@ import { GroupComponent } from './group/group.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component';
 import { CereriFlowMyStatusDialogComponent } from './cereri-flow-my-status-dialog/cereri-flow-my-status-dialog.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+// import { IconComponent } from './icon/icon.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 
 
@@ -68,7 +74,12 @@ import { CereriFlowMyStatusDialogComponent } from './cereri-flow-my-status-dialo
     MatPaginatorModule,
     MatDialogModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    PdfViewerModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule
 
   ],
   providers: [],

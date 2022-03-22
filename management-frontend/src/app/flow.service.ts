@@ -19,6 +19,10 @@ export class FlowService {
   findAllFlowByMe():  Observable<any[]>{
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/cerere/flow/accept-refuse/by-me`, this.loginService.configureHeaderOptionsForOAuth());
   }
+  findAllFlowPrevious():  Observable<any[]>{
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/cerere/flow/to-be-seen-by-me`, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
 
   modifyFlowItemStatus(dto: any){
     return this.serviciuHttpClient.put(`http://localhost:8080/rest/flow/update-status`, dto, this.loginService.configureHeaderOptionsForOAuth());

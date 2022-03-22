@@ -2,6 +2,49 @@
     <h2>Flow cereri - admite / respinge</h2>
 
 
+    <div>
+        <h3>Decizii anterioare</h3>
+        <div *ngFor="let dto of dtosFlowItemsPrevious">
+            <div>
+                For cerere: <span>{{dto.cerere.typeCerere}}</span> - <span>{{dto.cerere.userAssociated.email}}</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Superior</th>
+                        <th>Status</th>
+                        <th>Can Interrupt</th>
+                        <th>Order</th>
+                        <th>Motiv</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let fi of dto.flowItemsICanSeeForCerere">
+                        <td>
+                            {{fi.id}}
+                        </td>
+                        <td>
+                            {{fi.superior.email}}
+                        </td>
+                        <td>
+                            {{fi.status}}
+                        </td>
+                        <td>
+                            {{fi.canInterrupt}}
+                        </td>
+                        <td>
+                            {{fi.priority}}
+                        </td>
+                        <td>
+                            {{fi.motiv}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 <div *ngFor= "let cfi of cereriAndFlowItems | keyvalue">
     <h3>Flow items for cerere: {{cfi.key}}</h3>
     <table >

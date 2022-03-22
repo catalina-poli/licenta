@@ -16,6 +16,7 @@ export class AnunturiStudentViewComponent implements OnInit {
   anunt: Anunt | null = null;
 
   anuntEditare: Anunt | null = null;
+  sourceForPdf :string = '';
 
   updateAnuntCancel(){
     this.anuntEditare = null;
@@ -90,6 +91,7 @@ export class AnunturiStudentViewComponent implements OnInit {
             this.anunt = anunt;
             console.log('am incarcat anuntul: ', this.anunt);
             console.log('pas 2');
+            this.sourceForPdf = 'http://localhost:8080/rest/anunturi/generate-anunt-pdf/'+this.anunt.id+'?access_token='+localStorage.getItem('CHEIE_OAUTH');
           });
       }
     );

@@ -15,8 +15,21 @@ export class CereriFlowMyComponent implements OnInit {
   flowItems: any[] = [];
   constructor(private flowService: FlowService) { }
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
+  dtosFlowItemsPrevious: any[] = [];
 
   ngOnInit(): void {
+
+    this.flowService.findAllFlowPrevious()
+      .subscribe(
+        rez => {
+          this.dtosFlowItemsPrevious = rez;
+          console.log('dtos flow previous: ', this.dtosFlowItemsPrevious);
+        },
+        err => {
+          console.log('err: ', err);
+        }
+      );
+
     this.flowService.findAllFlowByMe()
       .subscribe(
         rez => {

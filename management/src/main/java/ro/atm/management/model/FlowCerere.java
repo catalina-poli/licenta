@@ -1,5 +1,6 @@
 package ro.atm.management.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,12 @@ public class FlowCerere {
 	@ManyToOne
 	@JoinColumn(name="id_user")
 	private User superior;
+	
+	@Column(name="can_interrupt")
+	private Integer canInterrupt;
+	
+	@Column(name="priority")
+	private Integer priority;
 	
 	private Integer status;
 	
@@ -71,6 +78,26 @@ public class FlowCerere {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	
+
+	public Integer getCanInterrupt() {
+		return canInterrupt;
+	}
+
+	public void setCanInterrupt(Integer canInterrupt) {
+		this.canInterrupt = canInterrupt;
+	}
+	
+	
+
+	public Integer getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Integer priority) {
+		this.priority = priority;
 	}
 
 	@Override

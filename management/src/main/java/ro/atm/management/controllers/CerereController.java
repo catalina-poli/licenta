@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ro.atm.management.dto.DtoCerereAndFlowsICanSee;
+import ro.atm.management.dto.DtoCerereWithUsers;
+import ro.atm.management.dto.UserCerere;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.CerereType;
 import ro.atm.management.model.FlowCerere;
@@ -98,6 +101,34 @@ public class CerereController {
 		
 	}
 	
+	@PostMapping("/save-with-users")
+	public Cerere saveCerereWithUsers(@RequestBody DtoCerereWithUsers cerereNouaDto, Principal principal) {
+		
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		Cerere cerereNoua = cerereNouaDto.getCerere();
+		
+		cerereNoua.setUserAssociated(userLogat);
+		cerereNoua.setDateCreated(new Date());
+		CerereType cerereType = this.repoCerereType.findByTypeCerere(cerereNoua.getTypeCerere());
+		cerereNoua.setCerereType(cerereType);
+		
+		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
+
+		
+		for(UserCerere uc : cerereNouaDto.getUsersSelected()) {
+			FlowCerere flowCerere = new FlowCerere();
+			flowCerere.setCerere(cerereSalvata);
+			flowCerere.setStatus(2); // PENDING
+			flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
+			flowCerere.setCanInterrupt(uc.getCanInterrupt());
+			flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
+			this.repoFlow.save(flowCerere);
+		}
+		
+		System.out.println("SAVING CERERE: " + cerereNouaDto);
+		return cerereSalvata;
+	}
+	
 	@PostMapping("/save")
 	public Cerere saveCerere(@RequestBody Cerere cerereNoua, Principal principal) {
 		System.out.println("PRINCIPAL: " + principal.getName());
@@ -128,12 +159,51 @@ public class CerereController {
 		return cerereSalvata;
 	}
 	
+	@GetMapping("/flow/to-be-seen-by-me")
+	public List<DtoCerereAndFlowsICanSee>myFlowCereriToBeSeenByMe(Principal principal){
+		System.out.println("PRINCIPAL: " + principal.getName());
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		List<FlowCerere> flowCereriICanSee = this.myFlowCereri(principal);
+		List<DtoCerereAndFlowsICanSee> result = new ArrayList<>();
+		for(FlowCerere flowCerereICanSee : flowCereriICanSee) {
+			DtoCerereAndFlowsICanSee dto = new DtoCerereAndFlowsICanSee();
+			dto.setCerere(flowCerereICanSee.getCerere());
+			dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerere(flowCerereICanSee.getCerere()));
+			result.add(dto);
+		}
+		
+		return result;
+	}
+	
 	@GetMapping("/flow/accept-refuse/by-me")
 	public List<FlowCerere>myFlowCereri(Principal principal){
 		System.out.println("PRINCIPAL: " + principal.getName());
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		List<FlowCerere> myFlowItems = this.repoFlow.findBySuperior(userLogat);
-		return myFlowItems;
+		List<FlowCerere> myFlowItemsWithPriority = new ArrayList<>();
+		for(FlowCerere fc : myFlowItems) {
+			// 1. cererea
+			Cerere cerereAsociata = fc.getCerere();
+			// 2. celelalte elemente de flow to check priority
+			List<FlowCerere> toateFlow = this.repoFlow.findByCerere(cerereAsociata);
+			boolean canAddToList = true;
+			for(FlowCerere fcElement : toateFlow) {
+				if(fcElement.getStatus() == 2 && fcElement.getPriority() < fc.getPriority()) {
+					// daca exista un flow cu ordinea mai mica decat flow-ul curent care este PENDING - nu ar trebui sa vedem flow item-ul
+					canAddToList = false;
+					break;
+				}
+				if(fcElement.getStatus() == 0 && fcElement.getPriority() < fc.getPriority() && fcElement.getCanInterrupt() == 1) {
+					// cineva a dat reject unui flow item, cineva care putea sa "intrerupa"
+					canAddToList = false;
+					break;
+				}
+			}
+			if(canAddToList) {
+				myFlowItemsWithPriority.add(fc);
+			}
+		}
+		return myFlowItemsWithPriority;
 	}
 	
 	@GetMapping("/get-groups-for-cerere/{idCerere}")

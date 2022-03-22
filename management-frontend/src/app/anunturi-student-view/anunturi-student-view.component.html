@@ -25,6 +25,14 @@
 
         <button (click)="editAnunt(anunt)">Editare</button>
         <button (click)="sendPdfRequestServer(anunt)">Generate PDF</button>
+
+        <!-- http://localhost:8080/rest/anunturi/generate-anunt-pdf/32 -->
+        LINK: {{sourceForPdf}} <br>
+        <div style="border: 1px solidi red;">
+            <pdf-viewer [src]="sourceForPdf" [render-text]="true" [original-size]="false"
+                style="width: 400px; height: 500px">
+            </pdf-viewer>
+        </div>
     </div>
     <ng-template #loadingScreen>
         <div>
@@ -33,5 +41,6 @@
     </ng-template>
 
 
+   
 
 </div>
