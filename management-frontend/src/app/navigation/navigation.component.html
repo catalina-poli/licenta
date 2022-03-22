@@ -1,91 +1,118 @@
-<!-- <div>
-    <ul>
-        <li><a routerLink="/utilizatorii">Utilizatorii</a></li>
-        <li><a [routerLink]="['/anunturile']">Anunturile</a></li>
-        <li><a [routerLink]="['/antunturi-student']">Anunturile Student</a></li>
-        <li><a [routerLink]="['/cererile']">Cererile</a></li>
-        <li><button (click)="logout()">Logout</button></li>
-    </ul>
-</div> -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Management</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+<mat-toolbar color="primary">
+  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+   >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+
+
+  <mat-toolbar color="primary">
+
+
+
+    <span>Document Flow Management</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon> favorite_border </mat-icon>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a  class="nav-item nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        <a *ngIf="canSee('utilizatori')" class="nav-item nav-link" routerLink="/utilizatorii">Utilizatorii</a>
-        <a *ngIf="canSee('anunturi')" class="nav-item nav-link" [routerLink]="['/anunturile']">Anunturile</a>
-        <a *ngIf="canSee('anunturi-student')" class="nav-item nav-link" [routerLink]="['/antunturi-student']">Anunturile Student</a>
-        <a *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
-        <a *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
-        <a *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
-        <button (click)="logout()">Logout</button>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon> notifications_none </mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon> account_circle </mat-icon>
+    </button>
 
-      </div>
-    </div>
-  </nav>
+   
 
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav
-        #drawer 
-        class="sidenav" 
-        fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false">
-      <mat-toolbar>Menu</mat-toolbar>
-      <mat-nav-list>
-        <a mat-list-item href="#">Anunturi</a>
-        <a mat-list-item href="#">Rapoarte</a>
-        <a mat-list-item href="#">Useri</a>
-        <a mat-list-item href="#">Flow</a>
-        <a mat-list-item href="#">Statistici</a>
-        <a mat-list-item href="#">Templates</a>
-  
-        <!-- <a mat-list-item href="#">LogOut</a> -->
-        <button mat-raised-button color="pink">LogOut</button>
-  
-  
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <mat-toolbar color="primary">
-          <button
-            type="button"
-            aria-label="Toggle sidenav"
-            mat-icon-button
-            (click)="drawer.toggle()"
-            *ngIf="isHandset$ | async">
-            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-          </button>
-        
-        
-          <mat-toolbar color="primary">
-            
-            <mat-toolbar-row>
-              <span>Document Flow Management</span>
-              <span class="example-spacer"></span>
-              <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-                <mat-icon> favorite_border </mat-icon>
-              </button>
-              <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-                <mat-icon> notifications_none </mat-icon>
-              </button>
-              <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-                <mat-icon> account_circle </mat-icon>
-              </button>
-            </mat-toolbar-row>
-  
-          </mat-toolbar>
-          
-      </mat-toolbar>
-      <!-- Add Content Here -->
-  
-      <ng-content>     </ng-content>
-    
+  </mat-toolbar>
+
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+
+      <a mat-list-item *ngIf="canSee('utilizatori')" class="nav-item nav-link"
+        routerLink="/utilizatorii">Utilizatorii</a>
+      <a mat-list-item *ngIf="canSee('anunturi')" class="nav-item nav-link"
+        [routerLink]="['/anunturile']">Anunturile</a>
+      <a mat-list-item *ngIf="canSee('anunturi-student')" class="nav-item nav-link"
+        [routerLink]="['/antunturi-student']">Anunturile Student</a>
+      <a mat-list-item *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
+      <a mat-list-item *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
+      <a mat-list-item *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
+      <button mat-raised-button color="pink" (click)="logout()">Logout</button>
+
+      <!-- <button mat-raised-button color="pink"  (click)="drawer.toggle()">CLOSE</button> -->
+
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+
+    <ng-content> </ng-content>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container> 
+<!-- <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+      #drawer 
+      class="sidenav" 
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Anunturi</a>
+      <a mat-list-item href="#">Rapoarte</a>
+      <a mat-list-item href="#">Useri</a>
+      <a mat-list-item href="#">Flow</a>
+      <a mat-list-item href="#">Statistici</a>
+      <a mat-list-item href="#">Templates</a>
+
+      <button mat-raised-button color="pink">LogOut</button>
+
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
       
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      
+        <mat-toolbar color="primary">
+          
+          <mat-toolbar-row>
+            <span>Document Flow Management</span>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+              <mat-icon> favorite_border </mat-icon>
+            </button>
+            <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+              <mat-icon> notifications_none </mat-icon>
+            </button>
+            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+              <mat-icon> account_circle </mat-icon>
+            </button>
+          </mat-toolbar-row>
+
+        </mat-toolbar>
+        
+    </mat-toolbar>
+
+    <ng-content>     </ng-content>
   
+    
+  </mat-sidenav-content>
+</mat-sidenav-container> -->

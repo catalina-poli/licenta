@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-navigation',
@@ -11,6 +12,8 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
+
+  @ViewChild(MatSidenav) drawer: any;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(
