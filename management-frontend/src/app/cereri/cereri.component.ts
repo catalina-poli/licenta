@@ -39,29 +39,10 @@ export class CereriComponent implements OnInit {
       });
   }
 
-  // save(){
-  //   console.log('salvam pe server: ', this.cerereNoua);
-  //   this.cereriService.saveCerere(this.cerereNoua)
-  //     .subscribe(
-  //       rez=> {
-  //         console.log('dupa save: ', rez);
-  //         this.cererile.push(rez);
-  //       },
-  //       err => {
-  //         console.log('err: ', err);
-  //       }
-  //     );
-  // }
   addCerere() {
-    // this.confirmareService.openDialog('hello');
     this.cereriService.openDialog('Adauga Cerere').subscribe(result => {
       console.log('The dialog was closed: ', result);
-      // this.message = result;
       if(result){
-        // this.data.push(result);
-        // this.cereriService.findAllCereri().subscribe(rez => {
-        //   this.cererile = rez;
-        // });
         this.cererile.push(result);
       }
     });

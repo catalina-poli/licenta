@@ -31,6 +31,20 @@
             </li>
         </ul>
     </div>
+    <!-- files for cerere -->
+    <div>
+
+        <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        <div class="file-upload">
+          <!-- {{fileName || "No file uploaded yet."}} -->
+          Incarca raportul sub forma de document:  
+      
+            <button mat-mini-fab color="primary" class="upload-btn"
+              (click)="fileUpload.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+    </div>
     <ng-template #anuntSaved>
         <div>
             Cererea a fost salvata

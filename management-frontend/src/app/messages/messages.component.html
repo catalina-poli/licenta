@@ -1,0 +1,36 @@
+<div>
+    <h2>My messages</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Contents</th>
+                <th>Sender</th>
+                <th>Date Posted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let m of messages">
+                <td>{{m.id}}</td>
+                <td>{{m.contents}}</td>
+                <td>
+                    <span *ngIf="m.sender; else noSender">
+                        {{m.sender.email}}
+                    </span>
+                    <ng-template #noSender>
+                        <span>System message (notification)</span>
+                    </ng-template>
+                </td>
+                <td>
+                    <span>
+                        {{m.datePosted | date : 'yyyy-MM-dd'}}
+                    </span>
+                </td>
+                <td>
+                    <button (click)="deleteMessage(m)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

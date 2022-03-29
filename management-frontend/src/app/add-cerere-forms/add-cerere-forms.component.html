@@ -1,0 +1,145 @@
+<mat-tab-group>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">toc</mat-icon>
+            Cererile Mele
+        </ng-template>
+        <div>
+            <h2>Cererile</h2>
+
+            <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addCerere()">Adauga
+                cerere</button>
+
+            <div>
+                <select [(ngModel)]="filtruTipCerere" (change)="selectOptiuneFiltru()">
+                    <option [ngValue]="'all'">All</option>
+                    <option *ngFor="let t of tipuri" [ngValue]="t">{{t}}</option>
+                </select>
+            </div>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date posted</th>
+                        <th>Type</th>
+                        <th>User associated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of cererileAfisate">
+                        <td>{{c.id}}</td>
+                        <td>{{c.dateCreated | date: 'yyyy-MM-dd'}}</td>
+                        <td>{{c.typeCerere}}</td>
+                        <td>
+                            <span *ngIf="c.userAssociated; else una">
+                                {{c.userAssociated.email}}
+                            </span>
+                            <ng-template #una>
+                                <span>
+                                    User not associated
+                                </span>
+                            </ng-template>
+
+                        </td>
+                        <td>
+                            <a [routerLink]="['/cerere-flow', c.id]">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+
+
+            </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">playlist_add</mat-icon>
+            Cerere Noua
+        </ng-template>
+
+        <!-- ADAUGARE CERERE -->
+
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">description</mat-icon>
+                    Completare Cerere
+
+                </ng-template>
+                Content 1
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">attach_file</mat-icon>
+                    Incarcare Cerere
+                </ng-template>
+
+                <!-- Upload cerere -->
+                <div>
+                    Adauga Cerere
+                    <div>
+
+
+                        <div *ngIf="!hasCerereBeenSaved; else anuntSaved">
+
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Adaugare cerere</mat-label>
+                                <mat-select [(ngModel)]="cerereNoua.typeCerere">
+                                    <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
+                                        {{tipCerere}}
+                                    </mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Users to receive cerere</mat-label>
+                                <mat-select multiple [(ngModel)]="usersSelected">
+
+                                    <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <h3>Users selected</h3>
+                            <ul>
+                                <li *ngFor="let userSelected of usersSelected">
+                                    <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
+                                    {{userSelected.email}} <button
+                                        (click)="removeFromCerere(userSelected)">Remove</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- files for cerere -->
+                        <div>
+
+                            <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+                      
+                        </div>
+                        <ng-template #anuntSaved>
+                            <div>
+                                Cererea a fost salvata
+                            </div>
+                        </ng-template>
+
+                    </div>
+
+                    <button mat-button color="primary" (click)="saveCerere()">Save
+                        cerere</button>
+                </div>
+
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-tab>
+
+
+</mat-tab-group>

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,6 +19,8 @@ export interface DialogData {
 })
 export class AddCerereComponent implements OnInit {
 
+  fileName = '';
+  fileToUpload:File | null = null;
   tipuri : string[] = ['permisie', 'invoire', 'restanta'];
   cerereNoua : any = {
     typeCerere : ''
@@ -33,7 +36,8 @@ export class AddCerereComponent implements OnInit {
     public dialogRef: MatDialogRef<AddCerereComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private serviciuCereri: CereriService,
-    private usersService: UserService) { }
+    private usersService: UserService,
+    private http: HttpClient) { }
 
 
 
@@ -76,7 +80,40 @@ export class AddCerereComponent implements OnInit {
         console.log('CERERE SAVED: ', cerereSalvata)
         this.hasCerereBeenSaved = true;
         this.data.rezultat = cerereSalvata;
+        this.uploadFile();
       })
+  }
+
+  uploadFile(){
+    if (this.fileToUpload) 
+    {
+
+      this.fileName = this.fileToUpload.name;
+
+      const formData = new FormData();
+
+      formData.append("file", this.fileToUpload);
+
+      const upload$ = this.http.post("http://localhost:8080/uploadFile", formData);
+
+      upload$.subscribe(
+        rez => {
+          console.log('file successfully uploaded: ', rez);
+        },
+        err => {
+          console.log('error: ', err);
+        }
+      );
+      
+    }
+  }
+
+  onFileSelected(event: any)
+  {
+
+    this.fileToUpload = event.target.files[0];
+
+     
   }
 
   saveCerereOld() {

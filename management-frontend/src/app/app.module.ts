@@ -37,6 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MessagesComponent } from './messages/messages.component';
+import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.component';
 
 
 
@@ -58,7 +60,9 @@ import { MatListModule } from '@angular/material/list';
     CereriFlowViewComponent,
     GroupComponent,
     CereriFlowMyComponent,
-    CereriFlowMyStatusDialogComponent
+    CereriFlowMyStatusDialogComponent,
+    MessagesComponent,
+    AddCerereFormsComponent
   ],
   imports: [
     BrowserModule,

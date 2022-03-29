@@ -37,7 +37,9 @@ public class UserController {
 	
 	@GetMapping("/all-cerere")
 	public List<User> getUsersForCerere(){
-		Iterable<Role> roles = this.repoRole.findAllById(Stream.of(1,2,4,5).collect(Collectors.toList()));
+//		Iterable<Role> roles = this.repoRole.findAllById(Stream.of(1,2,4,5).collect(Collectors.toList()));
+		
+		List<Role> roles = this.repoRole.findByRoleNameIn(Stream.of(Role.RoleTypes.ADMIN, Role.RoleTypes.COMANDANT, Role.RoleTypes.PROFESOR, Role.RoleTypes.SECRETAR).toList());
 		List<User> usersWithRoles = this.repoUser.findByUserRolesIn(roles);
 		return usersWithRoles;
 	}

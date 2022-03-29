@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.component';
 import { AnunturiStudentViewComponent } from './anunturi-student-view/anunturi-student-view.component';
 import { AnunturiStudentComponent } from './anunturi-student/anunturi-student.component';
 import { AnunturiComponent } from './anunturi/anunturi.component';
@@ -9,6 +10,7 @@ import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
 import { GroupComponent } from './group/group.component';
 import { LoginComponent } from './login/login.component';
+import { MessagesComponent } from './messages/messages.component';
 import { UseriComponent } from './useri/useri.component';
 
 const routes: Routes = [
@@ -48,6 +50,14 @@ const routes: Routes = [
   {
     path: 'my-flow-items',
     component: CereriFlowMyComponent
+  },
+  {
+    path: 'messages',
+    component: MessagesComponent
+  },
+  {
+    path: 'cerere-forms',
+    component: AddCerereFormsComponent
   }
 ];
 

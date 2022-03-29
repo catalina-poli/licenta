@@ -32,8 +32,10 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import ro.atm.management.model.Anunt;
+import ro.atm.management.model.Role;
 import ro.atm.management.repo.RepoAnunt;
 import ro.atm.management.repo.RepoAnuntPagination;
+import ro.atm.management.service.AnuntService;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
 @RestController // clasa care trimite date catre frontend
@@ -47,6 +49,9 @@ public class AnuntController {
 
 	@Autowired 
 	private RepoAnuntPagination repoAnuntPagination;
+	
+	@Autowired
+	private AnuntService anuntService;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
 	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
@@ -106,7 +111,7 @@ public class AnuntController {
 	public ResponseEntity<byte[]> generatePdf(@PathVariable("id") int id) throws InterruptedException, FileNotFoundException, IOException {
 		Optional<Anunt> anuntCautatOptional = repoAnunt.findById(id);
 		if (anuntCautatOptional.isPresent()) {
-
+			// 
 			byte[] fisierBytes = this.generatePdfInFilesystem(anuntCautatOptional.get());
 
 			  HttpHeaders headers = new HttpHeaders();
@@ -140,6 +145,9 @@ public class AnuntController {
 
 	@PostMapping("/save")
 	public Anunt saveAnunt(@RequestBody Anunt anuntNou) {
+		// TODO: send to ALL students
+//		this.anuntService.saveNotificationMessage(0, "Un nou anunt");
+		this.anuntService.saveNotificationMessageBulkCategory("Un nou anunt", Role.RoleTypes.STUDENT);
 		return repoAnunt.save(anuntNou);
 	}
 

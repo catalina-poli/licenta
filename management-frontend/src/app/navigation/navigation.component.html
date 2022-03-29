@@ -1,6 +1,5 @@
 <mat-toolbar color="primary">
-  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-   >
+  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
 
@@ -15,13 +14,13 @@
       <mat-icon> favorite_border </mat-icon>
     </button>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon> notifications_none </mat-icon>
+      <mat-icon [routerLink]="['/messages']"> notifications_none </mat-icon>
     </button>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon> account_circle </mat-icon>
     </button>
 
-   
+
 
   </mat-toolbar>
 
@@ -32,7 +31,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-
+      
       <a mat-list-item *ngIf="canSee('utilizatori')" class="nav-item nav-link"
         routerLink="/utilizatorii">Utilizatorii</a>
       <a mat-list-item *ngIf="canSee('anunturi')" class="nav-item nav-link"
@@ -40,11 +39,13 @@
       <a mat-list-item *ngIf="canSee('anunturi-student')" class="nav-item nav-link"
         [routerLink]="['/antunturi-student']">Anunturile Student</a>
       <a mat-list-item *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cererile']">Cererile</a>
+      <a mat-list-item *ngIf="canSee('cereri')" class="nav-item nav-link" [routerLink]="['/cerere-forms']">Cererile</a>
+
       <a mat-list-item *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
       <a mat-list-item *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
       <button mat-raised-button color="pink" (click)="logout()">Logout</button>
 
-      <!-- <button mat-raised-button color="pink"  (click)="drawer.toggle()">CLOSE</button> -->
+      <button mat-raised-button color="pink" (click)="drawer.toggle()">CLOSE</button>
 
 
     </mat-nav-list>
@@ -56,7 +57,7 @@
 
 
   </mat-sidenav-content>
-</mat-sidenav-container> 
+</mat-sidenav-container>
 <!-- <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
       #drawer 
