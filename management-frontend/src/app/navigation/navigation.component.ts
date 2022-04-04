@@ -5,6 +5,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MessageService } from '../message.service';
+import { Mesaj } from '../model/mesaj';
 
 @Component({
   selector: 'app-navigation',
@@ -14,53 +16,87 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class NavigationComponent implements OnInit {
 
   @ViewChild(MatSidenav) drawer: any;
+  numberOfNotifications: number = 0;
+  notifications: Mesaj[] = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-  .pipe(
-    map(result => result.matches),
-    shareReplay()
-  );
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
-  constructor(private router : Router, 
+  constructor(private router: Router,
     private breakpointObserver: BreakpointObserver,
-    private userService: UserService) {
+    private userService: UserService,
+    private messageService: MessageService) {
     console.log('navigation component loaded')
-   }
-
-  ngOnInit(): void {
   }
 
-  logout(){
+  refreshNumberOfMessages(){
+    this.messageService.findMyMessages()
+    .subscribe(
+      messages => {
+        this.numberOfNotifications = messages.length;
+        this.notifications = messages;
+      },
+      err =>{
+        console.log('err', err);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    // TODO: update the number of notifications when a new notification is added
+    this.refreshNumberOfMessages();
+    // TODO: uncomment!!!!!!!
+    // setInterval(() =>{
+    //   this.refreshNumberOfMessages();
+    // }, 5000);
+
+  }
+
+  logout() {
     localStorage.removeItem('CHEIE_OAUTH');
     localStorage.removeItem('MY_DETAILS');
     this.router.navigate(['/login']);
   }
 
-  canSee(navigationItem : string){
-    if(!localStorage.getItem('CHEIE_OAUTH')){
+  canSee(navigationItem: string) {
+    if (!localStorage.getItem('CHEIE_OAUTH')) {
       // not logged in
       return false;
     }
-    if(navigationItem == 'utilizatori'){
+    if (navigationItem == 'utilizatori') {
       return this.userService.canISee(['ADMIN'])
     }
-    if(navigationItem == 'anunturi'){
+    if (navigationItem == 'anunturi') {
       return this.userService.canISee(['ADMIN', 'PROFESOR', 'COMANDANT', 'SECRETAR'])
     }
-    if(navigationItem == 'anunturi-student'){
+    if (navigationItem == 'anunturi-student') {
       return this.userService.canISee(['STUDENT']);
     }
-    if(navigationItem == 'cereri'){
+    if (navigationItem == 'cereri') {
       return this.userService.canISee(['STUDENT', 'COMANDANT', 'PROFESOR', 'SECRETAR', 'ADMIN']);
     }
-    if(navigationItem == 'grupuri'){
+    if (navigationItem == 'grupuri') {
       return this.userService.canISee(['ADMIN']);
     }
-    if(navigationItem == 'decizii'){
+    if (navigationItem == 'decizii') {
       return this.userService.canISee(['ADMIN', 'PROFESOR', 'COMANDANT']);
     }
     return false;
   }
+
+
+  hidden = false;
+
+  toggleBadgeVisibility() {
+    this.hidden = !this.hidden;
+  } 
   
+  isOpen = false;
+
+  
+
 
 }

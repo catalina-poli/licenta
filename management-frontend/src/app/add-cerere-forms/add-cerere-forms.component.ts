@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CereriService } from '../cereri.service';
 import { Cerere } from '../model/cerere';
+import { CerereDetailed } from '../model/cerere-detailed';
 import { UserService } from '../user.service';
 
 @Component({
@@ -18,12 +19,14 @@ export class AddCerereFormsComponent implements OnInit {
   cerereNoua: any = {
     typeCerere: ''
   };
+  cerereNouaDetailed: CerereDetailed = new CerereDetailed();
 
   tipuri: string[] = ['permisie', 'invoire', 'restanta'];
 
   // add cerere document
   usersList: any[] = [];
   usersSelected: any[] = [];
+  usersSelectedCerereDetailed: any[] = [];
   fileName = '';
   fileToUpload: File | null = null;
   hasCerereBeenSaved: boolean = false;
@@ -78,6 +81,11 @@ export class AddCerereFormsComponent implements OnInit {
     this.usersSelected.splice(this.usersSelected.indexOf(user), 1);
   }
 
+
+  removeFromCerereDetailed(user: any) {
+    this.usersSelectedCerereDetailed.splice(this.usersSelectedCerereDetailed.indexOf(user), 1);
+  }
+
   saveCerere() {
     console.log('salvam o cerere')
 
@@ -123,6 +131,22 @@ export class AddCerereFormsComponent implements OnInit {
       );
 
     }
+  }
+
+  saveCerereDetailed() {
+    console.log('saving cerere detailed: ', this.cerereNouaDetailed);
+    // saveCerereDetailedWithUsersAndPriority
+
+    console.log('users selected: ', this.usersSelectedCerereDetailed);
+    this.cereriService.saveCerereDetailedWithUsersAndPriority(this.cerereNouaDetailed, this.usersSelectedCerereDetailed)
+      .subscribe(cerereSalvata => {
+        console.log('Cerere salvata pe server: ', cerereSalvata);
+
+        console.log('CERERE SAVED: ', cerereSalvata)
+        // this.hasCerereBeenSaved = true;
+        // this.data.rezultat = cerereSalvata;
+
+      })
   }
 
 }

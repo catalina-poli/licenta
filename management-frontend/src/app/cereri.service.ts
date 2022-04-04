@@ -33,6 +33,23 @@ export class CereriService {
       return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save', cerere, this.loginService.configureHeaderOptionsForOAuth())
   }
 
+
+  // save-with-users-cerere-detailed
+
+
+  saveCerereDetailedWithUsersAndPriority(cerereDetailed: any, usersSelected: any[]){
+    for(let u of usersSelected){
+      u.canInterrupt = u.canInterrupt ? 1 : 0;
+    }
+    const obiect = {
+      cerereDetailed: cerereDetailed,
+      usersSelected: usersSelected
+    };
+    return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save-with-users-cerere-detailed', obiect, this.loginService.configureHeaderOptionsForOAuth())
+
+  }
+  
+
   saveCerereWithUsersAndPriority(cerere: any, usersSelected: any[]){
     for(let u of usersSelected){
       u.canInterrupt = u.canInterrupt ? 1 : 0;

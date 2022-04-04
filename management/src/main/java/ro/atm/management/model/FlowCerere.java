@@ -21,6 +21,10 @@ public class FlowCerere {
 	@JoinColumn(name="id_cerere")
 	private Cerere cerere;
 	
+	@ManyToOne
+	@JoinColumn(name="id_cerere_detailed")
+	private CerereDetailed cerereDetailed;
+	
 
 	@ManyToOne
 	@JoinColumn(name="id_user")
@@ -98,6 +102,16 @@ public class FlowCerere {
 
 	public void setPriority(Integer priority) {
 		this.priority = priority;
+	}
+	
+	
+
+	public CerereDetailed getCerereDetailed() {
+		return cerereDetailed;
+	}
+
+	public void setCerereDetailed(CerereDetailed cerereDetailed) {
+		this.cerereDetailed = cerereDetailed;
 	}
 
 	@Override

@@ -71,7 +71,98 @@
                     Completare Cerere
 
                 </ng-template>
-                Content 1
+
+
+                <!-- add cerere detailed -->
+                Adauga Cerere Detailed
+                <div>
+
+
+                    <div *ngIf="!hasCerereBeenSaved; else anuntSaved">
+
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Adaugare cerere detailed</mat-label>
+                            <mat-select [(ngModel)]="cerereNouaDetailed.typeCerere">
+                                <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
+                                    {{tipCerere}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Users to receive cerere</mat-label>
+                            <mat-select multiple [(ngModel)]="usersSelectedCerereDetailed">
+
+                                <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>DateStart</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.dateStart">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>DateEnd</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.dateEnd">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Localitate</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.localitate">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Judet</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.judet">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Ora Plecare</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.oraPlecare">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Ora Sosire</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.oraSosire">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Motiv</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.motiv">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Modalitate Deplasare</mat-label>
+                                <input matInput type="text" [(ngModel)]="cerereNouaDetailed.modalitateDeplasare">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Users selected</h3>
+                        <ul>
+                            <li *ngFor="let userSelected of usersSelectedCerereDetailed">
+                                <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
+                                {{userSelected.email}} <button (click)="removeFromCerereDetailed(userSelected)">Remove</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <button mat-button color="primary" (click)="saveCerereDetailed()">Save
+                        cerere detailed</button>
+                </div>
+                <!-- ./add cerere detailed -->
+
             </mat-tab>
 
             <mat-tab>
@@ -121,7 +212,7 @@
                         <div>
 
                             <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
-                      
+
                         </div>
                         <ng-template #anuntSaved>
                             <div>

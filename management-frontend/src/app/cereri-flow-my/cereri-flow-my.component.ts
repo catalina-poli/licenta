@@ -15,7 +15,11 @@ export class CereriFlowMyComponent implements OnInit {
   flowItems: any[] = [];
   constructor(private flowService: FlowService) { }
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
+  cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
+  cereriDocumentAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   dtosFlowItemsPrevious: any[] = [];
+  dtosFlowItemsPreviousCereriDocument: any[] = [];
+  dtosFlowItemsPreviousCereriDetailed: any[] = [];
 
   ngOnInit(): void {
 
@@ -24,6 +28,16 @@ export class CereriFlowMyComponent implements OnInit {
         rez => {
           this.dtosFlowItemsPrevious = rez;
           console.log('dtos flow previous: ', this.dtosFlowItemsPrevious);
+          for (let dto of this.dtosFlowItemsPrevious) {
+            if (dto.cerere) {
+              this.dtosFlowItemsPreviousCereriDocument.push(dto);
+            }
+            if (dto.cerereDetailed) {
+              this.dtosFlowItemsPreviousCereriDetailed.push(dto);
+
+            }
+          }
+          console.log('dtosFlowItemsPreviousCereriDetailed: ', this.dtosFlowItemsPreviousCereriDetailed)
         },
         err => {
           console.log('err: ', err);
@@ -35,15 +49,25 @@ export class CereriFlowMyComponent implements OnInit {
         rez => {
           console.log('my flow items: ', rez);
           this.flowItems = rez;
-          for(let fi of this.flowItems){
-            if(!this.cereriAndFlowItems.has(fi['cerere']['id'])){
-              this.cereriAndFlowItems.set(fi['cerere']['id'], [fi]);
-            }else{
-              this.cereriAndFlowItems.get(fi['cerere']['id'])?.push(fi);
+          for (let fi of this.flowItems) {
+            if (fi['cerere']) {
+              if (!this.cereriDocumentAndFlowItems.has(fi['cerere']['id'])) {
+                this.cereriDocumentAndFlowItems.set(fi['cerere']['id'], [fi]);
+              } else {
+                this.cereriDocumentAndFlowItems.get(fi['cerere']['id'])?.push(fi);
+              }
+            }
+            if(fi['cerereDetailed']){
+              if (!this.cereriDetailedAndFlowItems.has(fi['cerereDetailed']['id'])) {
+                this.cereriDetailedAndFlowItems.set(fi['cerereDetailed']['id'], [fi]);
+              } else {
+                this.cereriDetailedAndFlowItems.get(fi['cerereDetailed']['id'])?.push(fi);
+              }
             }
           }
-          console.log('cereri and flow items: ', this.cereriAndFlowItems);
-          
+          console.log('cereri document and flow items: ', this.cereriDocumentAndFlowItems);
+          console.log('cereri detailed and flow items: ', this.cereriDetailedAndFlowItems);
+
         },
         err => {
           console.log('err: ', err);
@@ -51,8 +75,13 @@ export class CereriFlowMyComponent implements OnInit {
       );
   }
 
+  downloadCerere(fi: any){
+    const idCerere = fi['cerere']['id'];
+    console.log('download document pentru cerere: ', idCerere);
+  }
+
   rezolva(flowItem: any, status: boolean) {
-    if(status){
+    if (status) {
       const dto: any = {
         idFlowItem: flowItem['id'],
         statusItem: 1,
@@ -78,7 +107,7 @@ export class CereriFlowMyComponent implements OnInit {
     });
   }
 
-  
+
 
 
 }

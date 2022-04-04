@@ -32,7 +32,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component';
 import { CereriFlowMyStatusDialogComponent } from './cereri-flow-my-status-dialog/cereri-flow-my-status-dialog.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-// import { IconComponent } from './icon/icon.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -41,7 +40,17 @@ import { MessagesComponent } from './messages/messages.component';
 import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.component';
 
 
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatExpansionModule} from '@angular/material/expansion';
 
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SabloaneComponent } from './sabloane/sabloane.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { ProfileInformationComponent } from './profile-information/profile-information.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +71,9 @@ import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.com
     CereriFlowMyComponent,
     CereriFlowMyStatusDialogComponent,
     MessagesComponent,
-    AddCerereFormsComponent
+    AddCerereFormsComponent,
+    SabloaneComponent,
+    ProfileInformationComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,8 +94,16 @@ import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.com
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
-
+    MatListModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    OverlayModule,
+    MatBadgeModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    MatTreeModule,
+    MatStepperModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -26,6 +26,9 @@ public class CerereDocument {
 	@Column(name="document_type")
 	private String documentType;
 	
+	@Column(name="filename")
+	private String filename;
+	
 	@Lob
 	private byte[] contents;
 	
@@ -64,6 +67,14 @@ public class CerereDocument {
 
 	public void setCerere(Cerere cerere) {
 		this.cerere = cerere;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	
 	
