@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.Header;
+
 import ro.atm.management.model.CerereDocument;
 import ro.atm.management.repo.RepoCerereDocument;
 
@@ -26,6 +28,9 @@ public class FileDownloadService {
 		Resource resource = new ByteArrayResource(doc.getContents());
 		ResponseEntity<Resource> raspuns = ResponseEntity.ok().contentType(MediaType.parseMediaType(doc.getDocumentType()))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + doc.getFilename() + "\"")
+				.header("NumeFisier",  doc.getFilename())
+				.header("Access-Control-Allow-Headers", "*")
+				.header("Access-Control-Expose-Headers", "*")
 				.body(resource);
 
 		return raspuns;

@@ -1,6 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { FileUploadDownloadService } from '../file-upload-download.service';
 import { FlowService } from '../flow.service';
+import { saveAs as importedSaveAs } from "file-saver";
 
 
 
@@ -13,7 +16,7 @@ import { FlowService } from '../flow.service';
 export class CereriFlowMyComponent implements OnInit {
 
   flowItems: any[] = [];
-  constructor(private flowService: FlowService) { }
+  constructor(private flowService: FlowService, private fileUploadDownloadService: FileUploadDownloadService) { }
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDocumentAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
@@ -57,7 +60,7 @@ export class CereriFlowMyComponent implements OnInit {
                 this.cereriDocumentAndFlowItems.get(fi['cerere']['id'])?.push(fi);
               }
             }
-            if(fi['cerereDetailed']){
+            if (fi['cerereDetailed']) {
               if (!this.cereriDetailedAndFlowItems.has(fi['cerereDetailed']['id'])) {
                 this.cereriDetailedAndFlowItems.set(fi['cerereDetailed']['id'], [fi]);
               } else {
@@ -75,10 +78,21 @@ export class CereriFlowMyComponent implements OnInit {
       );
   }
 
-  downloadCerere(fi: any){
+  downloadCerere(fi: any) {
     const idCerere = fi['cerere']['id'];
     console.log('download document pentru cerere: ', idCerere);
+    this.fileUploadDownloadService.downloadFileCerere(idCerere)
+      .subscribe(fileDownloaded => {
+        console.log('file response: ', fileDownloaded);
+        console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
+        console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
+        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier') ;
+        const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
+        const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
+        importedSaveAs(blobBody, numeFisier);
+      });
   }
+
 
   rezolva(flowItem: any, status: boolean) {
     if (status) {
