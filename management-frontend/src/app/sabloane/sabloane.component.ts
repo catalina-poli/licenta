@@ -4,52 +4,76 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { CategorieSablonService } from '../categorie-sablon.service';
+import { CategorieSablonModel } from '../model/categorie-sablon';
 
 
 export class DynamicFlatNode {
   constructor(
-    public item: string,
+    public item: CategorieSablonModel,
     public level = 1,
     public expandable = false,
     public isLoading = false,
   ) {}
 }
 
+export class DynamicFlatNodeSablon {
+  constructor(
+    public item: CategorieSablonModel,
+    public level = 1,
+    public expandable = false,
+    public isLoading = false,
+  ) {}
+}
 
 @Injectable({providedIn: 'root'})
 export class DynamicDatabase {
-  dataMap = new Map<string, string[]>([
-    ['Modele rapoarte BATALION', ['INVOIRE', 'PERMISIE', 'MEDICALA']],
-    ['INVOIRE', ['PARASIRE GARNIZOANA','IN GARNIZOANA BUCURESTI']],
-    ['IN GARNIZOANA BUCURESTI', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-    ['PARASIRE GARNIZOANA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-    ['PERMISIE', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-    ['MEDICALA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-    ['Modele rapoarte UNIVERSITARE', ['REEXAMINARE', 'ADEVERINTA STUDENT', 'BURSA']],
-    ['BURSA', ['.']],
-    ['REEXAMINARE', ['.']],
-    ['ADEVERINTA STUDENT', ['.']],
-    ['Modele rapoarte DE INTERES GENERAL',['PARASIRE TARA','CONCEDIU','REVENDICARE LAPTOP','SCOATERE LAPTOP DIN GARNIZOANA','INTRODUCERE LAPTOP IN UNITATE']],
-    ['PARASIRE', ['.']],
-    ['CONCEDIU', ['.']],
-    ['REVENDICARE LAPTOP', ['.']],   
-    ['SCOATERE LAPTOP DIN GARNIZOANA', ['.']],    
-    ['INTRODUCERE LAPTOP IN UNITATE', ['.']],
-    ['PARASIRE TARA', ['.']],
+
+
+  // dataMap = new Map<CategorieSablonModel, CategorieSablonModel[]>([
+  //   [{ id: 1, categoryName: 'Modele rapoarte BATALION', categorieParinte: '' },
+  //   [{ id: 2, categoryName: 'Modele rapoarte BATALIO 222', categorieParinte: '' }]
+  //   ]);
+
+  dataMapTest = new Map<CategorieSablonModel, CategorieSablonModel[]>(
+    
+  );
+  
+  dataMap = new Map<CategorieSablonModel, CategorieSablonModel[]>([
+   
     
   ]);
+  // ['Modele rapoarte BATALION', ['INVOIRE', 'PERMISIE', 'MEDICALA']],
+  // ['INVOIRE', ['PARASIRE GARNIZOANA','IN GARNIZOANA BUCURESTI']],
+  // ['IN GARNIZOANA BUCURESTI', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
+  // ['PARASIRE GARNIZOANA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
+  // ['PERMISIE', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
+  // ['MEDICALA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
+  // ['Modele rapoarte UNIVERSITARE', ['REEXAMINARE', 'ADEVERINTA STUDENT', 'BURSA']],
+  // ['BURSA', ['.']],
+  // ['REEXAMINARE', ['.']],
+  // ['ADEVERINTA STUDENT', ['.']],
+  // ['Modele rapoarte DE INTERES GENERAL',['PARASIRE TARA','CONCEDIU','REVENDICARE LAPTOP','SCOATERE LAPTOP DIN GARNIZOANA','INTRODUCERE LAPTOP IN UNITATE']],
+  // ['PARASIRE', ['.']],
+  // ['CONCEDIU', ['.']],
+  // ['REVENDICARE LAPTOP', ['.']],   
+  // ['SCOATERE LAPTOP DIN GARNIZOANA', ['.']],    
+  // ['INTRODUCERE LAPTOP IN UNITATE', ['.']],
+  // ['PARASIRE TARA', ['.']],
 
-  rootLevelNodes: string[] = ['Modele rapoarte BATALION', 'Modele rapoarte UNIVERSITARE','Modele rapoarte DE INTERES GENERAL'];
+  rootLevelNodes: CategorieSablonModel[] = [
+    // { id: 1, categoryName: 'ROOT 1', categorieParinte: null },
+    // { id: 1, categoryName: 'ROOT 2', categorieParinte: null }
+  ];
 
   initialData(): DynamicFlatNode[] {
-    return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
+    return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true)); // TODO: modify 'name'
   }
 
-  getChildren(node: string): string[] | undefined {
+  getChildren(node: CategorieSablonModel): CategorieSablonModel[] | undefined {
     return this.dataMap.get(node);
   }
 
-  isExpandable(node: string): boolean {
+  isExpandable(node: CategorieSablonModel): boolean {
     return this.dataMap.has(node);
   }
 }
@@ -67,10 +91,14 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private _database: DynamicDatabase,
-  ) {}
+    private _database: DynamicDatabase
+    
+  ) {
+  }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
+
+
     this._treeControl.expansionModel.changed.subscribe(change => {
       if (
         (change as SelectionChange<DynamicFlatNode>).added ||
@@ -127,7 +155,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       // notify the change
       this.dataChange.next(this.data);
       node.isLoading = false;
-    }, 1000);
+    }, 450);
   }
 }
 
@@ -144,13 +172,27 @@ export class SabloaneComponent implements OnInit{
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database);
 
-    this.dataSource.data = database.initialData();
+    // this.dataSource.data = database.initialData();
+
+
+    
   }
    ngOnInit(): void {
+
+
+  
+
      this.categoriiSablonService.findAllCategoriiSablonRadacina()
       .subscribe(
         categoriiRadacina => {
-          console.log('categorii root: ', categoriiRadacina)
+          console.log('categorii root: ', categoriiRadacina);
+          const data = this.dataSource.data;
+          let noduri = categoriiRadacina.map(x => new DynamicFlatNode(x, 0, true)); 
+          for(let nod of noduri){
+            data.push(nod);
+          }
+          this.dataSource.data = data;
+          // this.dataSource.data = database.initialData();
         },
         err => {
           console.log('eroare incarcare categorii root: ', err);

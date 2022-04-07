@@ -2,7 +2,7 @@
    
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <button mat-icon-button disabled></button>
-      {{node.item}}
+      {{node.item.categoryName}}
     </mat-tree-node>
 
 
@@ -17,7 +17,7 @@
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon> 
       </button>
-      {{node.item}}
+      {{node.item.categoryName}}
       <mat-progress-bar *ngIf="node.isLoading"
                         mode="indeterminate"
                         class="example-tree-progress-bar"></mat-progress-bar>
