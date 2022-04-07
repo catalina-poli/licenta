@@ -1,8 +1,9 @@
 import {CollectionViewer, SelectionChange, DataSource} from '@angular/cdk/collections';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { CategorieSablonService } from '../categorie-sablon.service';
 
 
 export class DynamicFlatNode {
@@ -137,13 +138,25 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   styleUrls: ['./sabloane.component.css']
 })
 
-export class SabloaneComponent{
-  constructor(database: DynamicDatabase) {
+export class SabloaneComponent implements OnInit{
+  constructor(database: DynamicDatabase,
+    private categoriiSablonService: CategorieSablonService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database);
 
     this.dataSource.data = database.initialData();
   }
+   ngOnInit(): void {
+     this.categoriiSablonService.findAllCategoriiSablonRadacina()
+      .subscribe(
+        categoriiRadacina => {
+          console.log('categorii root: ', categoriiRadacina)
+        },
+        err => {
+          console.log('eroare incarcare categorii root: ', err);
+        }
+      );
+   }
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
 
