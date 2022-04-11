@@ -21,6 +21,13 @@ export class CategorieSablonService {
     return this.serviciuHttpClient.get<CategorieSablonModel[]>('http://localhost:8080/rest/sabloane-categorii/get-root-categorii', this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  
+  findAllCategoriiSablonChildrenForParent(idParent: number) : Observable<CategorieSablonModel[]>{
+    return this.serviciuHttpClient.get<CategorieSablonModel[]>(`http://localhost:8080/rest/sabloane-categorii/get-children/${idParent}`, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
+  
+
 
 
 }

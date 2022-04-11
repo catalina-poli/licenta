@@ -91,7 +91,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private _database: DynamicDatabase
+    private _database: DynamicDatabase,
+    private serviceCategoriiSabloane: CategorieSablonService
     
   ) {
   }
@@ -127,6 +128,16 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
+    console.log('TOGGLING NODE: ', node);
+    this.serviceCategoriiSabloane.findAllCategoriiSablonChildrenForParent(node.item.id)
+      .subscribe(
+        rez => {
+          console.log('categorii children: ', rez);
+        },
+        err => {
+          console.log(err);
+        }
+      );
     const children = this._database.getChildren(node.item);
     const index = this.data.indexOf(node);
     if (!children || index < 0) {
@@ -170,7 +181,7 @@ export class SabloaneComponent implements OnInit{
   constructor(database: DynamicDatabase,
     private categoriiSablonService: CategorieSablonService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database);
+    this.dataSource = new DynamicDataSource(this.treeControl, database, categoriiSablonService);
 
     // this.dataSource.data = database.initialData();
 

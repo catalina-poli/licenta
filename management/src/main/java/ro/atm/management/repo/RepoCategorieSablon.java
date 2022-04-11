@@ -11,5 +11,6 @@ import ro.atm.management.model.CategorieSablon;
 public interface RepoCategorieSablon extends CrudRepository<CategorieSablon, Integer>{
 
 	public List<CategorieSablon> findAllByCategorieParinteIsNull();
+	public List<CategorieSablon> findByCategorieParinteId(int idParent);
 	
 }

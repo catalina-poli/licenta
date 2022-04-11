@@ -61,6 +61,7 @@
 
       <a mat-list-item *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
       <a mat-list-item *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
+      <a mat-list-item class="nav-item nav-link" [routerLink]="['/sabloane']">Sabloane</a>
       <button mat-raised-button color="pink" (click)="logout()">Logout</button>
 
       <button mat-raised-button color="pink" (click)="drawer.toggle()">CLOSE</button>
