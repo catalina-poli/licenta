@@ -1,38 +1,86 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-   
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-      <button mat-icon-button disabled></button>
-      {{node.item.categoryName}}
-    </mat-tree-node>
 
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <button mat-icon-button disabled></button>
+    {{node.item.categoryName}}
+    <span *ngIf="node.item.file">
+      <!-- &nbsp; {{node.item.filename}} -->
 
-
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-      <button mat-icon-button
-              [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
-
-
-        <mat-icon class="mat-icon-rtl-mirror">
-            
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon> 
+      <button mat-raised-button (click)="downloadSablon(node.item.id)">
+        <mat-icon>get_app</mat-icon>DOWNLOAD
       </button>
-      {{node.item.categoryName}}
-      <mat-progress-bar *ngIf="node.isLoading"
-                        mode="indeterminate"
-                        class="example-tree-progress-bar"></mat-progress-bar>
-    </mat-tree-node>
+    </span>
+  </mat-tree-node>
 
-  </mat-tree>
 
-  <h3></h3>
+
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+
+
+      <mat-icon class="mat-icon-rtl-mirror">
+
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    {{node.item.categoryName}}
+    <span *ngIf="node.item.file">
+      <!-- &nbsp;{{node.item.filename}} -->
+      <br>
+      <button mat-raised-button (click)="downloadSablon(node.item.id)">
+        <mat-icon>get_app</mat-icon>DOWNLOAD
+      </button>
+    </span>
+    <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
+  </mat-tree-node>
+
+</mat-tree>
+
+<h3></h3>
 <div class="example-button-row">
-  <button mat-raised-button color="primary">  <mat-icon>description</mat-icon>PREVIEW</button>
-  <button mat-raised-button>	<mat-icon>get_app</mat-icon>DOWNLOAD</button>
-  <button mat-raised-button color="warn">	<mat-icon>delete</mat-icon>DELETE</button>
-  <button mat-raised-button color="accent"><mat-icon>attach_file</mat-icon>ADD MODEL</button>
+  <button mat-raised-button color="primary">
+    <mat-icon>description</mat-icon>PREVIEW
+  </button>
+  <button mat-raised-button color="warn">
+    <mat-icon>delete</mat-icon>DELETE
+  </button>
+  <button mat-raised-button color="accent">
+    <mat-icon>attach_file</mat-icon>ADD MODEL
+  </button>
+</div>
+
+<div>
+  Adauga Sablon
+  <div>
+
+
+    <div>
+
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nume categorie</mat-label>
+        <input matInput [(ngModel)]="newCategoryName">
+
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Parinte categorie</mat-label>
+        <input matInput [(ngModel)]="parentId">
+
+      </mat-form-field>
+
+
+    </div>
+
+    <!-- sablon file -->
+    <div>
+
+      <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+    </div>
+
+
   </div>
 
-
-
-
+  <button mat-button color="primary" (click)="saveSablon()">Save
+    sablon</button>
+</div>

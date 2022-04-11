@@ -11,6 +11,14 @@ export class FileUploadDownloadService {
 
 
 
+  downloadFileSablon(id: number): Observable<HttpResponse<Blob>> {
+    // let options = new RequestOptions({responseType: ResponseContentType.Blob });
+
+    const url = `http://localhost:8080/file-download/cerere-sablon/${id}`;
+    return this.http.get(url, { responseType: 'blob', observe: 'response' });
+
+
+  }
 
   downloadFileCerere(id: number): Observable<HttpResponse<Blob>> {
     // let options = new RequestOptions({responseType: ResponseContentType.Blob });

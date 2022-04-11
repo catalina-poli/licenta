@@ -1,11 +1,13 @@
-import {CollectionViewer, SelectionChange, DataSource} from '@angular/cdk/collections';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject, merge, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { CollectionViewer, SelectionChange, DataSource } from '@angular/cdk/collections';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CategorieSablonService } from '../categorie-sablon.service';
+import { FileUploadDownloadService } from '../file-upload-download.service';
 import { CategorieSablonModel } from '../model/categorie-sablon';
-
+import { saveAs as importedSaveAs } from "file-saver";
+import { HttpClient } from '@angular/common/http';
 
 export class DynamicFlatNode {
   constructor(
@@ -13,7 +15,7 @@ export class DynamicFlatNode {
     public level = 1,
     public expandable = false,
     public isLoading = false,
-  ) {}
+  ) { }
 }
 
 export class DynamicFlatNodeSablon {
@@ -22,10 +24,10 @@ export class DynamicFlatNodeSablon {
     public level = 1,
     public expandable = false,
     public isLoading = false,
-  ) {}
+  ) { }
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DynamicDatabase {
 
 
@@ -35,12 +37,12 @@ export class DynamicDatabase {
   //   ]);
 
   dataMapTest = new Map<CategorieSablonModel, CategorieSablonModel[]>(
-    
+
   );
-  
+
   dataMap = new Map<CategorieSablonModel, CategorieSablonModel[]>([
-   
-    
+
+
   ]);
   // ['Modele rapoarte BATALION', ['INVOIRE', 'PERMISIE', 'MEDICALA']],
   // ['INVOIRE', ['PARASIRE GARNIZOANA','IN GARNIZOANA BUCURESTI']],
@@ -93,7 +95,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase,
     private serviceCategoriiSabloane: CategorieSablonService
-    
+
   ) {
   }
 
@@ -112,7 +114,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     return merge(collectionViewer.viewChange, this.dataChange).pipe(map(() => this.data));
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {}
+  disconnect(collectionViewer: CollectionViewer): void { }
 
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
     if (change.added) {
@@ -133,52 +135,102 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       .subscribe(
         rez => {
           console.log('categorii children: ', rez);
+          const children =  rez;// this._database.getChildren(node.item);
+          const index = this.data.indexOf(node);
+          if (!children || index < 0) {
+            // If no children, or cannot find the node, no op
+            return;
+          }
+
+          node.isLoading = true;
+
+          setTimeout(() => {
+            if (expand) {
+              const nodes = children.map(
+                nodul => new DynamicFlatNode(nodul, node.level + 1, nodul.file ? false : true), //  this._database.isExpandable(name)
+              );
+              this.data.splice(index + 1, 0, ...nodes);
+            } else {
+              let count = 0;
+              for (
+                let i = index + 1;
+                i < this.data.length && this.data[i].level > node.level;
+                i++, count++
+              ) { }
+              this.data.splice(index + 1, count);
+            }
+
+            // notify the change
+            this.dataChange.next(this.data);
+            node.isLoading = false;
+          }, 450);
         },
         err => {
           console.log(err);
         }
       );
-    const children = this._database.getChildren(node.item);
-    const index = this.data.indexOf(node);
-    if (!children || index < 0) {
-      // If no children, or cannot find the node, no op
-      return;
-    }
 
-    node.isLoading = true;
-
-    setTimeout(() => {
-      if (expand) {
-        const nodes = children.map(
-          name => new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name)),
-        );
-        this.data.splice(index + 1, 0, ...nodes);
-      } else {
-        let count = 0;
-        for (
-          let i = index + 1;
-          i < this.data.length && this.data[i].level > node.level;
-          i++, count++
-        ) {}
-        this.data.splice(index + 1, count);
-      }
-
-      // notify the change
-      this.dataChange.next(this.data);
-      node.isLoading = false;
-    }, 450);
   }
 }
 
 
- @Component({
+@Component({
   selector: 'app-sabloane',
   templateUrl: './sabloane.component.html',
   styleUrls: ['./sabloane.component.css']
 })
 
-export class SabloaneComponent implements OnInit{
+export class SabloaneComponent implements OnInit {
+
+
+  newCategoryName: string = '';
+  parentId: number = -1;
+  newDocumentType: string = '';
+  newDocumentName: string = '';
+  fileName = '';
+
+  fileToUpload: File | null = null;
+
+  onFileSelected(event: any) {
+
+    this.fileToUpload = event.target.files[0];
+
+
+  }
+  
+
+  uploadFile() {
+    if (this.fileToUpload) {
+
+      this.fileName = this.fileToUpload.name;
+
+      const formData = new FormData();
+
+      formData.append("file", this.fileToUpload);
+
+      const upload$ = this.http.post("http://localhost:8080/uploadFile", formData);
+
+      upload$.subscribe(
+        rez => {
+          console.log('file successfully uploaded: ', rez);
+        },
+        err => {
+          console.log('error: ', err);
+        }
+      );
+
+    }
+  }
+
+  saveSablon(){
+    console.log('saving sablon: ', this.fileToUpload);
+    // this.uploadFile(); // TODO: dupa subscribe!!!
+  }
+
+
   constructor(database: DynamicDatabase,
+    private http: HttpClient,
+    private fileUploadDownloadService: FileUploadDownloadService,
     private categoriiSablonService: CategorieSablonService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, categoriiSablonService);
@@ -186,20 +238,20 @@ export class SabloaneComponent implements OnInit{
     // this.dataSource.data = database.initialData();
 
 
-    
+
   }
-   ngOnInit(): void {
+  ngOnInit(): void {
 
 
-  
 
-     this.categoriiSablonService.findAllCategoriiSablonRadacina()
+
+    this.categoriiSablonService.findAllCategoriiSablonRadacina()
       .subscribe(
         categoriiRadacina => {
           console.log('categorii root: ', categoriiRadacina);
           const data = this.dataSource.data;
-          let noduri = categoriiRadacina.map(x => new DynamicFlatNode(x, 0, true)); 
-          for(let nod of noduri){
+          let noduri = categoriiRadacina.map(x => new DynamicFlatNode(x, 0, true));
+          for (let nod of noduri) {
             data.push(nod);
           }
           this.dataSource.data = data;
@@ -209,7 +261,7 @@ export class SabloaneComponent implements OnInit{
           console.log('eroare incarcare categorii root: ', err);
         }
       );
-   }
+  }
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
 
@@ -220,5 +272,20 @@ export class SabloaneComponent implements OnInit{
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
+
+  downloadSablon(idSablon: number) {
+    
+    console.log('download document pentru cerere: ', idSablon);
+    this.fileUploadDownloadService.downloadFileSablon(idSablon)
+      .subscribe(fileDownloaded => {
+        console.log('file response: ', fileDownloaded);
+        console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
+        console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
+        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier') ;
+        const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
+        const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
+        importedSaveAs(blobBody, numeFisier);
+      });
+  }
 }
 
