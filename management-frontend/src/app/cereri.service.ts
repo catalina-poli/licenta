@@ -32,6 +32,7 @@ export class CereriService {
   saveCerere(cerere : any){
       return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save', cerere, this.loginService.configureHeaderOptionsForOAuth())
   }
+  
 
 
   // save-with-users-cerere-detailed

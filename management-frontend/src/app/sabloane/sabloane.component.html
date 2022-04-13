@@ -61,26 +61,59 @@
         <mat-label>Nume categorie</mat-label>
         <input matInput [(ngModel)]="newCategoryName">
 
+        <!-- 
+        <div>
+          <select [(ngModel)]="filtruTipCerere" (change)="selectOptiuneFiltru()">
+              <option [ngValue]="'all'">All</option>
+              <option *ngFor="let t of tipuri" [ngValue]="t">{{t}}</option>
+          </select>
+      </div> -->
+
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>Parinte categorie</mat-label>
-        <input matInput [(ngModel)]="parentId">
+
+        <mat-select [(ngModel)]="parentId">
+          <mat-label>Parinte categorie</mat-label>
+          <mat-option *ngFor="let cat of allCategorii" [value]="cat.id">{{cat.categoryName}}</mat-option>
+          <!-- <option *ngFor="let cat of allCategorii" [ngValue]="cat.id">{{cat.categoryName}}</option> -->
+        </mat-select>
 
       </mat-form-field>
 
 
     </div>
+
+   
 
     <!-- sablon file -->
     <div>
 
       <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+      <button mat-button color="primary" (click)="saveSablon()">Save
+        sablon</button>
+    </div>
 
+    <div style="border: 1px solid blue;">
+      <h3>Categorie noua node</h3>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nume categorie noua</mat-label>
+        <input matInput [(ngModel)]="categorieNoua.categoryName">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+
+        <mat-select [(ngModel)]="categorieNoua.categorieParinte">
+          <mat-label>Parinte categorie</mat-label>
+          <mat-option *ngFor="let cat of allCategorii" [value]="cat">{{cat.categoryName}}</mat-option>
+          <!-- <option *ngFor="let cat of allCategorii" [ngValue]="cat.id">{{cat.categoryName}}</option> -->
+        </mat-select>
+
+      </mat-form-field>
+      <button (click)="saveSablonNou()">Save sablon nou</button>
     </div>
 
 
   </div>
 
-  <button mat-button color="primary" (click)="saveSablon()">Save
-    sablon</button>
+ 
 </div>

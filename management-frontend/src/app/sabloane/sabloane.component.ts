@@ -31,10 +31,7 @@ export class DynamicFlatNodeSablon {
 export class DynamicDatabase {
 
 
-  // dataMap = new Map<CategorieSablonModel, CategorieSablonModel[]>([
-  //   [{ id: 1, categoryName: 'Modele rapoarte BATALION', categorieParinte: '' },
-  //   [{ id: 2, categoryName: 'Modele rapoarte BATALIO 222', categorieParinte: '' }]
-  //   ]);
+
 
   dataMapTest = new Map<CategorieSablonModel, CategorieSablonModel[]>(
 
@@ -44,27 +41,9 @@ export class DynamicDatabase {
 
 
   ]);
-  // ['Modele rapoarte BATALION', ['INVOIRE', 'PERMISIE', 'MEDICALA']],
-  // ['INVOIRE', ['PARASIRE GARNIZOANA','IN GARNIZOANA BUCURESTI']],
-  // ['IN GARNIZOANA BUCURESTI', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-  // ['PARASIRE GARNIZOANA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-  // ['PERMISIE', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-  // ['MEDICALA', ['IN TIMPUL PROGRAMULUI UNIVERSITAR','DUPA PROGRAMUL UNIVERSITAR']],
-  // ['Modele rapoarte UNIVERSITARE', ['REEXAMINARE', 'ADEVERINTA STUDENT', 'BURSA']],
-  // ['BURSA', ['.']],
-  // ['REEXAMINARE', ['.']],
-  // ['ADEVERINTA STUDENT', ['.']],
-  // ['Modele rapoarte DE INTERES GENERAL',['PARASIRE TARA','CONCEDIU','REVENDICARE LAPTOP','SCOATERE LAPTOP DIN GARNIZOANA','INTRODUCERE LAPTOP IN UNITATE']],
-  // ['PARASIRE', ['.']],
-  // ['CONCEDIU', ['.']],
-  // ['REVENDICARE LAPTOP', ['.']],   
-  // ['SCOATERE LAPTOP DIN GARNIZOANA', ['.']],    
-  // ['INTRODUCERE LAPTOP IN UNITATE', ['.']],
-  // ['PARASIRE TARA', ['.']],
+
 
   rootLevelNodes: CategorieSablonModel[] = [
-    // { id: 1, categoryName: 'ROOT 1', categorieParinte: null },
-    // { id: 1, categoryName: 'ROOT 2', categorieParinte: null }
   ];
 
   initialData(): DynamicFlatNode[] {
@@ -135,7 +114,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       .subscribe(
         rez => {
           console.log('categorii children: ', rez);
-          const children =  rez;// this._database.getChildren(node.item);
+          const children = rez;// this._database.getChildren(node.item);
           const index = this.data.indexOf(node);
           if (!children || index < 0) {
             // If no children, or cannot find the node, no op
@@ -184,10 +163,12 @@ export class SabloaneComponent implements OnInit {
 
 
   newCategoryName: string = '';
-  parentId: number = -1;
+  parentId?: number;
   newDocumentType: string = '';
   newDocumentName: string = '';
   fileName = '';
+  allCategorii: CategorieSablonModel[] = [];
+  categorieNoua: CategorieSablonModel = new CategorieSablonModel();
 
   fileToUpload: File | null = null;
 
@@ -197,7 +178,21 @@ export class SabloaneComponent implements OnInit {
 
 
   }
-  
+
+
+  saveSablonNou() {
+    this.categoriiSablonService.saveSablonNou(this.categorieNoua)
+      .subscribe(
+        rez => {
+          console.log('saved: ', rez);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
+  // upload sablon (ADMIN)
 
   uploadFile() {
     if (this.fileToUpload) {
@@ -208,7 +203,7 @@ export class SabloaneComponent implements OnInit {
 
       formData.append("file", this.fileToUpload);
 
-      const upload$ = this.http.post("http://localhost:8080/uploadFile", formData);
+      const upload$ = this.http.post(`http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`, formData);
 
       upload$.subscribe(
         rez => {
@@ -222,9 +217,9 @@ export class SabloaneComponent implements OnInit {
     }
   }
 
-  saveSablon(){
+  saveSablon() {
     console.log('saving sablon: ', this.fileToUpload);
-    // this.uploadFile(); // TODO: dupa subscribe!!!
+    this.uploadFile();
   }
 
 
@@ -242,7 +237,15 @@ export class SabloaneComponent implements OnInit {
   }
   ngOnInit(): void {
 
-
+    this.categoriiSablonService.findAllCategoriiDropdown()
+      .subscribe(
+        rez => {
+          this.allCategorii = rez;
+        },
+        err => {
+          console.log(err);
+        }
+      );
 
 
     this.categoriiSablonService.findAllCategoriiSablonRadacina()
@@ -274,18 +277,20 @@ export class SabloaneComponent implements OnInit {
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   downloadSablon(idSablon: number) {
-    
+
     console.log('download document pentru cerere: ', idSablon);
     this.fileUploadDownloadService.downloadFileSablon(idSablon)
       .subscribe(fileDownloaded => {
         console.log('file response: ', fileDownloaded);
         console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
         console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
-        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier') ;
+        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier');
         const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
         const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
         importedSaveAs(blobBody, numeFisier);
       });
   }
+
+
 }
 
