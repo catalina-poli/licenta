@@ -51,6 +51,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SabloaneComponent } from './sabloane/sabloane.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
+import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-document.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +75,7 @@ import { ProfileInformationComponent } from './profile-information/profile-infor
     AddCerereFormsComponent,
     SabloaneComponent,
     ProfileInformationComponent,
+    AddAnuntDocumentComponent,
   ],
   imports: [
     BrowserModule,

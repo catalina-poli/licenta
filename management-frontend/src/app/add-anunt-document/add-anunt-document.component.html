@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Add Anunt document</h1>
+<div mat-dialog-content>
+    
+
+    <div *ngIf="!hasAnuntBeenSaved; else anuntSaved">
+        <div>
+            <p *ngIf="errors_titlu_required">Eroare titlu required</p>
+            <mat-form-field appearance="fill">
+                <mat-label>Titlu anunt</mat-label>
+                <input matInput type="text" [(ngModel)]="titluAnuntNou">
+            </mat-form-field>
+        </div>
+        <div>
+            <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        </div>
+      
+    </div>
+    <ng-template #anuntSaved>
+        <div>
+            Anuntul a fost salvat
+        </div>
+    </ng-template>
+
+</div>
+<div mat-dialog-actions>
+
+    <button *ngIf="!hasAnuntBeenSaved" mat-button (click)="onNoClick()">Cancel</button>
+    <!-- [mat-dialog-close]="data.animal" -->
+    <button  *ngIf="!hasAnuntBeenSaved"   mat-button color="primary" (click)="saveAnunt()">Save anunt</button>
+    <button *ngIf="hasAnuntBeenSaved" [mat-dialog-close]="data.rezultat">Ok</button>
+</div>

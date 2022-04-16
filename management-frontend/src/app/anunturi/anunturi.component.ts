@@ -133,6 +133,18 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
     });
   }
 
+  addAnuntDocument() {
+    // this.confirmareService.openDialog('hello');
+    this.serviciuAnunturi.openDialogDocument('Add Anunt Document').subscribe(result => {
+      console.log('The dialog was closed: ', result);
+      // this.message = result;
+      if(result){
+        // this.data.push(result);
+        this.loadInitial();
+      }
+    });
+  }
+
   canISeeAnuntButton(){
     return this.userService.canISee(['ADMIN', 'COMANDANT', 'PROFESOR', 'SECRETAR']);
   }

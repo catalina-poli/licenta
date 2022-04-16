@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SortDirection } from '@angular/material/sort';
 import { Observable } from 'rxjs';
+import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-document.component';
 import { AddAnuntComponent } from './add-anunt/add-anunt.component';
 import { LoginService } from './login.service';
 import { Anunt } from './model/anunt';
@@ -45,7 +46,15 @@ export class AnunturiService {
     return 'hello';
   }
 
+ 
+  openDialogDocument(message: string): Observable<any> {
+    const dialogRef = this.dialog.open(AddAnuntDocumentComponent, {
+      width: '250px',
+      data: { message: message, rezultat: {} }
+    });
 
+    return dialogRef.afterClosed();
+  }
 
 
   openDialog(message: string): Observable<any> {

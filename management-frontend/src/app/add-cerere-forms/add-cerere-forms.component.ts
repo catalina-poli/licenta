@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CereriService } from '../cereri.service';
 import { Cerere } from '../model/cerere';
 import { CerereDetailed } from '../model/cerere-detailed';
+import { FileService } from '../services/file.service';
 import { UserService } from '../user.service';
 
 @Component({
@@ -21,6 +22,13 @@ export class AddCerereFormsComponent implements OnInit {
   };
   cerereNouaDetailed: CerereDetailed = new CerereDetailed();
 
+  displayedColumns: string[] = ['id', 'datePosted', 'type', 'userAssociated', 'actions'];
+  // <th>Id</th>
+  // <th>Date posted</th>
+  // <th>Type</th>
+  // <th>User associated</th>
+  // <th>Actions</th>
+
   tipuri: string[] = ['permisie', 'invoire', 'restanta'];
 
   // add cerere document
@@ -34,7 +42,8 @@ export class AddCerereFormsComponent implements OnInit {
 
   constructor(private cereriService: CereriService,
     private usersService: UserService,
-    private http: HttpClient) { }
+    
+    private fileService: FileService) { }
 
   selectOptiuneFiltru() {
     console.log('optiune curenta: ', this.filtruTipCerere);
@@ -98,40 +107,17 @@ export class AddCerereFormsComponent implements OnInit {
         console.log('CERERE SAVED: ', cerereSalvata)
         this.hasCerereBeenSaved = true;
         // this.data.rezultat = cerereSalvata;
-        this.uploadFile();
+        // 
+        this.fileService.uploadFile(this.fileToUpload, "http://localhost:8080/uploadFile");
       })
   }
 
 
   onFileSelected(event: any) {
-
     this.fileToUpload = event.target.files[0];
 
-
   }
 
-  uploadFile() {
-    if (this.fileToUpload) {
-
-      this.fileName = this.fileToUpload.name;
-
-      const formData = new FormData();
-
-      formData.append("file", this.fileToUpload);
-
-      const upload$ = this.http.post("http://localhost:8080/uploadFile", formData);
-
-      upload$.subscribe(
-        rez => {
-          console.log('file successfully uploaded: ', rez);
-        },
-        err => {
-          console.log('error: ', err);
-        }
-      );
-
-    }
-  }
 
   saveCerereDetailed() {
     console.log('saving cerere detailed: ', this.cerereNouaDetailed);

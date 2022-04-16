@@ -17,8 +17,50 @@
                 </select>
             </div>
 
-            <table border="1">
-                <thead>
+            <!-- displayedColumns: string[] = ['id', 'datePosted', 'type', 'userAssociated', 'actions']; -->
+            <table mat-table [dataSource]="cererileAfisate" class="example-table" matSort matSortActive="id" matSortDisableClear
+                matSortDirection="desc">
+                <!-- Number Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+                    <td mat-cell *matCellDef="let row">{{row.id}}</td>
+                </ng-container>
+
+                <!-- Title Column -->
+                <ng-container matColumnDef="datePosted">
+                    <th mat-header-cell *matHeaderCellDef>Date Posted</th>
+                    <td mat-cell *matCellDef="let row">{{row.dateCreated | date: 'yyyy-MM-dd'}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let row">{{row.typeCerere}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="userAssociated">
+                    <th mat-header-cell *matHeaderCellDef>User Associated</th>
+                    <td mat-cell *matCellDef="let row">{{row.userAssociated?.email}}</td>
+                </ng-container>
+                
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let row">
+          
+                     
+                        <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id]">View</a>
+                      <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
+                      <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
+          
+          
+                      <!-- <button (click)="updateSetSelected(row.id)" mat-button mat-raised-button>Update</button> -->
+          
+                    </td>
+                  </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <!-- <thead>
                     <tr>
                         <th>Id</th>
                         <th>Date posted</th>
@@ -47,7 +89,7 @@
                             <a [routerLink]="['/cerere-flow', c.id]">View</a>
                         </td>
                     </tr>
-                </tbody>
+                </tbody> -->
             </table>
             <div>
 
@@ -154,7 +196,8 @@
                         <ul>
                             <li *ngFor="let userSelected of usersSelectedCerereDetailed">
                                 <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
-                                {{userSelected.email}} <button (click)="removeFromCerereDetailed(userSelected)">Remove</button>
+                                {{userSelected.email}} <button
+                                    (click)="removeFromCerereDetailed(userSelected)">Remove</button>
                             </li>
                         </ul>
                     </div>

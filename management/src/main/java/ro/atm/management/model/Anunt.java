@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,15 @@ public class Anunt {
 	
 	@Column(name="categorie_destinatar")
 	private String categorieDestinatar;
+	
+	@Column(name="document_type")
+	private String documentType;
+	
+	@Column(name="filename")
+	private String filename;
+	
+	@Lob
+	private byte[] contents;
 	
 	
 	public Integer getId() {
@@ -46,6 +56,26 @@ public class Anunt {
 	public void setCategorieDestinatar(String categorieDestinatar) {
 		this.categorieDestinatar = categorieDestinatar;
 	}
+	public String getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public byte[] getContents() {
+		return contents;
+	}
+	public void setContents(byte[] contents) {
+		this.contents = contents;
+	}
+	
+	
 	
 	
 }

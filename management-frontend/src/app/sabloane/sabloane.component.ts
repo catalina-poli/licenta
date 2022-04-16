@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 import { CategorieSablonService } from '../categorie-sablon.service';
 import { FileUploadDownloadService } from '../file-upload-download.service';
 import { CategorieSablonModel } from '../model/categorie-sablon';
-import { saveAs as importedSaveAs } from "file-saver";
 import { HttpClient } from '@angular/common/http';
+import { FileService } from '../services/file.service';
 
 export class DynamicFlatNode {
   constructor(
@@ -195,26 +195,30 @@ export class SabloaneComponent implements OnInit {
   // upload sablon (ADMIN)
 
   uploadFile() {
-    if (this.fileToUpload) {
 
-      this.fileName = this.fileToUpload.name;
 
-      const formData = new FormData();
+    this.fileService.uploadFile(this.fileToUpload, `http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`)
 
-      formData.append("file", this.fileToUpload);
+    // if (this.fileToUpload) {
 
-      const upload$ = this.http.post(`http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`, formData);
+    //   this.fileName = this.fileToUpload.name;
 
-      upload$.subscribe(
-        rez => {
-          console.log('file successfully uploaded: ', rez);
-        },
-        err => {
-          console.log('error: ', err);
-        }
-      );
+    //   const formData = new FormData();
 
-    }
+    //   formData.append("file", this.fileToUpload);
+
+    //   const upload$ = this.http.post(`http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`, formData);
+
+    //   upload$.subscribe(
+    //     rez => {
+    //       console.log('file successfully uploaded: ', rez);
+    //     },
+    //     err => {
+    //       console.log('error: ', err);
+    //     }
+    //   );
+
+    // }
   }
 
   saveSablon() {
@@ -223,13 +227,12 @@ export class SabloaneComponent implements OnInit {
   }
 
 
-  constructor(database: DynamicDatabase,
-    private http: HttpClient,
-    private fileUploadDownloadService: FileUploadDownloadService,
-    private categoriiSablonService: CategorieSablonService) {
+  constructor(database: DynamicDatabase,        
+    private categoriiSablonService: CategorieSablonService,
+    private fileService: FileService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, categoriiSablonService);
-
+    
     // this.dataSource.data = database.initialData();
 
 
@@ -276,19 +279,8 @@ export class SabloaneComponent implements OnInit {
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  downloadSablon(idSablon: number) {
-
-    console.log('download document pentru cerere: ', idSablon);
-    this.fileUploadDownloadService.downloadFileSablon(idSablon)
-      .subscribe(fileDownloaded => {
-        console.log('file response: ', fileDownloaded);
-        console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
-        console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
-        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier');
-        const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
-        const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
-        importedSaveAs(blobBody, numeFisier);
-      });
+  downloadSablon(idSablon: number){
+    this.fileService.downloadSablon(idSablon);
   }
 
 

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import ro.atm.management.dto.Response;
+import ro.atm.management.model.Anunt;
 import ro.atm.management.model.CategorieSablon;
 import ro.atm.management.service.FileStorageService;
 
@@ -23,15 +24,21 @@ public class FileUploadController {
 	private FileStorageService fileStorageService;
 
 	@PostMapping("/uploadFile-sablon/{nodeName}/{idParent}")
-	public CategorieSablon uploadFileSablon(@RequestParam("file") MultipartFile file, @PathVariable("nodeName")String nodeName, @PathVariable("idParent")int idParent) {
-		CategorieSablon categorieSablonSaved = fileStorageService.storeFileSablon(file,nodeName, idParent);
-		// TODO: remove hardcoding ^
-//		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
-//				.path(fileName).toUriString();
+	public CategorieSablon uploadFileSablon(@RequestParam("file") MultipartFile file,
+			@PathVariable("nodeName") String nodeName, @PathVariable("idParent") int idParent) {
+		CategorieSablon categorieSablonSaved = fileStorageService.storeFileSablon(file, nodeName, idParent);
 
 		return categorieSablonSaved;
 	}
-	
+
+	@PostMapping("/uploadFile-anunt/{title}")
+	public Anunt uploadFileAnunt(@RequestParam("file") MultipartFile file, @PathVariable("title") String title) {
+		System.out.println("**SAVING ANUNT**");
+		Anunt anuntSaved = fileStorageService.storeFileAnunt(file, title);
+
+		return anuntSaved;
+	}
+
 	@PostMapping("/uploadFile")
 	public Response uploadFile(@RequestParam("file") MultipartFile file) {
 		String fileName = fileStorageService.storeFile(file, "cerere");
