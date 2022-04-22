@@ -29,8 +29,14 @@ export class AnunturiService {
     return this.serviciuHttpClient.get<Anunt>('http://localhost:8080/rest/anunturi/select-by-id/' + id, this.loginService.configureHeaderOptionsForOAuth());
   }
 
-  saveAnunt(anunt: Anunt): Observable<Anunt> {
-    return this.serviciuHttpClient.post('http://localhost:8080/rest/anunturi/save', anunt, this.loginService.configureHeaderOptionsForOAuth())
+  saveAnunt(anunt: Anunt, usersSelected: any[]): Observable<Anunt> {
+
+    const dto = {
+      anunt: anunt,
+      userIds: usersSelected
+    };
+    console.log('DTO: ', dto);
+    return this.serviciuHttpClient.post('http://localhost:8080/rest/anunturi/save', dto, this.loginService.configureHeaderOptionsForOAuth())
   }
 
   deleteAnunt(anunt: Anunt): Observable<Anunt> {

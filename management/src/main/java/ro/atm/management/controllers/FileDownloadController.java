@@ -34,6 +34,14 @@ public class FileDownloadController {
 
 	}
 	
+	@GetMapping("/anunt/{id}")
+	public ResponseEntity<Resource> downloadFileAnunt(@PathVariable("id") int id, HttpServletRequest request) {
+
+		ResponseEntity<Resource> resource = this.fileDownloadService.getAnuntDocumentAsResource(id);
+		return resource;
+
+	}
+	
 	@GetMapping("/cerere-sablon/{id}")
 	public ResponseEntity<Resource> downloadFileSablon(@PathVariable("id") int id, HttpServletRequest request) {
 

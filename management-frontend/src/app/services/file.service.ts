@@ -28,6 +28,22 @@ export class FileService {
       });
   }
 
+  downloadAnunt(idAnunt: number) {
+
+    console.log('download document pentru cerere: ', idAnunt);
+    this.fileUploadDownloadService.downloadFileAnunt(idAnunt)
+      .subscribe(fileDownloaded => {
+        console.log('file response: ', fileDownloaded);
+        console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
+        console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
+        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier');
+        const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
+        const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
+        importedSaveAs(blobBody, numeFisier);
+      });
+  }
+
+
   
   uploadFileWithoutSubscribe(fileToUpload: File | null,  url: string) : Observable<any> {
     let upload$ = of();

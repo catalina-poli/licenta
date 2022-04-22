@@ -43,7 +43,8 @@
             <button (click)="delAnunt(row)" mat-button mat-raised-button color="warn">Delete</button>
             &nbsp;
             <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
-            <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a>
+            <a *ngIf="!row.filename" mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a>
+            <button *ngIf="row.filename" mat-button mat-raised-button (click)="downloadAnunt(row)">Download</button>
 
 
             <!-- <button (click)="updateSetSelected(row.id)" mat-button mat-raised-button>Update</button> -->

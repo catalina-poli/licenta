@@ -48,6 +48,12 @@ public class User {
 	@Convert(converter = StatusAttributeConverter.class)
 	private Status status;
 	
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "anunturi_users", joinColumns = { @JoinColumn(name = "id_user") }, 
+	inverseJoinColumns = {
+			@JoinColumn(name = "id_anunt") })
+	private Set<Anunt> anunturi;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -97,6 +103,16 @@ public class User {
 	}
 	
 	
+	
+	
+
+	public Set<Anunt> getAnunturi() {
+		return anunturi;
+	}
+
+	public void setAnunturi(Set<Anunt> anunturi) {
+		this.anunturi = anunturi;
+	}
 
 	public Status getStatus() {
 		return status;

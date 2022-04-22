@@ -3,6 +3,7 @@ package ro.atm.management.controllers;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,13 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import ro.atm.management.dto.DtoAddAnunt;
 import ro.atm.management.model.Anunt;
 import ro.atm.management.model.Role;
+import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoAnunt;
 import ro.atm.management.repo.RepoAnuntPagination;
+import ro.atm.management.repo.RepoUser;
 import ro.atm.management.service.AnuntService;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
@@ -52,6 +56,9 @@ public class AnuntController {
 	
 	@Autowired
 	private AnuntService anuntService;
+	
+	@Autowired
+	private RepoUser repoUser;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
 	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
@@ -144,11 +151,24 @@ public class AnuntController {
 	}
 
 	@PostMapping("/save")
-	public Anunt saveAnunt(@RequestBody Anunt anuntNou) {
+	public Anunt saveAnunt(@RequestBody DtoAddAnunt anuntNou) {
 		// TODO: send to ALL students
 //		this.anuntService.saveNotificationMessage(0, "Un nou anunt");
+		
+		// TODO: check acum cui trebuie sa trimitem notificare (ID-urile user-ilor din dto!!!)
 		this.anuntService.saveNotificationMessageBulkCategory("Un nou anunt", Role.RoleTypes.STUDENT);
-		return repoAnunt.save(anuntNou);
+		
+		Anunt anunt = anuntNou.getAnunt();
+		List<Integer> userIds = anuntNou.getUserIds();
+		
+		System.out.println("SAVING TO IDS: " + userIds);
+		Anunt anuntSaved = repoAnunt.save(anunt);
+		Iterable<User> destinatari = this.repoUser.findAllById(userIds);
+		for(User user : destinatari) {
+			user.getAnunturi().add(anuntSaved);
+			repoUser.save(user);
+		}
+		return anuntSaved;
 	}
 
 	@PutMapping("/update")

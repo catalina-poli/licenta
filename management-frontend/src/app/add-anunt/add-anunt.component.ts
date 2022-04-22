@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AnunturiService } from '../anunturi.service';
 import { Anunt } from '../model/anunt';
+import { UserService } from '../user.service';
 
 export interface DialogData {
   message: string;
@@ -18,16 +19,28 @@ export class AddAnuntComponent implements OnInit {
   anuntNou: Anunt = new Anunt();
   hasAnuntBeenSaved: boolean = false;
   errors_titlu_required : boolean = false;
+  users: any[] = [];
+  usersSelected: any[] = [];
   
   constructor(
     public dialogRef: MatDialogRef<AddAnuntComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private serviciuAnunturi: AnunturiService) { }
+    private serviciuAnunturi: AnunturiService,
+    private serviceUser: UserService) { }
 
 
 
   ngOnInit(): void {
     console.log('Anunt  component');
+    this.serviceUser.findAllUsers()
+      .subscribe(
+        rez=>{
+          this.users = rez;
+        },
+        err => {
+          console.log('error: ', err);
+        }
+      );
   }
 
   onNoClick(): void {
@@ -37,7 +50,10 @@ export class AddAnuntComponent implements OnInit {
   }
 
   
-  
+  // onChange(eventTarget:any){
+  //   this.usersSelected = eventTarget.value;
+  //   console.log('users selected: ', this.usersSelected)
+  //  }
 
   saveAnunt() {
     console.log('salvam un anunt')
@@ -51,7 +67,7 @@ export class AddAnuntComponent implements OnInit {
     if(errors){
       return;
     }
-    this.serviciuAnunturi.saveAnunt(this.anuntNou)
+    this.serviciuAnunturi.saveAnunt(this.anuntNou, this.usersSelected)
       .subscribe(anuntulSalvat => {
         console.log('Anuntul salvat pe server: ', anuntulSalvat);
         // this.anunturile.push(anuntulSalvat);

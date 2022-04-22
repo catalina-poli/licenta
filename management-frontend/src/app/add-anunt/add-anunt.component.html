@@ -16,6 +16,15 @@
                 <input matInput type="text" [(ngModel)]="anuntNou.continut">
             </mat-form-field>
         </div>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>User-ii destinatari</mat-label>
+                <mat-select multiple [(ngModel)]="usersSelected" >
+                  
+                  <mat-option *ngFor="let u of users" [value]="u.id">{{u.email}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
       
     </div>
     <ng-template #anuntSaved>

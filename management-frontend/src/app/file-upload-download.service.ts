@@ -19,6 +19,14 @@ export class FileUploadDownloadService {
 
 
   }
+  downloadFileAnunt(id: number): Observable<HttpResponse<Blob>> {
+    // let options = new RequestOptions({responseType: ResponseContentType.Blob });
+
+    const url = `http://localhost:8080/file-download/anunt/${id}`;
+    return this.http.get(url, { responseType: 'blob', observe: 'response' });
+
+
+  }
 
   downloadFileCerere(id: number): Observable<HttpResponse<Blob>> {
     // let options = new RequestOptions({responseType: ResponseContentType.Blob });

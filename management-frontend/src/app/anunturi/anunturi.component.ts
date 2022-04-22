@@ -8,6 +8,7 @@ import { SortDirection } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
+import { FileService } from '../services/file.service';
 
 
 @Component({
@@ -86,7 +87,8 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
   constructor(private serviciuHttpClient: HttpClient,
     private serviciuAnunturi: AnunturiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private userService : UserService) {
+    private userService : UserService,
+    private fileService: FileService) {
     console.log('AnunturiComponent - constructor')
   }
   ngAfterViewInit(): void {
@@ -147,6 +149,13 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
 
   canISeeAnuntButton(){
     return this.userService.canISee(['ADMIN', 'COMANDANT', 'PROFESOR', 'SECRETAR']);
+  }
+
+  downloadAnunt(anunt: Anunt){
+    console.log('should download: ', anunt);
+    if(anunt.id){
+      this.fileService.downloadAnunt(anunt.id);
+    }
   }
 
 
