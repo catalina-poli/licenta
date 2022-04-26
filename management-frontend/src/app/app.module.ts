@@ -39,19 +39,22 @@ import { MatListModule } from '@angular/material/list';
 import { MessagesComponent } from './messages/messages.component';
 import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.component';
 
-
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+
 
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SabloaneComponent } from './sabloane/sabloane.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { ProfileInformationComponent } from './profile-information/profile-information.component';
 import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-document.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileInformationComponent } from './profile-information/profile-information.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,8 +77,8 @@ import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-docume
     MessagesComponent,
     AddCerereFormsComponent,
     SabloaneComponent,
-    ProfileInformationComponent,
     AddAnuntDocumentComponent,
+    ProfileInformationComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +108,9 @@ import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-docume
     MatTooltipModule,
     MatTreeModule,
     MatStepperModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

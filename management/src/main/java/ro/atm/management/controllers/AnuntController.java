@@ -3,8 +3,10 @@ package ro.atm.management.controllers;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,10 +36,12 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import ro.atm.management.dto.DtoAddAnunt;
 import ro.atm.management.model.Anunt;
+import ro.atm.management.model.Group;
 import ro.atm.management.model.Role;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoAnunt;
 import ro.atm.management.repo.RepoAnuntPagination;
+import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
 import ro.atm.management.service.AnuntService;
 
@@ -59,6 +63,9 @@ public class AnuntController {
 	
 	@Autowired
 	private RepoUser repoUser;
+	
+	@Autowired
+	private RepoGroup repoGroup;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
 	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
@@ -149,7 +156,41 @@ public class AnuntController {
 		return null;
 
 	}
+	
+	@PostMapping("/associate-groups-with-anunt/{idAnunt}")
+	public Anunt associateWithGroups(@PathVariable("idAnunt") int idAnunt, @RequestBody List<Integer> groupIds) {
+		
+		Anunt anunt = this.repoAnunt.findById(idAnunt).get();
+		Iterable<Group> allGroupsForAnunt = this.repoGroup.findAllById(groupIds);
+		
+		Set<User> userDestinari = new HashSet<>();
+		for(Group g : allGroupsForAnunt) {
+			userDestinari.addAll(g.getStudents());
+		}
+		
+		for(User user: userDestinari) {
+			user.getAnunturi().add(anunt);
+			
+		}
+		
+		this.repoUser.saveAll(userDestinari);
+		return anunt;
+	}
+	
+	@PostMapping("/associate-users-with-anunt/{idAnunt}")
+	public Anunt associateWithUsers(@PathVariable("idAnunt") int idAnunt, @RequestBody List<Integer> userIds) {
+		
+		Anunt anunt = this.repoAnunt.findById(idAnunt).get();
+		Iterable<User> allUsersForAnunt = this.repoUser.findAllById(userIds);
+		for(User user: allUsersForAnunt) {
+			user.getAnunturi().add(anunt);
+			
+		}
+		this.repoUser.saveAll(allUsersForAnunt);
+		return anunt;
+	}
 
+	// fara file
 	@PostMapping("/save")
 	public Anunt saveAnunt(@RequestBody DtoAddAnunt anuntNou) {
 		// TODO: send to ALL students
@@ -159,12 +200,38 @@ public class AnuntController {
 		this.anuntService.saveNotificationMessageBulkCategory("Un nou anunt", Role.RoleTypes.STUDENT);
 		
 		Anunt anunt = anuntNou.getAnunt();
-		List<Integer> userIds = anuntNou.getUserIds();
+		List<Integer> userIds = anuntNou.getIds();
 		
 		System.out.println("SAVING TO IDS: " + userIds);
 		Anunt anuntSaved = repoAnunt.save(anunt);
 		Iterable<User> destinatari = this.repoUser.findAllById(userIds);
 		for(User user : destinatari) {
+			user.getAnunturi().add(anuntSaved);
+			repoUser.save(user);
+		}
+		return anuntSaved;
+	}
+	
+	@PostMapping("/save-with-groups")
+	public Anunt saveAnuntWithGroups(@RequestBody DtoAddAnunt anuntNou) {
+		// TODO: send to ALL students
+//		this.anuntService.saveNotificationMessage(0, "Un nou anunt");
+		
+		// TODO: check acum cui trebuie sa trimitem notificare (ID-urile user-ilor din dto!!!)
+		this.anuntService.saveNotificationMessageBulkCategory("Un nou anunt", Role.RoleTypes.STUDENT);
+		
+		Anunt anunt = anuntNou.getAnunt();
+		List<Integer> groupIds = anuntNou.getIds();
+		
+		System.out.println("SAVING TO IDS: " + groupIds);
+		Anunt anuntSaved = repoAnunt.save(anunt);
+		Iterable<Group> grupuriDestinatare = this.repoGroup.findAllById(groupIds);
+		Set<User> useriDestinatari = new HashSet<>();
+		for(Group g : grupuriDestinatare) {
+			useriDestinatari.addAll(g.getStudents());
+		}
+		
+		for(User user : useriDestinatari) {
 			user.getAnunturi().add(anuntSaved);
 			repoUser.save(user);
 		}

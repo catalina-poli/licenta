@@ -29,14 +29,35 @@ export class AnunturiService {
     return this.serviciuHttpClient.get<Anunt>('http://localhost:8080/rest/anunturi/select-by-id/' + id, this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  associateWithUsers(idAnunt: number, idsUsers: number[]): Observable<Anunt>{
+    return this.serviciuHttpClient.post(`http://localhost:8080/rest/anunturi/associate-users-with-anunt/${idAnunt}`, idsUsers, this.loginService.configureHeaderOptionsForOAuth())
+  }
+
+
+  associateWithGroups(idAnunt: number, idGroups: number[]): Observable<Anunt>{
+    return this.serviciuHttpClient.post(`http://localhost:8080/rest/anunturi/associate-groups-with-anunt/${idAnunt}`, idGroups, this.loginService.configureHeaderOptionsForOAuth())
+  }
+
+  // fara file
   saveAnunt(anunt: Anunt, usersSelected: any[]): Observable<Anunt> {
 
     const dto = {
       anunt: anunt,
-      userIds: usersSelected
+      ids: usersSelected
     };
     console.log('DTO: ', dto);
     return this.serviciuHttpClient.post('http://localhost:8080/rest/anunturi/save', dto, this.loginService.configureHeaderOptionsForOAuth())
+  }
+
+  // fara file
+  saveAnuntWithGroups(anunt: Anunt, groupsSelected: any[]): Observable<Anunt> {
+
+    const dto = {
+      anunt: anunt,
+      ids: groupsSelected
+    };
+    console.log('DTO: ', dto);
+    return this.serviciuHttpClient.post('http://localhost:8080/rest/anunturi/save-with-groups', dto, this.loginService.configureHeaderOptionsForOAuth())
   }
 
   deleteAnunt(anunt: Anunt): Observable<Anunt> {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AnunturiService } from '../anunturi.service';
+import { GroupService } from '../group.service';
 import { Anunt } from '../model/anunt';
 import { UserService } from '../user.service';
 
@@ -18,23 +19,38 @@ export class AddAnuntComponent implements OnInit {
 
   anuntNou: Anunt = new Anunt();
   hasAnuntBeenSaved: boolean = false;
-  errors_titlu_required : boolean = false;
+  errors_titlu_required: boolean = false;
   users: any[] = [];
   usersSelected: any[] = [];
-  
+  grupuriSelected: any[] = [];
+  grupuri: any[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<AddAnuntComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private serviciuAnunturi: AnunturiService,
-    private serviceUser: UserService) { }
+    private serviceUser: UserService,
+    private groupService: GroupService) { }
 
 
 
   ngOnInit(): void {
     console.log('Anunt  component');
+
+    this.groupService.findAllGroups()
+      .subscribe(
+        rez => {
+          this.grupuri = rez;
+          console.log('grupuri: ', this.grupuri);
+        },
+        err => {
+          console.log('error loading groups: ', err);
+        }
+      );
+
     this.serviceUser.findAllUsers()
       .subscribe(
-        rez=>{
+        rez => {
           this.users = rez;
         },
         err => {
@@ -49,7 +65,7 @@ export class AddAnuntComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  
+
   // onChange(eventTarget:any){
   //   this.usersSelected = eventTarget.value;
   //   console.log('users selected: ', this.usersSelected)
@@ -58,24 +74,39 @@ export class AddAnuntComponent implements OnInit {
   saveAnunt() {
     console.log('salvam un anunt')
 
-    if(!this.anuntNou.titlu){
+    if (!this.anuntNou.titlu) {
       this.errors_titlu_required = true;
-    }else{
+    } else {
       this.errors_titlu_required = false;
     }
     let errors = this.errors_titlu_required;
-    if(errors){
+    if (errors) {
       return;
     }
-    this.serviciuAnunturi.saveAnunt(this.anuntNou, this.usersSelected)
-      .subscribe(anuntulSalvat => {
-        console.log('Anuntul salvat pe server: ', anuntulSalvat);
-        // this.anunturile.push(anuntulSalvat);
-        // this.loadInitial();
-        console.log('ANUNT SAVED: ', anuntulSalvat)
-        this.hasAnuntBeenSaved = true;
-        this.data.rezultat = anuntulSalvat;
-      })
-  }
 
+    if (this.usersSelected.length > 0) {
+
+
+      this.serviciuAnunturi.saveAnunt(this.anuntNou, this.usersSelected)
+        .subscribe(anuntulSalvat => {
+          console.log('Anuntul salvat pe server: ', anuntulSalvat);
+          // this.anunturile.push(anuntulSalvat);
+          // this.loadInitial();
+          console.log('ANUNT SAVED: ', anuntulSalvat)
+          this.hasAnuntBeenSaved = true;
+          this.data.rezultat = anuntulSalvat;
+        })
+    }
+    else if (this.grupuriSelected.length > 0) {
+      this.serviciuAnunturi.saveAnuntWithGroups(this.anuntNou, this.grupuriSelected)
+        .subscribe(anuntulSalvat => {
+          console.log('Anuntul salvat pe server: ', anuntulSalvat);
+          // this.anunturile.push(anuntulSalvat);
+          // this.loadInitial();
+          console.log('ANUNT SAVED: ', anuntulSalvat)
+          this.hasAnuntBeenSaved = true;
+          this.data.rezultat = anuntulSalvat;
+        })
+    }
+  }
 }
