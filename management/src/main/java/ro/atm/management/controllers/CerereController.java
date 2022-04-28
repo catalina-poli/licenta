@@ -108,6 +108,10 @@ public class CerereController {
 		
 	}
 	
+	
+	
+	// TODO: should delete one of the following two methods:
+	//   ??????
 	@PostMapping("/save-with-users-cerere-detailed")
 	public CerereDetailed saveCerereWithUsersCerereDetailed(@RequestBody DtoCerereDetailedWithUsers cerereNouaDto, Principal principal) {
 		
@@ -127,8 +131,12 @@ public class CerereController {
 		}
 		return saved;
 	}
-	@PostMapping("/save-with-users")
-	public Cerere saveCerereWithUsers(@RequestBody DtoCerereWithUsers cerereNouaDto, Principal principal) {
+	
+	@PostMapping("/save-with-users/{type}")
+	public Cerere saveCerereWithUsers(
+			@RequestBody DtoCerereWithUsers cerereNouaDto,
+			Principal principal,
+			@PathVariable("type") String type) {
 		
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		Cerere cerereNoua = cerereNouaDto.getCerere();
@@ -140,37 +148,42 @@ public class CerereController {
 		
 		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
 
-		
-		for(UserCerere uc : cerereNouaDto.getUsersSelected()) {
-			FlowCerere flowCerere = new FlowCerere();
-			flowCerere.setCerere(cerereSalvata);
-			flowCerere.setStatus(2); // PENDING
-			flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
-			flowCerere.setCanInterrupt(uc.getCanInterrupt());
-			flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
-			this.repoFlow.save(flowCerere);
+		if(type.equals("SPECIFIC_USERS")) {
+			for(UserCerere uc : cerereNouaDto.getUsersSelected()) {
+				FlowCerere flowCerere = new FlowCerere();
+				flowCerere.setCerere(cerereSalvata);
+				flowCerere.setStatus(2); // PENDING
+				flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
+				flowCerere.setCanInterrupt(uc.getCanInterrupt());
+				flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
+				this.repoFlow.save(flowCerere);
+			}
+		}else if(type.equals("DEFAULT_FLOW_USERS")) {
+			this.saveCerereAndAssociateWithDefaultGroupUsers(cerereNoua, principal);
 		}
+		
+		
 		
 		System.out.println("SAVING CERERE: " + cerereNouaDto);
 		return cerereSalvata;
 	}
 	
-	@Deprecated
-	@PostMapping("/save")
-	public Cerere saveCerere(@RequestBody Cerere cerereNoua, Principal principal) {
+	//@Deprecated
+	// @PostMapping("/save")
+	private Cerere saveCerereAndAssociateWithDefaultGroupUsers(Cerere cerereSalvata, Principal principal) {
 		System.out.println("PRINCIPAL: " + principal.getName());
-		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
-		cerereNoua.setUserAssociated(userLogat);
-		cerereNoua.setDateCreated(new Date());
+//		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+//		cerereNoua.setUserAssociated(userLogat);
+//		cerereNoua.setDateCreated(new Date());
 		
-		CerereType cerereType = this.repoCerereType.findByTypeCerere(cerereNoua.getTypeCerere());
-		cerereNoua.setCerereType(cerereType);
+//		CerereType cerereType = this.repoCerereType.findByTypeCerere(cerereNoua.getTypeCerere());
+//		cerereNoua.setCerereType(cerereType);
 		
 		
-		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
+//		Cerere cerereSalvata = this.repoCerere.save(cerereNoua);
 		// cand o noua cerere este inregistrata, in flow vor fi salvate cererile de aprobare a cerii, 
 		//		urmand ca acestea sa fie aprobate ulterior
-		List<Group> groupsCerere = this.getGroupsForCerere(cerereNoua.getId());
+		List<Group> groupsCerere = this.getGroupsForCerere(cerereSalvata.getId());
 		for(Group g : groupsCerere) {
 			User userInCharge = g.getUserInCharge();
 			if(userInCharge!= null) {

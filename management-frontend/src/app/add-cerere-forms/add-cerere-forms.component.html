@@ -18,8 +18,8 @@
             </div>
 
             <!-- displayedColumns: string[] = ['id', 'datePosted', 'type', 'userAssociated', 'actions']; -->
-            <table mat-table [dataSource]="cererileAfisate" class="example-table" matSort matSortActive="id" matSortDisableClear
-                matSortDirection="desc">
+            <table mat-table [dataSource]="cererileAfisate" class="example-table" matSort matSortActive="id"
+                matSortDisableClear matSortDirection="desc">
                 <!-- Number Column -->
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
@@ -41,22 +41,22 @@
                     <th mat-header-cell *matHeaderCellDef>User Associated</th>
                     <td mat-cell *matCellDef="let row">{{row.userAssociated?.email}}</td>
                 </ng-container>
-                
+
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
                     <td mat-cell *matCellDef="let row">
-          
-                     
+
+
                         <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id]">View</a>
-                      <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
-                      <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
-          
-          
-                      <!-- <button (click)="updateSetSelected(row.id)" mat-button mat-raised-button>Update</button> -->
-          
+                        <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
+                        <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
+
+
+                        <!-- <button (click)="updateSetSelected(row.id)" mat-button mat-raised-button>Update</button> -->
+
                     </td>
-                  </ng-container>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -132,14 +132,7 @@
 
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Users to receive cerere</mat-label>
-                            <mat-select multiple [(ngModel)]="usersSelectedCerereDetailed">
 
-                                <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
 
                         <div>
                             <mat-form-field appearance="fill">
@@ -190,16 +183,33 @@
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.modalitateDeplasare">
                             </mat-form-field>
                         </div>
+
+                        <div *ngIf="!defaultFlow">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Users to receive cerere</mat-label>
+                                <mat-select multiple [(ngModel)]="usersSelectedCerereDetailed">
+
+                                    <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div>
+                                <h3>Users selected</h3>
+                                <ul>
+                                    <li *ngFor="let userSelected of usersSelectedCerereDetailed">
+                                        <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
+                                        {{userSelected.email}} <button
+                                            (click)="removeFromCerereDetailed(userSelected)">Remove</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                     <div>
-                        <h3>Users selected</h3>
-                        <ul>
-                            <li *ngFor="let userSelected of usersSelectedCerereDetailed">
-                                <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
-                                {{userSelected.email}} <button
-                                    (click)="removeFromCerereDetailed(userSelected)">Remove</button>
-                            </li>
-                        </ul>
+                        <mat-checkbox [(ngModel)]="defaultFlow" (ngModelChange)="userSwitchedOption()">
+                            {{type}}
+                        </mat-checkbox>
                     </div>
                     <button mat-button color="primary" (click)="saveCerereDetailed()">Save
                         cerere detailed</button>
@@ -232,24 +242,26 @@
 
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Users to receive cerere</mat-label>
-                                <mat-select multiple [(ngModel)]="usersSelected">
 
-                                    <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <h3>Users selected</h3>
-                            <ul>
-                                <li *ngFor="let userSelected of usersSelected">
-                                    <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
-                                    {{userSelected.email}} <button
-                                        (click)="removeFromCerere(userSelected)">Remove</button>
-                                </li>
-                            </ul>
+                            <div *ngIf="!defaultFlow">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Users to receive cerere</mat-label>
+                                    <mat-select multiple [(ngModel)]="usersSelected">
+
+                                        <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                           
+                                <h3>Users selected</h3>
+                                <ul>
+                                    <li *ngFor="let userSelected of usersSelected">
+                                        <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
+                                        {{userSelected.email}} <button
+                                            (click)="removeFromCerere(userSelected)">Remove</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <!-- files for cerere -->
                         <div>
@@ -263,6 +275,11 @@
                             </div>
                         </ng-template>
 
+                    </div>
+                    <div>
+                        <mat-checkbox [(ngModel)]="defaultFlow" (ngModelChange)="userSwitchedOption()">
+                            {{type}}
+                        </mat-checkbox>
                     </div>
 
                     <button mat-button color="primary" (click)="saveCerere()">Save

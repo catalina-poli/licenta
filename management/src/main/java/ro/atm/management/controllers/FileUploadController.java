@@ -39,18 +39,21 @@ public class FileUploadController {
 		return anuntSaved;
 	}
 
-	@PostMapping("/uploadFile")
-	public Response uploadFile(@RequestParam("file") MultipartFile file) {
-		String fileName = fileStorageService.storeFile(file, "cerere");
+	
+	
+	@PostMapping("/uploadFile/{idCerere}")
+	public Response uploadFile(@RequestParam("file") MultipartFile file,
+			@PathVariable("idCerere") int idCerere) {
+		String fileName = fileStorageService.storeFile(file, "cerere", idCerere);
 		// TODO: remove hardcoding ^
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
 				.path(fileName).toUriString();
 
 		return new Response(fileName, fileDownloadUri, file.getContentType(), file.getSize());
 	}
-
-	@PostMapping("/uploadMultipleFiles")
-	public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-		return Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
-	}
+//
+//	@PostMapping("/uploadMultipleFiles")
+//	public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+//		return Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
+//	}
 }

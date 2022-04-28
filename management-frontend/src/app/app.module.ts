@@ -39,21 +39,22 @@ import { MatListModule } from '@angular/material/list';
 import { MessagesComponent } from './messages/messages.component';
 import { AddCerereFormsComponent } from './add-cerere-forms/add-cerere-forms.component';
 
-import {OverlayModule} from '@angular/cdk/overlay';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatTreeModule} from '@angular/material/tree';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 
 
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SabloaneComponent } from './sabloane/sabloane.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-document.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { ProfileInformationComponent } from './profile-information/profile-infor
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

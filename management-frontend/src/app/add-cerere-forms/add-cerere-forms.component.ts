@@ -100,7 +100,7 @@ export class AddCerereFormsComponent implements OnInit {
 
     console.log('cerere noua: ', this.cerereNoua);
     console.log('users selected: ', this.usersSelected);
-    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNoua, this.usersSelected)
+    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNoua, this.usersSelected, this.type)
       .subscribe(cerereSalvata => {
         console.log('Cerere salvata pe server: ', cerereSalvata);
 
@@ -108,7 +108,7 @@ export class AddCerereFormsComponent implements OnInit {
         this.hasCerereBeenSaved = true;
         // this.data.rezultat = cerereSalvata;
         // 
-        this.fileService.uploadFile(this.fileToUpload, "http://localhost:8080/uploadFile");
+        this.fileService.uploadFile(this.fileToUpload, "http://localhost:8080/uploadFile/" + cerereSalvata.id);
       })
   }
 
@@ -119,12 +119,22 @@ export class AddCerereFormsComponent implements OnInit {
   }
 
 
+  defaultFlow: boolean = true;
+  type: string = 'DEFAULT_FLOW_USERS';
+
+  userSwitchedOption(){
+ 
+    this.type = this.defaultFlow ? 'DEFAULT_FLOW_USERS' : 'SPECIFIC_USERS';
+    console.log('user wants to select specific: ', this.defaultFlow)
+  }
+
   saveCerereDetailed() {
     console.log('saving cerere detailed: ', this.cerereNouaDetailed);
     // saveCerereDetailedWithUsersAndPriority
 
     console.log('users selected: ', this.usersSelectedCerereDetailed);
-    this.cereriService.saveCerereDetailedWithUsersAndPriority(this.cerereNouaDetailed, this.usersSelectedCerereDetailed)
+    this.type = this.defaultFlow ? 'DEFAULT_FLOW_USERS' : 'SPECIFIC_USERS';
+    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNouaDetailed, this.usersSelectedCerereDetailed, this.type)
       .subscribe(cerereSalvata => {
         console.log('Cerere salvata pe server: ', cerereSalvata);
 

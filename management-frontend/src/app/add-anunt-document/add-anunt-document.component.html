@@ -10,7 +10,7 @@
                 <input matInput type="text" [(ngModel)]="titluAnuntNou">
             </mat-form-field>
         </div>
-        <div>
+        <div *ngIf="userWantsToSelectSpecificUsers">
             <mat-form-field appearance="fill">
                 <mat-label>User-ii destinatari</mat-label>
                 <mat-select multiple [(ngModel)]="usersSelected" >
@@ -19,7 +19,7 @@
                 </mat-select>
               </mat-form-field>
         </div>
-        <div>
+        <div *ngIf="!userWantsToSelectSpecificUsers">
             <mat-form-field appearance="fill">
                 <mat-label>Grupuri</mat-label>
                 <mat-select multiple [(ngModel)]="grupuriSelected" >
@@ -27,6 +27,14 @@
                   <mat-option *ngFor="let g of grupuri" [value]="g.id">{{g.numeGrup}}</mat-option>
                 </mat-select>
               </mat-form-field>
+        </div>
+
+        <div>
+            <mat-checkbox [(ngModel)]="userWantsToSelectSpecificUsers"
+            
+            (ngModelChange)="userSwitchedOption()">
+            Select individual users
+        </mat-checkbox>
         </div>
         <div>
             <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>

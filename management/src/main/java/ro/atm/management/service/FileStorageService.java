@@ -112,7 +112,7 @@ public class FileStorageService {
 		
 	}
 
-	public String storeFile(MultipartFile file, String documentType) {
+	public String storeFile(MultipartFile file, String documentType, Integer idCerere) {
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -132,7 +132,7 @@ public class FileStorageService {
 					CerereDocument doc = new CerereDocument();
 					doc.setContents(file.getInputStream().readAllBytes());
 					doc.setDocumentType(file.getContentType());
-					int idCerere = 28; // TODO: remove hardcoding
+//					int idCerere = 28; // TODO: remove hardcoding
 					// TODO: set denumire document!!!!
 					Cerere cerere = this.repoCerere.findById(idCerere).get();
 //					doc.setIdCerere(idCerere);

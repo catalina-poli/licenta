@@ -68,20 +68,22 @@ export class AddCerereComponent implements OnInit {
     this.usersSelected.splice(this.usersSelected.indexOf(user), 1);
   }
 
+  
   saveCerere() {
     console.log('salvam o cerere')
 
     console.log('cerere noua: ', this.cerereNoua);
     console.log('users selected: ', this.usersSelected);
-    this.serviciuCereri.saveCerereWithUsersAndPriority(this.cerereNoua, this.usersSelected)
-      .subscribe(cerereSalvata => {
-        console.log('Cerere salvata pe server: ', cerereSalvata);
+    throw new Error('eroare should not use');
+    // this.serviciuCereri.saveCerereWithUsersAndPriority(this.cerereNoua, this.usersSelected)
+    //   .subscribe(cerereSalvata => {
+    //     console.log('Cerere salvata pe server: ', cerereSalvata);
 
-        console.log('CERERE SAVED: ', cerereSalvata)
-        this.hasCerereBeenSaved = true;
-        this.data.rezultat = cerereSalvata;
-        this.uploadFile();
-      })
+    //     console.log('CERERE SAVED: ', cerereSalvata)
+    //     this.hasCerereBeenSaved = true;
+    //     this.data.rezultat = cerereSalvata;
+    //     this.uploadFile();
+    //   })
   }
 
   uploadFile(){

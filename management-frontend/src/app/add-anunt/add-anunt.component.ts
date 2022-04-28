@@ -33,6 +33,16 @@ export class AddAnuntComponent implements OnInit {
     private groupService: GroupService) { }
 
 
+    userWantsToSelectSpecificUsers: boolean = false;
+
+    userSwitchedOption(){
+      console.log('user wants to select specific: ', this.userWantsToSelectSpecificUsers)
+      if(this.userWantsToSelectSpecificUsers){
+        this.grupuriSelected = [];
+      }else{
+        this.usersSelected = [];
+      }
+    }
 
   ngOnInit(): void {
     console.log('Anunt  component');

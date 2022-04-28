@@ -38,20 +38,20 @@ export class CereriService {
   // save-with-users-cerere-detailed
 
 
-  saveCerereDetailedWithUsersAndPriority(cerereDetailed: any, usersSelected: any[]){
-    for(let u of usersSelected){
-      u.canInterrupt = u.canInterrupt ? 1 : 0;
-    }
-    const obiect = {
-      cerereDetailed: cerereDetailed,
-      usersSelected: usersSelected
-    };
-    return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save-with-users-cerere-detailed', obiect, this.loginService.configureHeaderOptionsForOAuth())
+  // saveCerereDetailedWithUsersAndPriority(cerereDetailed: any, usersSelected: any[]){
+  //   for(let u of usersSelected){
+  //     u.canInterrupt = u.canInterrupt ? 1 : 0;
+  //   }
+  //   const obiect = {
+  //     cerereDetailed: cerereDetailed,
+  //     usersSelected: usersSelected
+  //   };
+  //   return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save-with-users-cerere-detailed', obiect, this.loginService.configureHeaderOptionsForOAuth())
 
-  }
+  // }
   
 
-  saveCerereWithUsersAndPriority(cerere: any, usersSelected: any[]){
+  saveCerereWithUsersAndPriority(cerere: any, usersSelected: any[], type: string) : Observable<Cerere>{
     for(let u of usersSelected){
       u.canInterrupt = u.canInterrupt ? 1 : 0;
     }
@@ -59,7 +59,7 @@ export class CereriService {
       cerere: cerere,
       usersSelected: usersSelected
     };
-    return this.serviciuHttpClient.post('http://localhost:8080/rest/cerere/save-with-users', obiect, this.loginService.configureHeaderOptionsForOAuth())
+    return this.serviciuHttpClient.post<Cerere>(`http://localhost:8080/rest/cerere/save-with-users/${type}`, obiect, this.loginService.configureHeaderOptionsForOAuth())
 
   }
   

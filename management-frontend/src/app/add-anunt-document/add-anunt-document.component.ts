@@ -27,6 +27,16 @@ export class AddAnuntDocumentComponent implements OnInit {
   grupuriSelected: any[] = [];
   grupuri: any[] = [];
 
+  userWantsToSelectSpecificUsers: boolean = false;
+
+  userSwitchedOption(){
+    console.log('user wants to select specific: ', this.userWantsToSelectSpecificUsers)
+    if(this.userWantsToSelectSpecificUsers){
+      this.grupuriSelected = [];
+    }else{
+      this.usersSelected = [];
+    }
+  }
 
   users: any[] = [];
   usersSelected: any[] = [];
