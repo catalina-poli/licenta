@@ -55,6 +55,7 @@ import { AddAnuntDocumentComponent } from './add-anunt-document/add-anunt-docume
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DialogTableFlowItemsComponent } from './cereri-flow-my/dialog-table-flow-items/dialog-table-flow-items.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     SabloaneComponent,
     AddAnuntDocumentComponent,
     ProfileInformationComponent,
+    DialogTableFlowItemsComponent,
   ],
   imports: [
     BrowserModule,

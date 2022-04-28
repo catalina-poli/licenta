@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { FileUploadDownloadService } from '../file-upload-download.service';
 import { FlowService } from '../flow.service';
 import { saveAs as importedSaveAs } from "file-saver";
+import { MatTableDataSource } from '@angular/material/table';
+import { DialogTableFlowItemsComponent } from './dialog-table-flow-items/dialog-table-flow-items.component';
 
 
 
@@ -16,13 +18,34 @@ import { saveAs as importedSaveAs } from "file-saver";
 export class CereriFlowMyComponent implements OnInit {
 
   flowItems: any[] = [];
-  constructor(private flowService: FlowService, private fileUploadDownloadService: FileUploadDownloadService) { }
+  constructor(private flowService: FlowService,
+    private fileUploadDownloadService: FileUploadDownloadService,
+    public dialog: MatDialog
+  ) { }
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDocumentAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   dtosFlowItemsPrevious: any[] = [];
   dtosFlowItemsPreviousCereriDocument: any[] = [];
+  dataSource_dtosFlowItemsPreviousCereriDocument : MatTableDataSource<any> =  new MatTableDataSource<any>();
+
   dtosFlowItemsPreviousCereriDetailed: any[] = [];
+
+  displayedColumnsDocument: string[] = ['idCerereDocument', 'typeCerereDocument', 'emailCerereDocument', 'actionsCerereDocument']
+
+  openDialogFlowItems(dto: any) {
+    console.log('should open dialog for: ', dto);
+    const dialogRef = this.dialog.open(DialogTableFlowItemsComponent, {
+      minWidth: 800,
+      
+      data: dto
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed: ', result);
+
+    });
+  }
 
   ngOnInit(): void {
 
@@ -40,6 +63,9 @@ export class CereriFlowMyComponent implements OnInit {
 
             }
           }
+          console.log('dto cereri document previous: ', this.dtosFlowItemsPreviousCereriDocument);
+          this.dataSource_dtosFlowItemsPreviousCereriDocument  =  new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDocument);
+
           console.log('dtosFlowItemsPreviousCereriDetailed: ', this.dtosFlowItemsPreviousCereriDetailed)
         },
         err => {
@@ -78,15 +104,15 @@ export class CereriFlowMyComponent implements OnInit {
       );
   }
 
-  downloadCerere(fi: any) {
-    const idCerere = fi['cerere']['id'];
+  downloadCerere(dto: any) {
+    const idCerere = dto['cerere']['id'];
     console.log('download document pentru cerere: ', idCerere);
     this.fileUploadDownloadService.downloadFileCerere(idCerere)
       .subscribe(fileDownloaded => {
         console.log('file response: ', fileDownloaded);
         console.log('headers CD: ', fileDownloaded.headers.get('Content-Disposition'));
         console.log('nume fisier: ', fileDownloaded.headers.get('NumeFisier'));
-        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier') ;
+        const headerNumeFisier = fileDownloaded.headers.get('NumeFisier');
         const numeFisier = headerNumeFisier ? headerNumeFisier : 'download';
         const blobBody: Blob = fileDownloaded.body ? fileDownloaded.body : new Blob;
         importedSaveAs(blobBody, numeFisier);

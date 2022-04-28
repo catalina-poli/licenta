@@ -6,9 +6,73 @@
         <h3>Decizii anterioare</h3>
 
         <h4>Cereri document</h4>
+
+
+
+        <table mat-table [dataSource]="dataSource_dtosFlowItemsPreviousCereriDocument" class="mat-elevation-z8">
+
+           
+
+            <!-- 
+               
+             -->
+
+            <ng-container matColumnDef="idCerereDocument">
+                <th mat-header-cell *matHeaderCellDef> ID. </th>
+                <td mat-cell *matCellDef="let element"> {{element.cerere.id}} </td>
+            </ng-container>
+        
+          
+            <ng-container matColumnDef="typeCerereDocument">
+                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.cerere.typeCerere}} </td>
+            </ng-container> 
+        
+            <ng-container matColumnDef="emailCerereDocument">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.cerere.userAssociated?.email}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="actionsCerereDocument">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button (click)="openDialogFlowItems(element)">Open dialog flow items</button>
+                    <button (click)="downloadCerere(element)">Download</button>
+                </td>
+            </ng-container>
+        
+           
+       
+        
+          
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+        </table>
+        
+
+        <!-- <div *ngFor="let dto of dtosFlowItemsPreviousCereriDocument">
+            <div>
+                For cerere: 
+                <span>{{dto.cerere.id}}</span>
+                <span>{{dto.cerere.typeCerere}}</span> - <span>{{dto.cerere.userAssociated.email}}</span>
+            </div>
+            <div>
+                <button (click)="openDialogFlowItems(dto)">Open dialog flow items</button>
+            </div>
+
+            <div>
+                <button (click)="downloadCerere(dto)">Download</button>
+            </div>
+        </div> -->
+
+
+
         <div *ngFor="let dto of dtosFlowItemsPreviousCereriDocument">
             <div>
                 For cerere: <span>{{dto.cerere.typeCerere}}</span> - <span>{{dto.cerere.userAssociated.email}}</span>
+
+                <button (click)="downloadCerere(dto)">Download</button>
             </div>
             <table>
                 <thead>
@@ -43,7 +107,7 @@
                             {{fi.motiv}}
                         </td>
                         <td>
-                            <button (click)="downloadCerere(fi)">Download</button>
+                            <!-- <button (click)="downloadCerere(fi)">Download</button> -->
                         </td>
                     </tr>
                 </tbody>
@@ -55,6 +119,7 @@
             <div>
                 For cerere detailed: <span>{{dto.cerereDetailed.typeCerere}}</span> -
                 <span>{{dto.cerereDetailed.user.email}}</span>
+                
             </div>
             <table>
                 <thead>
@@ -183,10 +248,10 @@
                         </ng-template>
                     </td>
                     <td>
-                        {{fi.cerereDetailed.dateStart}}
+                        {{fi.cerereDetailed.dateStart | date : 'yyyy-MM-dd'}}
                     </td>
                     <td>
-                        {{fi.cerereDetailed.dateEnd}}
+                        {{fi.cerereDetailed.dateEnd | date : 'yyyy-MM-dd'}}
                     </td>
                     <td>
                         {{fi.motiv}}

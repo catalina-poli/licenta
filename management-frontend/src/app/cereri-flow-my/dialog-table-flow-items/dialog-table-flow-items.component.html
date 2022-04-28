@@ -1,0 +1,39 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+           
+
+  
+
+    <ng-container matColumnDef="idFlowItemDocument">
+        <th mat-header-cell *matHeaderCellDef> ID. </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+  
+    <ng-container matColumnDef="superiorCerereDocument">
+        <th mat-header-cell *matHeaderCellDef> Superior </th>
+        <td mat-cell *matCellDef="let element"> {{element.superior?.email}} </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="statusCerereDocument">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="canInterruptCerereDocument">
+        <th mat-header-cell *matHeaderCellDef> Can Interrupt </th>
+        <td mat-cell *matCellDef="let element"> {{element.canInterrupt}} </td>
+    </ng-container>
+
+   
+
+    <ng-container matColumnDef="motivCerereDocument">
+        <th mat-header-cell *matHeaderCellDef> Motiv </th>
+        <td mat-cell *matCellDef="let element"> {{element.motiv}} </td>
+    </ng-container>
+
+  
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+</table>
