@@ -51,13 +51,20 @@ export class CereriService {
   // }
   
 
-  saveCerereWithUsersAndPriority(cerere: any, usersSelected: any[], type: string) : Observable<Cerere>{
+  saveCerereWithUsersAndPriority(cerere: any, cerereDetailed: any, usersSelected: any[], type: string) : Observable<Cerere>{
     for(let u of usersSelected){
       u.canInterrupt = u.canInterrupt ? 1 : 0;
     }
+    // comment - saved o cerere nu o cerere detailed
+    // const obiect = {
+    //   cerere: cerere,
+    //   usersSelected: usersSelected
+    // };
     const obiect = {
       cerere: cerere,
-      usersSelected: usersSelected
+      usersSelected: usersSelected,
+      cerereDetailed: cerereDetailed
+
     };
     return this.serviciuHttpClient.post<Cerere>(`http://localhost:8080/rest/cerere/save-with-users/${type}`, obiect, this.loginService.configureHeaderOptionsForOAuth())
 

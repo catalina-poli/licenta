@@ -1,21 +1,24 @@
-<div>
-    <h2>Componenta useri</h2>
-
-    <input type="text" placeholder="Email" [(ngModel)]="userNou.email"> <br>
+<div class="example-container mat-elevation-z8">
+   
+    <!-- <input type="text" placeholder="Email" [(ngModel)]="userNou.email"> <br>
     <input type="password" placeholder="Password" [(ngModel)]="userNou.password"><br>
-    <button (click)="register()">Register</button>
+    <button (click)="register()">Register</button> -->
 
     <table border="1">
         <thead>
             <tr>
-                <th>Id</th>
+                <th></th>
                 <th>Email</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let u of useri">
                 <td>
-                    {{u.id}}
+                    
+                    <div class="example-button-row">
+                        <button mat-raised-button color="accent">
+                          <mat-icon>visibility</mat-icon> PROFILE DETAILS
+                        </button></div>
                 </td>
                 <td>
                     {{u.email}}

@@ -3,10 +3,12 @@ package ro.atm.management.dto;
 import java.util.List;
 
 import ro.atm.management.model.Cerere;
+import ro.atm.management.model.CerereDetailed;
 
 public class DtoCerereWithUsers {
 
 	private Cerere cerere;
+	private CerereDetailed cerereDetailed;
 	private List<UserCerere> usersSelected;
 
 	public Cerere getCerere() {
@@ -23,6 +25,16 @@ public class DtoCerereWithUsers {
 
 	public void setUsersSelected(List<UserCerere> usersSelected) {
 		this.usersSelected = usersSelected;
+	}
+
+	
+	
+	public CerereDetailed getCerereDetailed() {
+		return cerereDetailed;
+	}
+
+	public void setCerereDetailed(CerereDetailed cerereDetailed) {
+		this.cerereDetailed = cerereDetailed;
 	}
 
 	@Override

@@ -56,6 +56,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DialogTableFlowItemsComponent } from './cereri-flow-my/dialog-table-flow-items/dialog-table-flow-items.component';
+import { LoginRegisterComponent } from './login-register/login-register.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { DialogTableFlowItemsComponent } from './cereri-flow-my/dialog-table-flo
     AddAnuntDocumentComponent,
     ProfileInformationComponent,
     DialogTableFlowItemsComponent,
+    LoginRegisterComponent,
   ],
   imports: [
     BrowserModule,

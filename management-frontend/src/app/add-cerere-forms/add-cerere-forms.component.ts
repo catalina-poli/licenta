@@ -20,7 +20,7 @@ export class AddCerereFormsComponent implements OnInit {
   cerereNoua: any = {
     typeCerere: ''
   };
-  cerereNouaDetailed: CerereDetailed = new CerereDetailed();
+  cerereNouaDetailed: CerereDetailed  = new CerereDetailed();
 
   displayedColumns: string[] = ['id', 'datePosted', 'type', 'userAssociated', 'actions'];
   // <th>Id</th>
@@ -100,7 +100,9 @@ export class AddCerereFormsComponent implements OnInit {
 
     console.log('cerere noua: ', this.cerereNoua);
     console.log('users selected: ', this.usersSelected);
-    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNoua, this.usersSelected, this.type)
+
+
+    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNoua, null, this.usersSelected, this.type)
       .subscribe(cerereSalvata => {
         console.log('Cerere salvata pe server: ', cerereSalvata);
 
@@ -134,11 +136,13 @@ export class AddCerereFormsComponent implements OnInit {
 
     console.log('users selected: ', this.usersSelectedCerereDetailed);
     this.type = this.defaultFlow ? 'DEFAULT_FLOW_USERS' : 'SPECIFIC_USERS';
-    this.cereriService.saveCerereWithUsersAndPriority(this.cerereNouaDetailed, this.usersSelectedCerereDetailed, this.type)
+    this.cereriService.saveCerereWithUsersAndPriority(null, this.cerereNouaDetailed, this.usersSelectedCerereDetailed, this.type)
       .subscribe(cerereSalvata => {
         console.log('Cerere salvata pe server: ', cerereSalvata);
 
-        console.log('CERERE SAVED: ', cerereSalvata)
+        console.log('CERERE SAVED: ', cerereSalvata);
+        // this.cerereNoua = null;
+        this.cerereNouaDetailed = new CerereDetailed();;
         // this.hasCerereBeenSaved = true;
         // this.data.rezultat = cerereSalvata;
 

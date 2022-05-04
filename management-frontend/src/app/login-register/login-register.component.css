@@ -1,0 +1,40 @@
+
+.example-card {
+    max-width: 400px;
+  }
+  
+
+  .center-content {
+      margin-top: 100px;
+      text-align: -webkit-center;
+  }
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    margin-top: 10px;
+    width: 100%;
+  }
+.mat-button{
+    margin-top: 10px;
+    width: 100%;
+    color: white;
+    background-color: #c2175b;
+    height: 40px;
+  }
+
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+  
+}
+.example-button {
+  margin-top: 16px;
+}
+
+.example-tooltip-red {
+  background: rgb(73, 68, 68);
+}

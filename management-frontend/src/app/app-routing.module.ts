@@ -9,6 +9,7 @@ import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.com
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
 import { GroupComponent } from './group/group.component';
+import { LoginRegisterComponent } from './login-register/login-register.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
@@ -68,6 +69,10 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileInformationComponent
+  },
+  {
+    path: 'login-register',
+    component: LoginRegisterComponent
   }
 ];
 
