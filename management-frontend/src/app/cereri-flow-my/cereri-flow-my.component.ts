@@ -30,8 +30,10 @@ export class CereriFlowMyComponent implements OnInit {
   dataSource_dtosFlowItemsPreviousCereriDocument : MatTableDataSource<any> =  new MatTableDataSource<any>();
 
   dtosFlowItemsPreviousCereriDetailed: any[] = [];
+  dataSource_dtosFlowItemsPreviousCereriDetailed : MatTableDataSource<any> =  new MatTableDataSource<any>();
 
-  displayedColumnsDocument: string[] = ['idCerereDocument', 'typeCerereDocument', 'emailCerereDocument', 'actionsCerereDocument']
+  displayedColumnsDocument: string[] = ['idCerereDocument', 'typeCerereDocument', 'emailCerereDocument', 'actionsCerereDocument'];
+  displayedColumnsDetailed: string[] = ['idCerereDetailed', 'typeCerereDetailed', 'emailCerereDetailed', 'actionsCerereDetailed'];
 
   openDialogFlowItems(dto: any) {
     console.log('should open dialog for: ', dto);
@@ -64,8 +66,9 @@ export class CereriFlowMyComponent implements OnInit {
             }
           }
           console.log('dto cereri document previous: ', this.dtosFlowItemsPreviousCereriDocument);
+          console.log('dto cereri DETAILED previous: ', this.dtosFlowItemsPreviousCereriDetailed);
           this.dataSource_dtosFlowItemsPreviousCereriDocument  =  new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDocument);
-
+          this.dataSource_dtosFlowItemsPreviousCereriDetailed = new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDetailed);
           console.log('dtosFlowItemsPreviousCereriDetailed: ', this.dtosFlowItemsPreviousCereriDetailed)
         },
         err => {

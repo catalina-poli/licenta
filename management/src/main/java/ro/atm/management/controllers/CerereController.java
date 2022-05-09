@@ -145,11 +145,12 @@ public class CerereController {
 			cerereNoua.setCerereType(cerereType);
 
 		}
-		// TODO: de asociat si cu cerereDetailed in caz ca obiectul e trimis
+
 		CerereDetailed cerereDetailed = null;
 		if (cerereNouaDto.getCerereDetailed() != null) {
 			cerereDetailed = cerereNouaDto.getCerereDetailed();
 			cerereDetailed.setUser(userLogat);
+			cerereDetailed.setDateCreated(new Date());
 		}
 
 		Cerere cerereSalvata = null;
@@ -218,13 +219,20 @@ public class CerereController {
 	public List<DtoCerereAndFlowsICanSee> myFlowCereriToBeSeenByMe(Principal principal) {
 		System.out.println("PRINCIPAL: " + principal.getName());
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
-		List<FlowCerere> flowCereriICanSee = this.myFlowCereri(principal);
+		List<FlowCerere> flowCereriICanSee = this.myFlowCereri(principal);  
 		List<DtoCerereAndFlowsICanSee> result = new ArrayList<>();
 		for (FlowCerere flowCerereICanSee : flowCereriICanSee) {
 			DtoCerereAndFlowsICanSee dto = new DtoCerereAndFlowsICanSee();
 			dto.setCerere(flowCerereICanSee.getCerere());
 			dto.setCerereDetailed(flowCerereICanSee.getCerereDetailed());
-			dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerere(flowCerereICanSee.getCerere()));
+			
+			if(dto.getCerere() != null) {
+				dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerere(flowCerereICanSee.getCerere()));
+
+			}else if(dto.getCerereDetailed() != null) {
+				dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerereDetailed(flowCerereICanSee.getCerereDetailed()));
+
+			}
 			result.add(dto);
 		}
 
