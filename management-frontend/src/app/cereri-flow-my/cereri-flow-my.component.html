@@ -69,62 +69,17 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumnsDetailed"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsDetailed;"></tr>
         </table>
-        <!-- cereri detailed old
 
-        <h4>Cereri detailed</h4>
-        <div *ngFor="let dto of dtosFlowItemsPreviousCereriDetailed">
-            <div>
-                For cerere detailed: <span>{{dto.cerereDetailed.typeCerere}}</span> -
-                <span>{{dto.cerereDetailed.user.email}}</span>
 
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Superior</th>
-                        <th>Status</th>
-                        <th>Can Interrupt</th>
-                        <th>Order</th>
-                        <th>Motiv</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let fi of dto.flowItemsICanSeeForCerere">
-                        <td>
-                            {{fi.id}}
-                        </td>
-                        <td>
-                            {{fi.superior.email}}
-                        </td>
-                        <td>
-                            {{fi.status}}
-                        </td>
-                        <td>
-                            {{fi.canInterrupt}}
-                        </td>
-                        <td>
-                            {{fi.priority}}
-                        </td>
-                        <td>
-                            {{fi.motiv}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
- -->
-
-        <hr>
-        <hr>
+     
         <h1>Admite / respinge</h1>
-        <hr>
+   
 
 
         <mat-form-field appearance="fill">
             <mat-label>Filtrare decizii</mat-label>
-            <mat-select [(ngModel)]="selectedStatusFilter">
+            <mat-select [(ngModel)]="selectedStatusFilter" (selectionChange)="onFilterStatusChange()">
+                <mat-option [value]="-1">All</mat-option>
                 <mat-option *ngFor="let status of statusDropdownOptions" [value]="status.status">
                     {{status.text}}
                 </mat-option>
@@ -133,7 +88,59 @@
 
 
 
-        <h2>Cereri document</h2>
+        <!-- Cereri ALL material table -->
+
+        <table mat-table [dataSource]="dataSource_tableAllCereriDocumentAndDetailed" class="mat-elevation-z8">
+            <ng-container matColumnDef="idAll">
+                <th mat-header-cell *matHeaderCellDef> ID. </th>
+                <td mat-cell *matCellDef="let element"> {{element.idCerereDetailedOrDocument}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="typeCerereAll">
+                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.tipCerere}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="emailCerereAll">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.utilizator.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateStartAll">
+                <th mat-header-cell *matHeaderCellDef> Date Start </th>
+                <td mat-cell *matCellDef="let element"> {{element.dateStart | date :'yyyy-MM-dd'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="dateEndAll">
+                <th mat-header-cell *matHeaderCellDef> Date End </th>
+                <td mat-cell *matCellDef="let element"> {{element.dateEnd | date :'yyyy-MM-dd'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="motivAll">
+                <th mat-header-cell *matHeaderCellDef> Motiv </th>
+                <td mat-cell *matCellDef="let element"> {{element.motiv}} </td>
+            </ng-container>
+            <ng-container matColumnDef="statusAll">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">{{element.status == 2 ? 'PENDING' : element.status == 1 ?
+                    'ACCEPTATA' : 'RESPINSA'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actionsAll">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element">
+                    <button (click)="rezolva(element, true)">Admite</button>
+                    <button (click)="rezolva(element, false)">Respinge</button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsAll"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsAll;"></tr>
+        </table>
+        <!-- ./Cereri ALL material table -->
+
+
+        <!-- <h2>Cereri document</h2>
         <div *ngFor="let cfi of cereriDocumentAndFlowItems | keyvalue">
             <div *ngIf="shouldDisplayCerereDetailed(cfi.key, 'document')">
                 <h3>Cerere: {{cfi.key}}</h3>
@@ -197,7 +204,7 @@
         <h2> Cereri detailed</h2>
         <div *ngFor="let cfi of cereriDetailedAndFlowItems | keyvalue">
             <div *ngIf="shouldDisplayCerereDetailed(cfi.key, 'detailed')">
-                <!-- todo: disable or enable-->
+              
                 <h3>Cerere detailed: {{cfi.key}}</h3>
                 <table>
                     <thead>
@@ -253,7 +260,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
+            </div> -->
     </div>
+
+</div>

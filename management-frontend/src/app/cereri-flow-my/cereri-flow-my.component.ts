@@ -6,6 +6,7 @@ import { FlowService } from '../flow.service';
 import { saveAs as importedSaveAs } from "file-saver";
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogTableFlowItemsComponent } from './dialog-table-flow-items/dialog-table-flow-items.component';
+import { DataTableFlowItemAdmiteRespinge } from '../model/data-table-flow-item-admite-respinge';
 
 
 
@@ -17,7 +18,7 @@ import { DialogTableFlowItemsComponent } from './dialog-table-flow-items/dialog-
 })
 export class CereriFlowMyComponent implements OnInit {
 
-  selectedStatusFilter: number = 2;
+  selectedStatusFilter: number = -1;
 
   statusDropdownOptions: any[] = [
     { status: 0, text: "RESPINS" },
@@ -33,6 +34,12 @@ export class CereriFlowMyComponent implements OnInit {
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDocumentAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
+
+  initialDataForDSALL: DataTableFlowItemAdmiteRespinge[] = [];
+  dataForDSAll: DataTableFlowItemAdmiteRespinge[] = [];
+  dataSource_tableAllCereriDocumentAndDetailed: MatTableDataSource<DataTableFlowItemAdmiteRespinge> = new MatTableDataSource<DataTableFlowItemAdmiteRespinge>();
+
+
   dtosFlowItemsPrevious: any[] = [];
 
   dtosFlowItemsPreviousCereriDocument: any[] = [];
@@ -43,7 +50,38 @@ export class CereriFlowMyComponent implements OnInit {
 
   displayedColumnsDocument: string[] = ['idCerereDocument', 'typeCerereDocument', 'emailCerereDocument', 'actionsCerereDocument'];
   displayedColumnsDetailed: string[] = ['idCerereDetailed', 'typeCerereDetailed', 'emailCerereDetailed', 'actionsCerereDetailed'];
+  displayedColumnsAll: string[] = ['idAll', 'typeCerereAll', 'emailCerereAll', 'dateStartAll', 'dateEndAll', 'motivAll', 'statusAll', 'actionsAll'];
 
+
+
+  onFilterStatusChange() {
+    console.log('displaying data for status: ', this.selectedStatusFilter);
+    // this.initialDataForDSALL = [...this.dataForDSAll];
+    if (this.selectedStatusFilter == -1) {
+      this.dataForDSAll = [...this.initialDataForDSALL];
+      this.dataSource_tableAllCereriDocumentAndDetailed = new MatTableDataSource<DataTableFlowItemAdmiteRespinge>(this.dataForDSAll);
+      return;
+    }
+    this.dataForDSAll = [...this.initialDataForDSALL];
+    this.dataForDSAll = this.dataForDSAll.filter(x => x.status == this.selectedStatusFilter);
+    this.dataSource_tableAllCereriDocumentAndDetailed = new MatTableDataSource<DataTableFlowItemAdmiteRespinge>(this.dataForDSAll);
+
+  }
+
+  shouldDisplayCerereAll(idCerere: any, type: string): boolean {
+    // cereriDetailedAndFlowItems
+    // cereriDocumentAndFlowItems
+    // let shouldDisplay: boolean = true;
+    // let cerereFlowItems = this.cereriDetailedAndFlowItems.get(idCerere) || [];
+    for (let fi of this.dataForDSAll) {
+      if (fi.status != this.selectedStatusFilter) {
+        return false;
+      }
+    }
+    return true;
+
+    return true;
+  }
 
   shouldDisplayCerereDetailed(idCerere: any, typeCerere: string): boolean {
     // cereriDetailedAndFlowItems
@@ -113,6 +151,7 @@ export class CereriFlowMyComponent implements OnInit {
         rez => {
           console.log('my flow items: ', rez);
           this.flowItems = rez;
+
           for (let fi of this.flowItems) {
             if (fi['cerere']) {
               if (!this.cereriDocumentAndFlowItems.has(fi['cerere']['id'])) {
@@ -120,6 +159,16 @@ export class CereriFlowMyComponent implements OnInit {
               } else {
                 this.cereriDocumentAndFlowItems.get(fi['cerere']['id'])?.push(fi);
               }
+              let dataRow: DataTableFlowItemAdmiteRespinge = new DataTableFlowItemAdmiteRespinge();
+              dataRow.idCerereDetailedOrDocument = fi['cerere']['id'];
+              dataRow.dateStart = fi['cerere']['dateStart'];
+              dataRow.dateEnd = fi['cerere']['dateEnd'];
+              dataRow.motiv = fi['motiv'];
+              dataRow.status = fi['status'];
+              dataRow.tipCerere = fi['cerere']['typeCerere'];
+              dataRow.utilizator = fi.cerere.userAssociated;
+              dataRow.id = fi['id'];
+              this.dataForDSAll.push(dataRow);
             }
             if (fi['cerereDetailed']) {
               if (!this.cereriDetailedAndFlowItems.has(fi['cerereDetailed']['id'])) {
@@ -127,10 +176,24 @@ export class CereriFlowMyComponent implements OnInit {
               } else {
                 this.cereriDetailedAndFlowItems.get(fi['cerereDetailed']['id'])?.push(fi);
               }
+
+              let dataRow: DataTableFlowItemAdmiteRespinge = new DataTableFlowItemAdmiteRespinge();
+              dataRow.idCerereDetailedOrDocument = fi['cerereDetailed']['id'];
+              dataRow.dateStart = fi['cerereDetailed']['dateStart'];
+              dataRow.dateEnd = fi['cerereDetailed']['dateEnd'];
+              dataRow.motiv = fi['motiv'];
+              dataRow.status = fi['status'];
+              dataRow.tipCerere = fi['cerereDetailed']['typeCerere'];
+              dataRow.utilizator = fi.cerereDetailed.user;
+              dataRow.id = fi['id'];
+              this.dataForDSAll.push(dataRow);
             }
           }
           console.log('cereri document and flow items: ', this.cereriDocumentAndFlowItems);
           console.log('cereri detailed and flow items: ', this.cereriDetailedAndFlowItems);
+          console.log('cereri uniformizate: ', this.dataForDSAll);
+          this.initialDataForDSALL = [...this.dataForDSAll];
+          this.dataSource_tableAllCereriDocumentAndDetailed = new MatTableDataSource<DataTableFlowItemAdmiteRespinge>(this.dataForDSAll);
 
         },
         err => {
