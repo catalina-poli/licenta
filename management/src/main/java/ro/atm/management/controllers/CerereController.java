@@ -3,7 +3,9 @@ package ro.atm.management.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -97,12 +99,14 @@ public class CerereController {
 	}
 
 	private void saveCerereFlowForCerereAndUserStatus2Pending(Cerere cerereSalvata,
-			CerereDetailed cerereDetailedSalvata, User userInCharge) {
+			CerereDetailed cerereDetailedSalvata, User userInCharge, int priority) {
 		FlowCerere flow = new FlowCerere();
 		flow.setCerere(cerereSalvata);
 		flow.setCerereDetailed(cerereDetailedSalvata);
 		flow.setMotiv(null);
 		flow.setStatus(2); // 2 - INCOMPLETE / PENDING
+		flow.setCanInterrupt(1);
+		flow.setPriority(priority);
 		flow.setSuperior(userInCharge);
 		this.repoFlow.save(flow);
 
@@ -112,7 +116,7 @@ public class CerereController {
 	// ??????
 	@PostMapping("/save-with-users-cerere-detailed")
 	public CerereDetailed saveCerereWithUsersCerereDetailed(@RequestBody DtoCerereDetailedWithUsers cerereNouaDto,
-			Principal principal) {
+			Principal principal) { 
 
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		CerereDetailed cerereNouaDetailed = cerereNouaDto.getCerereDetailed();
@@ -199,15 +203,25 @@ public class CerereController {
 		// aprobare a cerii,
 		// urmand ca acestea sa fie aprobate ulterior
 		List<Group> groupsCerere = this.getGroupsForCerere(cerereSalvata.getId());
+		Set<User> usersAlreadyAssociated = new HashSet<>();
+		int priority = 0;
 		for (Group g : groupsCerere) {
 			User userInCharge = g.getUserInCharge();
+			
 			if (userInCharge != null) {
-				this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed, userInCharge);
+				if(!usersAlreadyAssociated.contains(userInCharge)) {
+					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed, userInCharge, priority++);
+					usersAlreadyAssociated.add(userInCharge);
+				}
+				
 			}
 			if (g.getParentGroup() != null) {
 				if (g.getParentGroup().getUserInCharge() != null) {
+					if(!usersAlreadyAssociated.contains(g.getParentGroup().getUserInCharge())) {
 					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed,
-							g.getParentGroup().getUserInCharge());
+							g.getParentGroup().getUserInCharge(), priority++);
+					usersAlreadyAssociated.add(g.getParentGroup().getUserInCharge());
+					}
 				}
 			}
 

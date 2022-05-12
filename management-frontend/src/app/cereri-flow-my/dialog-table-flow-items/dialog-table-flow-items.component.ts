@@ -22,7 +22,7 @@ export class DialogTableFlowItemsComponent implements OnInit {
   ngOnInit(): void {
     
     console.log('dialog deschis pentru: ', this.data);
-    this.dataSource =  new MatTableDataSource<any>(this.data.flowItemsICanSeeForCerere);;
+    this.dataSource =  new MatTableDataSource<any>(this.data.flowItemsICanSeeForCerere);
   }
 
 }

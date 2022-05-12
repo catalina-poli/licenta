@@ -17,6 +17,14 @@ import { DialogTableFlowItemsComponent } from './dialog-table-flow-items/dialog-
 })
 export class CereriFlowMyComponent implements OnInit {
 
+  selectedStatusFilter: number = 2;
+
+  statusDropdownOptions: any[] = [
+    { status: 0, text: "RESPINS" },
+    { status: 1, text: "ADMIS" },
+    { status: 2, text: "PENDING" }
+  ];
+
   flowItems: any[] = [];
   constructor(private flowService: FlowService,
     private fileUploadDownloadService: FileUploadDownloadService,
@@ -26,20 +34,44 @@ export class CereriFlowMyComponent implements OnInit {
   cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDocumentAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   dtosFlowItemsPrevious: any[] = [];
+
   dtosFlowItemsPreviousCereriDocument: any[] = [];
-  dataSource_dtosFlowItemsPreviousCereriDocument : MatTableDataSource<any> =  new MatTableDataSource<any>();
+  dataSource_dtosFlowItemsPreviousCereriDocument: MatTableDataSource<any> = new MatTableDataSource<any>();
 
   dtosFlowItemsPreviousCereriDetailed: any[] = [];
-  dataSource_dtosFlowItemsPreviousCereriDetailed : MatTableDataSource<any> =  new MatTableDataSource<any>();
+  dataSource_dtosFlowItemsPreviousCereriDetailed: MatTableDataSource<any> = new MatTableDataSource<any>();
 
   displayedColumnsDocument: string[] = ['idCerereDocument', 'typeCerereDocument', 'emailCerereDocument', 'actionsCerereDocument'];
   displayedColumnsDetailed: string[] = ['idCerereDetailed', 'typeCerereDetailed', 'emailCerereDetailed', 'actionsCerereDetailed'];
+
+
+  shouldDisplayCerereDetailed(idCerere: any, typeCerere: string): boolean {
+    // cereriDetailedAndFlowItems
+    // cereriDocumentAndFlowItems
+    // let shouldDisplay: boolean = true;
+    if (typeCerere == 'detailed') {
+      let cerereFlowItems = this.cereriDetailedAndFlowItems.get(idCerere) || [];
+      for (let fi of cerereFlowItems) {
+        if (fi.status != this.selectedStatusFilter) {
+          return false;
+        }
+      }
+      return true;
+    }
+    let cerereFlowItems = this.cereriDocumentAndFlowItems.get(idCerere) || [];
+    for (let fi of cerereFlowItems) {
+      if (fi.status != this.selectedStatusFilter) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   openDialogFlowItems(dto: any) {
     console.log('should open dialog for: ', dto);
     const dialogRef = this.dialog.open(DialogTableFlowItemsComponent, {
       minWidth: 800,
-      
+
       data: dto
     });
 
@@ -67,7 +99,7 @@ export class CereriFlowMyComponent implements OnInit {
           }
           console.log('dto cereri document previous: ', this.dtosFlowItemsPreviousCereriDocument);
           console.log('dto cereri DETAILED previous: ', this.dtosFlowItemsPreviousCereriDetailed);
-          this.dataSource_dtosFlowItemsPreviousCereriDocument  =  new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDocument);
+          this.dataSource_dtosFlowItemsPreviousCereriDocument = new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDocument);
           this.dataSource_dtosFlowItemsPreviousCereriDetailed = new MatTableDataSource<any>(this.dtosFlowItemsPreviousCereriDetailed);
           console.log('dtosFlowItemsPreviousCereriDetailed: ', this.dtosFlowItemsPreviousCereriDetailed)
         },
