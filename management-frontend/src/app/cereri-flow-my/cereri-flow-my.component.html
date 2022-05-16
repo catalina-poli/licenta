@@ -28,8 +28,10 @@
             <ng-container matColumnDef="actionsCerereDocument">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let element">
-                    <button (click)="openDialogFlowItems(element)">Open dialog flow items</button>
-                    <button (click)="downloadCerere(element)">Download</button>
+                    <!-- <button (click)="openDialogFlowItems(element)">Open dialog flow items</button> -->
+                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> Open dialog flow items</button>
+                    <!-- <button (click)="downloadCerere(element)">Download</button> -->
+                    <button mat-raised-button (click)="downloadCerere(element)"><mat-icon>get_app</mat-icon>DOWNLOAD</button>
                 </td>
             </ng-container>
 
@@ -60,7 +62,9 @@
             <ng-container matColumnDef="actionsCerereDetailed">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let element">
-                    <button (click)="openDialogFlowItems(element)">Open dialog flow items</button>
+                    <!-- <button (click)="openDialogFlowItems(element)">Open dialog flow items</button> -->
+                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> Open dialog flow items</button>
+
                     <!-- <button (click)="downloadCerere(element)">Download</button>  -->
                 </td>
             </ng-container>
@@ -128,8 +132,11 @@
             <ng-container matColumnDef="actionsAll">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let element">
-                    <button (click)="rezolva(element, true)">Admite</button>
-                    <button (click)="rezolva(element, false)">Respinge</button>
+                    <!-- <button (click)="rezolva(element, true)">Admite</button> -->
+                    <button mat-raised-button (click)="rezolva(element, true)">	<mat-icon>check</mat-icon>ADMITE</button>
+
+                    <!-- <button (click)="rezolva(element, false)">Respinge</button> -->
+                    <button mat-raised-button color="warn" (click)="rezolva(element, false)"><mat-icon>close</mat-icon>RESPINGE</button>
                 </td>
             </ng-container>
 
