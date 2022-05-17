@@ -8,6 +8,7 @@ import { FileUploadDownloadService } from '../file-upload-download.service';
 import { CategorieSablonModel } from '../model/categorie-sablon';
 import { HttpClient } from '@angular/common/http';
 import { FileService } from '../services/file.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class DynamicFlatNode {
   constructor(
@@ -179,8 +180,14 @@ export class SabloaneComponent implements OnInit {
 
   }
 
-
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
   saveSablonNou() {
+    if(!this.categorieNoua.categoryName){
+      this.openSnackBar('Cannot add empty category node', 'Close');
+      return;
+    }
     this.categoriiSablonService.saveSablonNou(this.categorieNoua)
       .subscribe(
         rez => {
@@ -188,6 +195,7 @@ export class SabloaneComponent implements OnInit {
         },
         err => {
           console.log(err);
+          this.openSnackBar('Could not add category', 'Close');
         }
       );
   }
@@ -199,26 +207,6 @@ export class SabloaneComponent implements OnInit {
 
     this.fileService.uploadFile(this.fileToUpload, `http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`)
 
-    // if (this.fileToUpload) {
-
-    //   this.fileName = this.fileToUpload.name;
-
-    //   const formData = new FormData();
-
-    //   formData.append("file", this.fileToUpload);
-
-    //   const upload$ = this.http.post(`http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`, formData);
-
-    //   upload$.subscribe(
-    //     rez => {
-    //       console.log('file successfully uploaded: ', rez);
-    //     },
-    //     err => {
-    //       console.log('error: ', err);
-    //     }
-    //   );
-
-    // }
   }
 
   saveSablon() {
@@ -229,7 +217,8 @@ export class SabloaneComponent implements OnInit {
 
   constructor(database: DynamicDatabase,        
     private categoriiSablonService: CategorieSablonService,
-    private fileService: FileService) {
+    private fileService: FileService,
+    private _snackBar: MatSnackBar) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, categoriiSablonService);
     

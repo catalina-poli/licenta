@@ -23,7 +23,7 @@
     
 
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-      <mat-icon  [routerLink]="['/messages']" [matBadgeHidden]="hidden" (click)="toggleBadgeVisibility()" [matBadge]="numberOfNotifications" matBadgeColor="primary"> notifications_none </mat-icon>
+      <mat-icon  (mouseenter)="isOpen = !isOpen" (mouseout)="isOpen = false" [routerLink]="['/messages']" [matBadgeHidden]="hidden" (click)="toggleBadgeVisibility()" [matBadge]="numberOfNotifications" matBadgeColor="primary"> notifications_none </mat-icon>
     </button>
 
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
@@ -64,7 +64,7 @@
       <a mat-list-item class="nav-item nav-link" [routerLink]="['/sabloane']">Sabloane</a>
       <button mat-raised-button color="pink" (click)="logout()">Logout</button>
 
-      <button mat-raised-button color="pink" (click)="drawer.toggle()">CLOSE</button>
+      <button mat-raised-button color="pink"  (click)="drawer.toggle()">CLOSE</button>
 
 
     </mat-nav-list>

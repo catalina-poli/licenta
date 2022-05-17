@@ -19,6 +19,11 @@ export class NavigationComponent implements OnInit {
   numberOfNotifications: number = 0;
   notifications: Mesaj[] = [];
 
+
+  messagesAssociated(){
+    console.log('messages!');
+  }
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
