@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AnunturiService } from '../anunturi.service';
 import { Anunt } from '../model/anunt';
-import { SortDirection } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
@@ -19,13 +18,7 @@ import { FileService } from '../services/file.service';
 export class AnunturiComponent implements OnInit, AfterViewInit {
 
   titluComponenta: string = 'Anunturi here';
-  // anunturile: Anunt[] = [];
 
-  // titluAnuntNou: string = '';
-  // continutAnuntNou: string = '';
-
-
-  // ---- paginare (tabel)
   displayedColumns: string[] = ['id', 'titlu', 'continut', 'actionsCol'];
 
 
@@ -38,7 +31,6 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   resultsLength = 0;
-  // myRoles: any[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -46,6 +38,7 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
   loadInitial() {
 
     if (this.sort) {
+      console.log('sort ok')
 
       this.sort.sortChange.subscribe(() => this.paginator ? this.paginator.pageIndex = 0 : 0);
       merge(this.sort.sortChange, this.paginator ? this.paginator.page : 0)
@@ -75,6 +68,8 @@ export class AnunturiComponent implements OnInit, AfterViewInit {
         ).subscribe(data => this.data = data);
       this.changeDetectorRefs.detectChanges();
 
+    }else{
+      console.log('anunturi no sort');
     }
   }
   // ---- ./paginare

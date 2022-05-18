@@ -28,6 +28,9 @@ public class SablonCategorieController {
 	
 	@PostMapping("/save")
 	public CategorieSablon save(@RequestBody  CategorieSablon categorieNoua) {
+		if(categorieNoua.getCategoryName().isEmpty()) {
+			throw new RuntimeException("Cannot have empty category name");
+		}
 		return this.repoCategorieSablon.save(categorieNoua);
 	}
 	

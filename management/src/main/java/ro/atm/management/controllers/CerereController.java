@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +29,7 @@ import ro.atm.management.model.CerereDetailed;
 import ro.atm.management.model.CerereType;
 import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.Group;
+import ro.atm.management.model.Message;
 import ro.atm.management.model.Role;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
@@ -32,6 +37,7 @@ import ro.atm.management.repo.RepoCerereDetailed;
 import ro.atm.management.repo.RepoCerereType;
 import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
+import ro.atm.management.repo.RepoMessage;
 import ro.atm.management.repo.RepoUser;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
@@ -57,6 +63,9 @@ public class CerereController {
 	@Autowired
 	private RepoCerereDetailed repoCerereDetailed;
 
+	@Autowired
+	private RepoMessage repoMessage;
+
 	@GetMapping("/all")
 	public List<Cerere> allCereri(Principal principal) {
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
@@ -71,6 +80,44 @@ public class CerereController {
 			return repoCerere.findAllByOrderByDateCreatedDesc();
 		}
 		return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(userLogat);
+	}
+
+//	@GetMapping("/all-paginated/{page}/{size}/{sort}/{order}")
+//	public Page<Anunt> allUsersPaginated(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort, @PathVariable("order") String order){
+//		
+//		Pageable pageCurrent = PageRequest.of(page, size , order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+//		Page<Anunt> messages = repoAnuntPagination.findAll(pageCurrent);
+//		return messages;
+//	}
+
+	@GetMapping("/all-paginated/{type}/{page}/{size}/{sort}/{order}")
+	public Page<Cerere> allCereriPaginated(Principal principal, @PathVariable("type") String type,
+			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
+			@PathVariable("order") String order) {
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		boolean admin = false;
+		Pageable pageCurrent = PageRequest.of(page, size,
+				order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+
+		for (Role role : userLogat.getUserRoles()) {
+			if (role.getRoleName().equals("ADMIN")) {
+				admin = true;
+				break;
+			}
+		}
+		System.out.println("******PAGE CERERI******");
+		System.out.println("TYPE: " + type);
+		if (type.equals("all")) {
+			if (admin) {
+				return repoCerere.findAllByOrderByDateCreatedDesc(pageCurrent);
+			}
+			return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(pageCurrent, userLogat);
+		} else {
+			if (admin) {
+				return repoCerere.findAllByTypeCerereOrderByDateCreatedDesc(pageCurrent, type);
+			}
+			return repoCerere.findAllByTypeCerereAndUserAssociatedOrderByDateCreatedDesc(pageCurrent, type, userLogat);
+		}
 	}
 
 	@GetMapping("/by-id/{idCerere}")
@@ -108,6 +155,15 @@ public class CerereController {
 		flow.setCanInterrupt(1);
 		flow.setPriority(priority);
 		flow.setSuperior(userInCharge);
+
+		Message message = new Message();
+		message.setContents("New cerere added");
+		message.setDatePosted(new Date());
+		message.setMessageType("system");
+		message.setReceiver(userInCharge);
+
+		this.repoMessage.save(message);
+
 		this.repoFlow.save(flow);
 
 	}
@@ -116,7 +172,7 @@ public class CerereController {
 	// ??????
 	@PostMapping("/save-with-users-cerere-detailed")
 	public CerereDetailed saveCerereWithUsersCerereDetailed(@RequestBody DtoCerereDetailedWithUsers cerereNouaDto,
-			Principal principal) { 
+			Principal principal) {
 
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		CerereDetailed cerereNouaDetailed = cerereNouaDto.getCerereDetailed();
@@ -207,20 +263,21 @@ public class CerereController {
 		int priority = 0;
 		for (Group g : groupsCerere) {
 			User userInCharge = g.getUserInCharge();
-			
+
 			if (userInCharge != null) {
-				if(!usersAlreadyAssociated.contains(userInCharge)) {
-					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed, userInCharge, priority++);
+				if (!usersAlreadyAssociated.contains(userInCharge)) {
+					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed, userInCharge,
+							priority++);
 					usersAlreadyAssociated.add(userInCharge);
 				}
-				
+
 			}
 			if (g.getParentGroup() != null) {
 				if (g.getParentGroup().getUserInCharge() != null) {
-					if(!usersAlreadyAssociated.contains(g.getParentGroup().getUserInCharge())) {
-					this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed,
-							g.getParentGroup().getUserInCharge(), priority++);
-					usersAlreadyAssociated.add(g.getParentGroup().getUserInCharge());
+					if (!usersAlreadyAssociated.contains(g.getParentGroup().getUserInCharge())) {
+						this.saveCerereFlowForCerereAndUserStatus2Pending(cerereSalvata, cerereDetailed,
+								g.getParentGroup().getUserInCharge(), priority++);
+						usersAlreadyAssociated.add(g.getParentGroup().getUserInCharge());
 					}
 				}
 			}
@@ -233,18 +290,19 @@ public class CerereController {
 	public List<DtoCerereAndFlowsICanSee> myFlowCereriToBeSeenByMe(Principal principal) {
 		System.out.println("PRINCIPAL: " + principal.getName());
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
-		List<FlowCerere> flowCereriICanSee = this.myFlowCereri(principal);  
+		List<FlowCerere> flowCereriICanSee = this.myFlowCereri(principal);
 		List<DtoCerereAndFlowsICanSee> result = new ArrayList<>();
 		for (FlowCerere flowCerereICanSee : flowCereriICanSee) {
 			DtoCerereAndFlowsICanSee dto = new DtoCerereAndFlowsICanSee();
 			dto.setCerere(flowCerereICanSee.getCerere());
 			dto.setCerereDetailed(flowCerereICanSee.getCerereDetailed());
-			
-			if(dto.getCerere() != null) {
+
+			if (dto.getCerere() != null) {
 				dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerere(flowCerereICanSee.getCerere()));
 
-			}else if(dto.getCerereDetailed() != null) {
-				dto.setFlowItemsICanSeeForCerere(this.repoFlow.findByCerereDetailed(flowCerereICanSee.getCerereDetailed()));
+			} else if (dto.getCerereDetailed() != null) {
+				dto.setFlowItemsICanSeeForCerere(
+						this.repoFlow.findByCerereDetailed(flowCerereICanSee.getCerereDetailed()));
 
 			}
 			result.add(dto);

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,10 +19,12 @@ import ro.atm.management.model.Anunt;
 import ro.atm.management.model.CategorieSablon;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.CerereDocument;
+import ro.atm.management.model.Message;
 import ro.atm.management.repo.RepoAnunt;
 import ro.atm.management.repo.RepoCategorieSablon;
 import ro.atm.management.repo.RepoCerere;
 import ro.atm.management.repo.RepoCerereDocument;
+import ro.atm.management.repo.RepoMessage;
 
 @Service
 public class FileStorageService {
@@ -43,6 +46,9 @@ public class FileStorageService {
 	
 	@Autowired
 	private RepoCategorieSablon repoCategorieSablon;
+	
+	@Autowired
+	private RepoMessage repoMessage;
 
 	public FileStorageService() {
 		this.fileStorageLocation = Paths.get(IDetail.uploadPath).toAbsolutePath().normalize();
@@ -139,6 +145,14 @@ public class FileStorageService {
 					doc.setCerere(cerere);
 					doc.setFilename(fileName);
 					this.repoCerereDocument.save(doc);
+					
+					Message message = new Message();
+					message.setContents("New cerere added");
+					message.setDatePosted(new Date());
+					message.setMessageType("system");
+					message.setReceiver(cerere.getUserAssociated());
+				
+					this.repoMessage.save(message);
 				}
 			}
 

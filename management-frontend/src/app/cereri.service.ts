@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SortDirection } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
 import { LoginService } from './login.service';
@@ -15,6 +16,12 @@ export class CereriService {
 
   findAllCereri() : Observable<Cerere[]>{
     return this.serviciuHttpClient.get<Cerere[]>('http://localhost:8080/rest/cerere/all', this.loginService.configureHeaderOptionsForOAuth());
+  }
+
+  findAllMatTable(type: string, sort: string, order: SortDirection, page: number): Observable<any> {
+    console.log('cereri service - findAllMatTable with pagination')
+    const reqUrlLocal = `http://localhost:8080/rest/cerere/all-paginated/${type}/${page}/5/${sort}/${order}`;
+    return this.serviciuHttpClient.get<any>(reqUrlLocal, this.loginService.configureHeaderOptionsForOAuth());
   }
 
 
