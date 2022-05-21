@@ -7,21 +7,17 @@
         <div>
             <h2>Cererile</h2>
 
-            <!-- <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addCerere()">Adauga
-                cerere</button> -->
+
 
             <div>
-                <mat-select  [(ngModel)]="filtruTipCerere" (selectionChange)="selectOptiuneFiltru()">
+                <mat-select [(ngModel)]="filtruTipCerere" (selectionChange)="selectOptiuneFiltru()">
                     <!-- <option [ngValue]="'all'">All</option> -->
                     <mat-option [value]="'all'">All</mat-option>
                     <mat-option *ngFor="let t of tipuri" [value]="t">{{t}}</mat-option>
-                        
+
                     <!-- <option *ngFor="let t of tipuri" [ngValue]="t">{{t}}</option> -->
                 </mat-select>
-                <!-- <mat-select [(ngModel)]="cerereNouaDetailed.typeCerere">
-                    <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
-                        {{tipCerere}}
-                    </mat-option> -->
+
             </div>
 
             <div class="example-container mat-elevation-z8">
@@ -29,7 +25,7 @@
                 <div class="example-table-container">
                     <!-- displayedColumns: string[] = ['id', 'datePosted', 'type', 'userAssociated', 'actions']; -->
                     <table mat-table [dataSource]="cererileAfisate" class="example-table" matSort matSortActive="id"
-                         matSortDisableClear matSortDirection="desc">
+                        matSortDisableClear matSortDirection="desc">
                         <!-- Number Column -->
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
@@ -77,6 +73,11 @@
 
 
             </div>
+
+
+            <app-table-detailed></app-table-detailed>
+
+            
         </div>
     </mat-tab>
 

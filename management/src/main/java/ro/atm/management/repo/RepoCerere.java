@@ -19,10 +19,8 @@ public interface RepoCerere extends PagingAndSortingRepository<Cerere, Integer> 
 	public List<Cerere> findAllByUserAssociatedOrderByDateCreatedDesc(User userAssociated);
 	
 	public Page<Cerere> findAllByUserAssociatedOrderByDateCreatedDesc(Pageable pageable, User userAssociated);
-
 	public Page<Cerere> findAllByOrderByDateCreatedDesc(Pageable pageable);
 	public Page<Cerere> findAllByTypeCerereAndUserAssociatedOrderByDateCreatedDesc(Pageable pageable, String typeCerere,User userAssociated);
-
 	public Page<Cerere> findAllByTypeCerereOrderByDateCreatedDesc(Pageable pageable, String typeCerere);
 
 }

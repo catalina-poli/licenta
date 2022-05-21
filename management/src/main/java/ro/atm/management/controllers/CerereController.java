@@ -89,6 +89,40 @@ public class CerereController {
 //		Page<Anunt> messages = repoAnuntPagination.findAll(pageCurrent);
 //		return messages;
 //	}
+	
+	
+	
+	@GetMapping("/all-paginated-detailed/{type}/{page}/{size}/{sort}/{order}")
+	public Page<CerereDetailed> allCereriDetailedPaginated(Principal principal, @PathVariable("type") String type,
+			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
+			@PathVariable("order") String order) {
+		
+		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
+		boolean admin = false;
+		Pageable pageCurrent = PageRequest.of(page, size,
+				order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+		
+		for (Role role : userLogat.getUserRoles()) {
+			if (role.getRoleName().equals("ADMIN")) {
+				admin = true;
+				break;
+			}
+		}
+		System.out.println("******PAGE CERERI******");
+		System.out.println("TYPE: " + type);
+		if (type.equals("all")) {
+			if (admin) {
+				return repoCerereDetailed.findAllByOrderByDateCreatedDesc(pageCurrent);
+			}
+			return repoCerereDetailed.findAllByUserOrderByDateCreatedDesc(pageCurrent, userLogat);
+		} else {
+			if (admin) {
+				return repoCerereDetailed.findAllByTypeCerereOrderByDateCreatedDesc(pageCurrent, type);
+			}
+			return repoCerereDetailed.findAllByTypeCerereAndUserOrderByDateCreatedDesc(pageCurrent, type, userLogat);
+		}
+		
+	}	
 
 	@GetMapping("/all-paginated/{type}/{page}/{size}/{sort}/{order}")
 	public Page<Cerere> allCereriPaginated(Principal principal, @PathVariable("type") String type,

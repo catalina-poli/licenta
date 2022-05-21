@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { CereriFlowViewDialogComponent } from '../cereri-flow-view-dialog/cereri-flow-view-dialog.component';
 import { CereriService } from '../cereri.service';
 import { FlowService } from '../flow.service';
 import { GroupService } from '../group.service';
@@ -18,7 +21,8 @@ export class CereriFlowComponent implements OnInit {
   groups: any = [];
 
   constructor(private serviceCerere: CereriService, private activatedRoute: ActivatedRoute,
-    private flowService: FlowService, private groupService: GroupService) { }
+    private flowService: FlowService, private groupService: GroupService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -55,6 +59,19 @@ export class CereriFlowComponent implements OnInit {
             }
           );
     });
+  }
+
+  viewStatusDialog(){
+    this.openDialog();
+  }
+  openDialog(): Observable<any> {
+
+    const dialogRef = this.dialog.open(CereriFlowViewDialogComponent, {
+      width: '100%',
+      data: {id : this.idCerere}  //  rezultat : {}
+    });
+
+    return dialogRef.afterClosed();
   }
 
 }

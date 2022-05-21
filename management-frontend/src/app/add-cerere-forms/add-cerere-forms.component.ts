@@ -58,13 +58,16 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     console.log('after view init')
     this.loadInitial();
+    // this.loadInitialDetailed();
   }
+
+  // findAllMatTableDetailed
+  
 
   loadInitial() {
 
     
     if (this.sort) {
-      console.log('sort ok')
       this.filtruTipCerere = this.filtruTipCerere.toLowerCase();
       this.sort.sortChange.subscribe(() => this.paginator ? this.paginator.pageIndex = 0 : 0);
       merge(this.sort.sortChange, this.paginator ? this.paginator.page : 0)
@@ -103,10 +106,7 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
         });
       this.changeDetectorRefs.detectChanges();
 
-    }else{
-      console.log('no sort')
     }
-    console.log('LOAD INITIAL!')
   }
   // ./pagination
 

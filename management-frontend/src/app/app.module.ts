@@ -57,6 +57,8 @@ import { ProfileInformationComponent } from './profile-information/profile-infor
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DialogTableFlowItemsComponent } from './cereri-flow-my/dialog-table-flow-items/dialog-table-flow-items.component';
 import { LoginRegisterComponent } from './login-register/login-register.component';
+import { TableDetailedComponent } from './add-cerere-forms/table-detailed/table-detailed.component';
+import { CereriFlowViewDialogComponent } from './cereri-flow-view-dialog/cereri-flow-view-dialog.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,8 @@ import { LoginRegisterComponent } from './login-register/login-register.componen
     ProfileInformationComponent,
     DialogTableFlowItemsComponent,
     LoginRegisterComponent,
+    TableDetailedComponent,
+    CereriFlowViewDialogComponent,
   ],
   imports: [
     BrowserModule,
