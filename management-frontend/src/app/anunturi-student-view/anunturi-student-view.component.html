@@ -23,11 +23,16 @@
     <div *ngIf="anunt; else loadingScreen">
         <h2>Anunt: {{anunt.titlu}}</h2>
 
-        <button (click)="editAnunt(anunt)">Editare</button>
-        <button (click)="sendPdfRequestServer(anunt)">Generate PDF</button>
+        <!-- <button (click)="editAnunt(anunt)"><mat-icon> border_color</mat-icon>Editare</button> -->
+        <button mat-raised-button color="accent"(click)="editAnunt(anunt)"><mat-icon> border_color</mat-icon>Editare</button>
+
+        <!-- <button (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button> -->
+        <button mat-raised-button color="accent" (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button>
+        <button mat-raised-button color="accent"><mat-icon>pageview</mat-icon>PREVIEW</button>
 
         <!-- http://localhost:8080/rest/anunturi/generate-anunt-pdf/32 -->
-        LINK: {{sourceForPdf}} <br>
+        <!-- LINK: {{sourceForPdf}} <br> -->
+        
         <div style="border: 1px solidi red;">
             <pdf-viewer [src]="sourceForPdf" [render-text]="true" [original-size]="false"
                 style="width: 400px; height: 500px">

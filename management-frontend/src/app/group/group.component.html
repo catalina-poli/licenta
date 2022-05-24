@@ -30,39 +30,11 @@
                 </td>
                 <td>
                     <!-- <button (click)="viewStudents(g)">View students</button> -->
-                    <button mat-raised-button color="accent" (click)="viewStudents(g)"><mat-icon>contacts</mat-icon>VIEW STUDENTS</button>
+                    <!-- <button mat-raised-button color="accent" (click)="viewStudents(g)"><mat-icon>contacts</mat-icon>VIEW STUDENTS</button> -->
+                    <button mat-raised-button color="accent" (click)="viewStudentsDialog(g)"><mat-icon>contacts</mat-icon>VIEW STUDENTS DIALOG</button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <div *ngIf="students.length > 0">
-        <h3>Students in groups</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>User id</th>
-                    <th>User email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let s of students"> 
-                    <td>
-                        {{s.id}}
-                    </td>
-                    <td>
-                        {{s.email}}
-                    </td>
-                    <td>
-                        <button (click)="removeUserFromGroups(s)">Remove</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <h3>Add student to group</h3>
-        <select [(ngModel)]="selectedStudent">
-            <option [ngValue]="u" *ngFor="let u of users">{{u.email}}</option>
-        </select>
-        <button (click)="addUserToGroup()">Add user</button>
-    </div>
+    
 </div>

@@ -12,23 +12,37 @@
     <mat-tab label="Login">
 
         <div class="login">
-            <h3 class="text-center text-white pt-5">Login form</h3>
+
             <div class="container">
                 <div class="login-row row justify-content-center align-items-center">
                     <div class="login-column col-md-6">
                         <div class="login-box col-md-12">
                             <div class="login-form form" action="" method="post">
-                                <h3 class="text-center text-info">Login</h3>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="username" class="text-info">Username:</label><br>
                                     <input type="text" [(ngModel)]="username" id="username" class="form-control">
-                                </div>
-                                <div class="form-group">
+                                </div> -->
+
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Adresa Email</mat-label>
+                                    <input type="email" matInput placeholder="Adresa Email" value=""
+                                        [(ngModel)]="username">
+                                    <mat-icon matSuffix>email</mat-icon>
+
+                                </mat-form-field>
+
+
+                                <!-- <div class="form-group">
                                     <label for="password" class="text-info">Password:</label><br>
                                     <input type="text" [(ngModel)]="password" type="password" id="password"
                                         class="form-control">
-                                </div>
+                                </div> -->
 
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Parola</mat-label>
+                                    <input type="password" matInput placeholder="Parola" [(ngModel)]="password">
+                                    <mat-icon matSuffix>vpn_key</mat-icon>
+                                </mat-form-field>
                                 <div class="form-group">
                                     <button mat-raised-button color="primary" (click)="login()">Login</button>
                                 </div>
@@ -41,22 +55,34 @@
     </mat-tab>
     <mat-tab label="Register">
         <div class="login">
-            <h3 class="text-center text-white pt-5">Register form</h3>
             <div class="container">
                 <div class="login-row row justify-content-center align-items-center">
                     <div class="login-column col-md-6">
                         <div class="login-box col-md-12">
                             <div class="login-form form" class="form" action="" method="post">
-                                <h3 class="text-center text-info">Register</h3>
-                                <div class="form-group">
+
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Adresa Email</mat-label>
+                                    <input type="email" matInput placeholder="Adresa Email" value=""
+                                        [(ngModel)]="username">
+                                    <mat-icon matSuffix>email</mat-icon>
+
+                                </mat-form-field>
+
+                                <!-- <div class="form-group">
                                     <label for="username" class="text-info">Username:</label><br>
                                     <input type="text" [(ngModel)]="username" id="username" class="form-control">
-                                </div>
-                                <div class="form-group">
+                                </div> -->
+                                <!-- <div class="form-group">
                                     <label for="password" class="text-info">Password:</label><br>
                                     <input type="text" [(ngModel)]="password" type="password" id="password"
                                         class="form-control">
-                                </div>
+                                </div> -->
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Parola</mat-label>
+                                    <input type="password" matInput placeholder="Parola" [(ngModel)]="password">
+                                    <mat-icon matSuffix>vpn_key</mat-icon>
+                                </mat-form-field>
 
                                 <div class="form-group">
                                     <button mat-raised-button color="primary" (click)="register()">Register</button>

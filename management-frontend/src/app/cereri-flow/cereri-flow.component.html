@@ -2,38 +2,32 @@
 
     <h2>Cerere</h2>
 
-    <table class="table table-bordered">
-        <thead>
+    
 
-        </thead>
-        <tbody>
-            <tr>
-                <td>ID</td>
-                <td>{{idCerere}}</td>
-            </tr>
-            <tr>
-                <td>Tip Cerere</td>
-                <td>{{cerere.typeCerere}}</td>
-            </tr>
-            <tr>
-                <td>User</td>
-                <td>{{cerere.userAssociated.email}}</td>
-            </tr>
-            <tr>
-                <td>Date created</td>
-                <td><span>{{cerere.dateCreated | date : 'yyyy-MM-dd'}}</span></td>
-            </tr>
-            <tr>
-                <td>Date end</td>
-                <td><span>{{cerere.dateEnd | date : 'yyyy-MM-dd'}}</span></td>
-            </tr>
-        </tbody>
-    </table>
-
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+        <!-- Position Column -->
+        <ng-container matColumnDef="typePropertyCol">
+          <th mat-header-cell *matHeaderCellDef> Type property </th>
+          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="valuePropertyCol">
+          <th mat-header-cell *matHeaderCellDef> Value </th>
+          <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+        </ng-container>
+      
+     
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
 
     <div>
         <!-- <a [routerLink]="['/cereri-flow-view', cerere.id] ">View status</a> -->
-        <button (click)="viewStatusDialog()">View status dialog</button>
+        <!-- <button (click)="viewStatusDialog()">View status dialog</button> -->
+        <button mat-button color="accent" (click)="viewStatusDialog()"><mat-icon>dvr</mat-icon>VIEW STATUS</button>
+
     </div>
 
     <div>

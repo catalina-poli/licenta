@@ -59,6 +59,8 @@ import { DialogTableFlowItemsComponent } from './cereri-flow-my/dialog-table-flo
 import { LoginRegisterComponent } from './login-register/login-register.component';
 import { TableDetailedComponent } from './add-cerere-forms/table-detailed/table-detailed.component';
 import { CereriFlowViewDialogComponent } from './cereri-flow-view-dialog/cereri-flow-view-dialog.component';
+import { DatePipe } from '@angular/common';
+import { ViewStudentsDialogComponent } from './group/view-students-dialog/view-students-dialog.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,7 @@ import { CereriFlowViewDialogComponent } from './cereri-flow-view-dialog/cereri-
     LoginRegisterComponent,
     TableDetailedComponent,
     CereriFlowViewDialogComponent,
+    ViewStudentsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,7 +125,7 @@ import { CereriFlowViewDialogComponent } from './cereri-flow-view-dialog/cereri-
     ReactiveFormsModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>Students in groups</h1>
+
+<div mat-dialog-content>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User id</th>
+                <th>User email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of students">
+                <td>
+                    {{s.id}}
+                </td>
+                <td>
+                    {{s.email}}
+                </td>
+                <td>
+                    <!-- <button (click)="removeUserFromGroups(s)">Remove</button> -->
+                    <button mat-raised-button color="warn" (click)="removeUserFromGroups(s)">
+                        <mat-icon>delete</mat-icon>REMOVE STUDENT
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <mat-form-field appearance="fill">
+        <mat-label>Add student to group</mat-label>
+        <mat-select [(ngModel)]="selectedStudent">
+            <mat-option [value]="u" *ngFor="let u of users">{{u.email}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div style="justify-content: flex-end;">
+        <button mat-raised-button color="accent" (click)="addUserToGroup()">
+            <mat-icon>add</mat-icon>ADD USER
+        </button>
+    </div>
+
+    <!-- <button (click)="addUserToGroup()">Add user</button> -->
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">CLOSE</button>
+</div>

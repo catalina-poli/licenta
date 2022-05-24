@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { GroupService } from '../group.service';
 import { UserService } from '../user.service';
+import { ViewStudentsDialogComponent } from './view-students-dialog/view-students-dialog.component';
 
 @Component({
   selector: 'app-group',
@@ -10,12 +13,15 @@ import { UserService } from '../user.service';
 export class GroupComponent implements OnInit {
 
   groups: any[] = [];
-  students: any[] = [];
   selectedGroup : any = null;
-  selectedStudent: any = null;
-  constructor(private groupService : GroupService, private usersService : UserService) { }
+  
 
-  users: any[] = []; // TODO: students, nu users
+ 
+
+  constructor(private groupService : GroupService, 
+   
+    public dialog: MatDialog) { }
+
   ngOnInit(): void {
     this.groupService.findAllGroups()
       .subscribe(
@@ -24,34 +30,32 @@ export class GroupComponent implements OnInit {
           console.log('Groups: ', this.groups);
         }
       );
-    this.usersService.findAllUsers().subscribe(
-      users => {
-        this.users = users;
-        console.log('users: ', this.users);
-      }
-    );
+  
   }
 
-  viewStudents(group: any){
-    this.students = group['students'];
+  // viewStudents(group: any){
+  //   this.hasClickedViewGroup = true;
+  //   this.students = group['students'];
+  //   this.selectedGroup = group;
+  // }
+ 
+
+
+  viewStudentsDialog(group: any){
+    
+    // this.students = group['students'];
     this.selectedGroup = group;
+    this.openDialog(group);
   }
-  removeUserFromGroups(student: any){
-    this.groupService.removeUserFromGroup(student['id'], this.selectedGroup['id'])
-      .subscribe(datele => {
-        console.log('removed user: ', student, ' from group: ', this.selectedGroup);
-        this.selectedGroup = datele;
-        this.students = this.students.filter(x => x != student);
-      });
-  }
-  addUserToGroup(){
-    console.log('adding student: ', this.selectedStudent, ' to group: ', this.selectedGroup);
-    this.groupService.addUserToGroup(this.selectedStudent['id'], this.selectedGroup['id'])
-    .subscribe(datele => {
-      console.log('removed user: ', this.selectedStudent, ' from group: ', this.selectedGroup);
-      this.selectedGroup = datele;
-      this.students.push(this.selectedStudent)
+  openDialog(group: any): Observable<any> {
+
+    const dialogRef = this.dialog.open(ViewStudentsDialogComponent, {
+      width: '100%',
+      data: group
     });
+
+    return dialogRef.afterClosed();
   }
+
 
 }
