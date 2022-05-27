@@ -1,0 +1,16 @@
+<h3>Editare anunt</h3>
+<div>
+    <mat-form-field appearance="fill">
+        <mat-label>Titlu anunt modificat</mat-label>
+        <input matInput type="text" placeholder="Titlu anunt modificat" [(ngModel)]="anunt.titlu">
+    </mat-form-field>
+</div>
+<div>
+    <mat-form-field appearance="fill">
+        <mat-label>Continut</mat-label>
+        <input matInput type="text" placeholder="Continut anunt modificat" [(ngModel)]="anunt.continut">
+    </mat-form-field>
+</div>
+<button mat-raised-button color="warn" (click)="updateAnunt()">Update</button>
+&nbsp;
+<button mat-raised-button color="primary" (click)="updateAnuntCancel()">Cancel</button>

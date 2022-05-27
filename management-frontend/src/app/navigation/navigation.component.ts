@@ -60,10 +60,20 @@ export class NavigationComponent implements OnInit {
 
   }
 
+
+  isUserLoggedIn(){
+    let key = localStorage.getItem('CHEIE_OAUTH')
+    return key;
+  }
+
+  login(){
+    this.router.navigate(['/login-register'])
+  }
+
   logout() {
     localStorage.removeItem('CHEIE_OAUTH');
     localStorage.removeItem('MY_DETAILS');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login-register']);
   }
 
   canSee(navigationItem: string) {

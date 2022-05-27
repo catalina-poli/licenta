@@ -61,6 +61,7 @@ import { TableDetailedComponent } from './add-cerere-forms/table-detailed/table-
 import { CereriFlowViewDialogComponent } from './cereri-flow-view-dialog/cereri-flow-view-dialog.component';
 import { DatePipe } from '@angular/common';
 import { ViewStudentsDialogComponent } from './group/view-students-dialog/view-students-dialog.component';
+import { EditAnuntDialogComponent } from './anunturi-student-view/edit-anunt-dialog/edit-anunt-dialog.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ViewStudentsDialogComponent } from './group/view-students-dialog/view-s
     TableDetailedComponent,
     CereriFlowViewDialogComponent,
     ViewStudentsDialogComponent,
+    EditAnuntDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,6 @@ import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
 import { GroupComponent } from './group/group.component';
 import { LoginRegisterComponent } from './login-register/login-register.component';
-import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileInformationComponent } from './profile-information/profile-information.component';
 import { SabloaneComponent } from './sabloane/sabloane.component';
@@ -35,10 +34,7 @@ const routes: Routes = [
     path: 'anunturi-student/:id_anunt',
     component: AnunturiStudentViewComponent
   },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+
   {
     path: 'cerere-flow/:id',
     component: CereriFlowComponent

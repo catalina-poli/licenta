@@ -85,19 +85,17 @@
         <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
         <!-- <button mat-button color="primary" (click)="saveSablon()">Save
             sablon</button> -->
-        <div> <button mat-raised-button color="primary" (click)="saveSablon()">
-            <mat-icon>description</mat-icon>SAVE SABLON
-          </button>
+            <br>           
+            <br>
+        <div> 
+          <button mat-raised-button color="primary" (click)="saveSablon()"><mat-icon>description</mat-icon>SAVE SABLON</button>
         </div>
-
-
 
       </div>
 
     </mat-tab>
     <mat-tab label="ADAUGARE CATEGORIE NOUA">
       <div>
-        <h2>CATEGORIE NOUA</h2>
         <h3>Selectati numele noii categorii:</h3>
 
         <mat-form-field appearance="fill">
@@ -116,15 +114,9 @@
 
         </mat-form-field>
         <!-- <button (click)="saveSablonNou()">Save sablon nou</button> -->
-        <div> <button mat-raised-button color="primary" (click)="saveSablonNou()">
-            <mat-icon>description</mat-icon>SAVE CATEGORY
-          </button>
+        <div> 
+          <button mat-raised-button color="primary" (click)="saveSablonNou()"><mat-icon>description</mat-icon>SAVE CATEGORY</button>
         </div>
-
-        <!-- <button mat-raised-button color="warn">
-            <mat-icon>delete</mat-icon>DELETE CATEGORY
-          </button> -->
-
       </div>
     </mat-tab>
   </mat-tab-group>

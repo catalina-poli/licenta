@@ -3,6 +3,7 @@ package ro.atm.management.controllers;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,7 @@ import ro.atm.management.repo.RepoAnuntPagination;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
 import ro.atm.management.service.AnuntService;
+import ro.atm.management.service.UserService;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
 @RestController // clasa care trimite date catre frontend
@@ -66,6 +68,9 @@ public class AnuntController {
 	
 	@Autowired
 	private RepoGroup repoGroup;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
 	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
@@ -239,8 +244,21 @@ public class AnuntController {
 	}
 
 	@PutMapping("/update")
-	public Anunt updateAnunt(@RequestBody Anunt anuntModificat) {
-		return repoAnunt.save(anuntModificat);
+	public Anunt updateAnunt(@RequestBody Anunt anuntModificat, Principal principal) {
+		Optional<User> user = this.userService.getUser(principal);
+		if(!user.isPresent()) {
+			throw new RuntimeException("Nobody logged in");
+		}
+		boolean hasAccess = false;
+		
+		Anunt anuntDb = this.repoAnunt.findById(anuntModificat.getId()).get();
+		hasAccess = this.userService.isAdmin(user.get()) 
+				||
+				(anuntDb .getPoster() != null ? anuntDb .getPoster().equals(user.get()) : false) ; 
+		if(hasAccess){
+			return repoAnunt.save(anuntModificat);
+		}
+		throw new RuntimeException("No access");
 	}
 
 	@DeleteMapping("/delete/{id}")

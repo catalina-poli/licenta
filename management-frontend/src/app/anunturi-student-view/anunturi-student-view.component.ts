@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnunturiService } from '../anunturi.service';
 import { ConfirmareService } from '../confirmare.service';
+import { ConfirmareComponent } from '../confirmare/confirmare.component';
 import { Anunt } from '../model/anunt';
+import { EditAnuntDialogComponent } from './edit-anunt-dialog/edit-anunt-dialog.component';
 
 @Component({
   selector: 'app-anunturi-student-view',
@@ -15,51 +18,50 @@ export class AnunturiStudentViewComponent implements OnInit {
 
   anunt: Anunt | null = null;
 
-  anuntEditare: Anunt | null = null;
-  sourceForPdf :string = '';
+  sourceForPdf: string = '';
 
-  updateAnuntCancel(){
-    this.anuntEditare = null;
-  }
-
-  updateAnunt() {
-    console.log('trimitem pe server: ', this.anuntEditare);
-    this.confirmareService.openDialog('hello');
-    let debug = true;
-    if(debug){
-      return;
-    }
-    if (this.anuntEditare) {
-      this.anuntService.updateAnunt(this.anuntEditare)
-        .subscribe(anuntulSalvat => {
-          console.log('Anuntul modificat pe server: ', anuntulSalvat);
-          this.anunt = anuntulSalvat;
-          this.anuntEditare = null;
-          // this.loadInitial();
-        })
-    }
-  }
-
-  editAnunt(anunt: Anunt | null): void {
-    this.anuntEditare = {...anunt};// creare copie parametru
-    console.log('editam anuntul: ', this.anuntEditare)
-  }
   constructor(private activatedRoute: ActivatedRoute, private anuntService: AnunturiService,
     private httpClient: HttpClient,
-    private confirmareService : ConfirmareService) { }
+    private confirmareService: ConfirmareService,
+    public dialog: MatDialog,
+    private router: Router) { }
 
 
-   
 
+  editAnunt(anunt: Anunt | null): void {
+
+    // this.dialog
+    const dialogRef = this.dialog.open(EditAnuntDialogComponent, {
+      width: '250px',
+      data: { anunt: { ...anunt }, rezultat: false }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('result: ', result);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        if (this.anunt) {
+          console.log('should navigate');
+          this.router.navigate(['/anunturi-student', this.anunt.id]);
+        }
+      });
+
+    });
+  }
+
+
+
+
+
+  shouldLoadPdfFromServer: boolean = false;
 
   sendPdfRequestServer(anunt: Anunt) {
 
     let headers =
-    new HttpHeaders({
-      // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      'Authorization': 'Bearer ' + localStorage.getItem("CHEIE_OAUTH")
-    });
-  headers.set('Accept', 'application/pdf');
+      new HttpHeaders({
+        // 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem("CHEIE_OAUTH")
+      });
+    headers.set('Accept', 'application/pdf');
     const url: string = 'http://localhost:8080/rest/anunturi/generate-anunt-pdf/' + anunt.id;
 
     headers = headers.set('Accept', 'application/pdf');
@@ -68,12 +70,12 @@ export class AnunturiStudentViewComponent implements OnInit {
         var file = new Blob([data], { type: 'application/pdf' })
         var fileURL = URL.createObjectURL(file);
 
-// if you want to open PDF in new tab
-        window.open(fileURL); 
-        var a         = document.createElement('a');
-        a.href        = fileURL; 
-        a.target      = '_blank';
-        a.download    = anunt.titlu+'.pdf';
+        // if you want to open PDF in new tab
+        window.open(fileURL);
+        var a = document.createElement('a');
+        a.href = fileURL;
+        a.target = '_blank';
+        a.download = anunt.titlu + '.pdf';
         document.body.appendChild(a);
         a.click();
       },
@@ -91,7 +93,7 @@ export class AnunturiStudentViewComponent implements OnInit {
             this.anunt = anunt;
             console.log('am incarcat anuntul: ', this.anunt);
             console.log('pas 2');
-            this.sourceForPdf = 'http://localhost:8080/rest/anunturi/generate-anunt-pdf/'+this.anunt.id+'?access_token='+localStorage.getItem('CHEIE_OAUTH');
+            this.sourceForPdf = 'http://localhost:8080/rest/anunturi/generate-anunt-pdf/' + this.anunt.id + '?access_token=' + localStorage.getItem('CHEIE_OAUTH');
           });
       }
     );

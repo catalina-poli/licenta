@@ -1,24 +1,7 @@
 <div>
 
 
-    <div *ngIf="anuntEditare">
-        <h3>Editare anunt</h3>
-        <div>
-            <mat-form-field appearance="fill">
-                <mat-label>Titlu anunt modificat</mat-label>
-                <input matInput type="text" placeholder="Titlu anunt modificat" [(ngModel)]="anuntEditare.titlu">
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field appearance="fill">
-                <mat-label>Continut</mat-label>
-                <input matInput type="text" placeholder="Continut anunt modificat" [(ngModel)]="anuntEditare.continut">
-            </mat-form-field>
-        </div>
-        <button mat-raised-button color="warn" (click)="updateAnunt()">Update</button>
-        &nbsp;
-        <button mat-raised-button color="primary" (click)="updateAnuntCancel()">Cancel</button>
-    </div>
+    
 
     <div *ngIf="anunt; else loadingScreen">
         <h2>Anunt: {{anunt.titlu}}</h2>
@@ -28,12 +11,13 @@
 
         <!-- <button (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button> -->
         <button mat-raised-button color="accent" (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button>
-        <button mat-raised-button color="accent"><mat-icon>pageview</mat-icon>PREVIEW</button>
+        <button mat-raised-button color="accent" (click)="shouldLoadPdfFromServer = true"><mat-icon>pageview</mat-icon>PREVIEW</button>
 
         <!-- http://localhost:8080/rest/anunturi/generate-anunt-pdf/32 -->
         <!-- LINK: {{sourceForPdf}} <br> -->
         
-        <div style="border: 1px solidi red;">
+
+        <div *ngIf="shouldLoadPdfFromServer" style="border: 1px solidi red;">
             <pdf-viewer [src]="sourceForPdf" [render-text]="true" [original-size]="false"
                 style="width: 400px; height: 500px">
             </pdf-viewer>

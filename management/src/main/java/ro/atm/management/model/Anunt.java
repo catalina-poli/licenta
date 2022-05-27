@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +29,10 @@ public class Anunt {
 	
 	@Column(name="filename")
 	private String filename;
+	
+	@ManyToOne
+	@JoinColumn(name="id_poster")
+	private User poster;
 	
 	@Lob
 	private byte[] contents;
@@ -73,6 +79,12 @@ public class Anunt {
 	}
 	public void setContents(byte[] contents) {
 		this.contents = contents;
+	}
+	public User getPoster() {
+		return poster;
+	}
+	public void setPoster(User poster) {
+		this.poster = poster;
 	}
 	
 	
