@@ -36,6 +36,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import ro.atm.management.dto.DtoAddAnunt;
+import ro.atm.management.exceptions.InexistingUserException;
 import ro.atm.management.model.Anunt;
 import ro.atm.management.model.Group;
 import ro.atm.management.model.Role;
@@ -45,7 +46,9 @@ import ro.atm.management.repo.RepoAnuntPagination;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoUser;
 import ro.atm.management.service.AnuntService;
+import ro.atm.management.service.MessageService;
 import ro.atm.management.service.UserService;
+import ro.atm.management.service.MessageService.MessageType;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
 @RestController // clasa care trimite date catre frontend
@@ -71,6 +74,10 @@ public class AnuntController {
 	
 	@Autowired
 	private UserService userService;
+	
+	
+	@Autowired
+	private MessageService messageService;
 	
 	@GetMapping("/all") // url-ul de la care putem lua toate anunturile
 	public Iterable<Anunt> getAllAnunturi() /*throws InterruptedException*/ {
@@ -163,7 +170,7 @@ public class AnuntController {
 	}
 	
 	@PostMapping("/associate-groups-with-anunt/{idAnunt}")
-	public Anunt associateWithGroups(@PathVariable("idAnunt") int idAnunt, @RequestBody List<Integer> groupIds) {
+	public Anunt associateWithGroups(Principal principal, @PathVariable("idAnunt") int idAnunt, @RequestBody List<Integer> groupIds) throws InexistingUserException {
 		
 		Anunt anunt = this.repoAnunt.findById(idAnunt).get();
 		Iterable<Group> allGroupsForAnunt = this.repoGroup.findAllById(groupIds);
@@ -175,6 +182,7 @@ public class AnuntController {
 		
 		for(User user: userDestinari) {
 			user.getAnunturi().add(anunt);
+			this.messageService.sendMessage(principal, user, MessageService.NEW_MESSAGE_ANUNT, MessageType.CHAT);
 			
 		}
 		
@@ -183,12 +191,17 @@ public class AnuntController {
 	}
 	
 	@PostMapping("/associate-users-with-anunt/{idAnunt}")
-	public Anunt associateWithUsers(@PathVariable("idAnunt") int idAnunt, @RequestBody List<Integer> userIds) {
+	public Anunt associateWithUsers(@PathVariable("idAnunt") int idAnunt,
+			@RequestBody List<Integer> userIds,
+			Principal principal) throws InexistingUserException {
+		
+		
 		
 		Anunt anunt = this.repoAnunt.findById(idAnunt).get();
 		Iterable<User> allUsersForAnunt = this.repoUser.findAllById(userIds);
 		for(User user: allUsersForAnunt) {
 			user.getAnunturi().add(anunt);
+			this.messageService.sendMessage(principal, user, MessageService.NEW_MESSAGE_ANUNT, MessageType.CHAT);
 			
 		}
 		this.repoUser.saveAll(allUsersForAnunt);
