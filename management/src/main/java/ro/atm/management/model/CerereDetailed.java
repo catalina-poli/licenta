@@ -44,6 +44,9 @@ public class CerereDetailed {
 	private Integer oraSosire;
 
 	private String motiv;
+	
+	private Integer archived;
+
 
 	@Column(name = "modalitate_deplasare")
 	private String modalitateDeplasare;
@@ -143,5 +146,15 @@ public class CerereDetailed {
 	public void setModalitateDeplasare(String modalitateDeplasare) {
 		this.modalitateDeplasare = modalitateDeplasare;
 	}
+
+	public Integer getArchived() {
+		return archived;
+	}
+
+	public void setArchived(Integer archived) {
+		this.archived = archived;
+	}
+	
+	
 
 }

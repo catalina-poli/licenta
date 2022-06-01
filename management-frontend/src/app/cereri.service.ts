@@ -18,6 +18,11 @@ export class CereriService {
     return this.serviciuHttpClient.get<Cerere[]>('http://localhost:8080/rest/cerere/all', this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  archiveCerere(cerereType: string, idCerere: number):Observable<any>{
+    return this.serviciuHttpClient.post(`http://localhost:8080/rest/cerere/archive/${cerereType}/${idCerere}`, {}, this.loginService.configureHeaderOptionsForOAuth())
+
+  }
+
 
   // document
   findAllMatTable(type: string, sort: string, order: SortDirection, page: number): Observable<any> {

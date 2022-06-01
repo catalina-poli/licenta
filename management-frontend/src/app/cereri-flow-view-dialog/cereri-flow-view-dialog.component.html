@@ -25,6 +25,9 @@
     </tbody>
     <p>
         <span>Status cerere: {{calculAdmisRespinsPending()}}</span>
+        <!-- <button (click)="arhivare()" *ngIf="calculAdmisRespinsPending() != 'PENDING'">ARHIVARE x</button> -->
+        <button mat-button color="accent" (click)="arhivare()"  *ngIf="calculAdmisRespinsPending() != 'PENDING'"><mat-icon>archive</mat-icon>ARHIVARE</button>
+
     </p>
     
 </table>

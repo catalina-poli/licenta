@@ -3,8 +3,10 @@ package ro.atm.management.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import ro.atm.management.dto.DtoCerereAndFlowsICanSee;
 import ro.atm.management.dto.DtoCerereDetailedWithUsers;
 import ro.atm.management.dto.DtoCerereWithUsers;
 import ro.atm.management.dto.UserCerere;
+import ro.atm.management.exceptions.InexistingUserException;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.CerereDetailed;
 import ro.atm.management.model.CerereType;
@@ -39,6 +42,8 @@ import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoMessage;
 import ro.atm.management.repo.RepoUser;
+import ro.atm.management.service.MessageService;
+import ro.atm.management.service.MessageService.MessageType;
 
 @CrossOrigin(value = { "http://localhost:4200/" })
 @RestController
@@ -65,6 +70,9 @@ public class CerereController {
 
 	@Autowired
 	private RepoMessage repoMessage;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@GetMapping("/all")
 	public List<Cerere> allCereri(Principal principal) {
@@ -82,14 +90,6 @@ public class CerereController {
 		return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(userLogat);
 	}
 
-//	@GetMapping("/all-paginated/{page}/{size}/{sort}/{order}")
-//	public Page<Anunt> allUsersPaginated(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort, @PathVariable("order") String order){
-//		
-//		Pageable pageCurrent = PageRequest.of(page, size , order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
-//		Page<Anunt> messages = repoAnuntPagination.findAll(pageCurrent);
-//		return messages;
-//	}
-	
 	
 	
 	@GetMapping("/all-paginated-detailed/{type}/{page}/{size}/{sort}/{order}")
@@ -165,13 +165,6 @@ public class CerereController {
 		User userAsociat = repoUser.findById(idUser).get(); // SELECT * FROM users where id = <idUser>;
 		return this.repoCerere.findByUserAssociated(userAsociat);
 
-//		List<Cerere> cereri = new ArrayList<>();
-//		for(Cerere c : this.repoCerere.findAll()) { // SELECT * FROM cereri ----> SELECT * FROM cereri where id_user = .//
-//			if(c.getUserAssociated().getId() == idUser) {
-//				cereri.add(c);
-//			}
-//		}
-//		return cereri;
 	}
 
 	@GetMapping("/all-restanta")
@@ -225,9 +218,34 @@ public class CerereController {
 		return saved;
 	}
 
+	
+	@PostMapping("/archive/{cerereType}/{idCerere}")
+	public Map<String, Boolean> archiveCerere(@PathVariable("cerereType") String cerereType,
+			@PathVariable("idCerere") int idCerere){
+		Map<String, Boolean> result = new HashMap<>();
+		result.put("result", true);
+		try {
+		if(cerereType.equals("CERERE_DOCUMENT")) {
+			//CerereDocument cerereDocument = this.repoCerere
+			Cerere cerereDocument = this.repoCerere.findById(idCerere).get();
+			cerereDocument.setArchived(1);
+			this.repoCerere.save(cerereDocument);
+		}else {
+			CerereDetailed cerereDetailed = this.repoCerereDetailed.findById(idCerere).get();
+			cerereDetailed.setArchived(1);
+			this.repoCerereDetailed.save(cerereDetailed);
+		}
+		}catch(Exception e) {
+			e.printStackTrace();
+			result.put("result", false);
+		}
+		
+		return result;
+	}
+	
 	@PostMapping("/save-with-users/{type}")
 	public Cerere saveCerereWithUsers(@RequestBody DtoCerereWithUsers cerereNouaDto, Principal principal,
-			@PathVariable("type") String type) {
+			@PathVariable("type") String type) throws InexistingUserException {
 
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		Cerere cerereNoua = null;
@@ -266,6 +284,7 @@ public class CerereController {
 				flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
 				flowCerere.setCanInterrupt(uc.getCanInterrupt());
 				flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
+				this.messageService.sendMessage(principal, uc.getId(), MessageService.NEW_MESSAGE_ANUNT, MessageType.CHAT);
 				this.repoFlow.save(flowCerere);
 			}
 		} else if (type.equals("DEFAULT_FLOW_USERS")) {

@@ -28,6 +28,8 @@ public class Cerere {
 
 	// @Column(name="user_id")
 	// private Integer userId;
+	
+	private Integer archived;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id") // foreign key
@@ -97,6 +99,14 @@ public class Cerere {
 
 	public void setCerereType(CerereType cerereType) {
 		this.cerereType = cerereType;
+	}
+
+	public Integer getArchived() {
+		return archived;
+	}
+
+	public void setArchived(Integer archived) {
+		this.archived = archived;
 	}
 	
 	

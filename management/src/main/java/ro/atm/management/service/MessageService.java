@@ -11,6 +11,7 @@ import ro.atm.management.exceptions.InexistingUserException;
 import ro.atm.management.model.Message;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoMessage;
+import ro.atm.management.repo.RepoUser;
 
 @Service
 public class MessageService {
@@ -27,6 +28,34 @@ public class MessageService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RepoUser repoUser;
+	
+	
+public Message sendMessage(Principal principal, int idReceiver, String messageContents, MessageType messageType) throws InexistingUserException{
+		
+		Optional<User> userDestinatarOptional = this.userService.getUser(principal);
+		if(!userDestinatarOptional.isPresent()) {
+			throw new InexistingUserException();
+		}
+		
+		User user = userDestinatarOptional.get();
+		Message message = new Message();
+		message.setContents(messageContents);
+		message.setDatePosted(new Date());
+		message.setMessageType(messageType.equals(MessageType.SYSTEM) ? "system" : "chat");
+		message.setSender(user);
+		Optional<User> receiverOptional = this.repoUser.findById(idReceiver);
+		if(!receiverOptional.isPresent()) {
+			throw new InexistingUserException();
+		}
+		message.setReceiver(receiverOptional.get());
+		
+		return this.repoMessage.save(message);
+				
+		
+	}
 	
 	public Message sendMessage(Principal principal, User receiver, String messageContents, MessageType messageType) throws InexistingUserException{
 		

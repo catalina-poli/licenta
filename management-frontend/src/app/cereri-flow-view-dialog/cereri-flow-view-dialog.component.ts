@@ -74,7 +74,7 @@ export class CereriFlowViewDialogComponent implements OnInit {
 
   ngOnInit(): void {
 
-
+    // TODO: cerere (document) VS cerere detailed => vedem doar cererile document
     
 
       this.idCerere = this.data.id;
@@ -109,6 +109,19 @@ export class CereriFlowViewDialogComponent implements OnInit {
               console.log('err: ', err);
             }
           );
+  }
+
+  arhivare(){
+    // archiveCerere
+    this.serviceCerere.archiveCerere('CERERE_DOCUMENT', this.cerere.id)
+      .subscribe(
+        rez => {
+          console.log('arhivare:', rez);
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
 }
