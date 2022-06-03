@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ro.atm.management.dto.DtoFlow;
 import ro.atm.management.dto.DtoFlowUpdateStatus;
 import ro.atm.management.model.Cerere;
+import ro.atm.management.model.CerereDetailed;
 import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
+import ro.atm.management.repo.RepoCerereDetailed;
 import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoUser;
 
@@ -34,6 +36,9 @@ public class FlowController {
 	private RepoCerere repoCerere;
 	
 	@Autowired
+	private RepoCerereDetailed repoCerereDetailed;
+	
+	@Autowired
 	private RepoUser repoUser;
 	
 	@GetMapping("/all")
@@ -45,6 +50,12 @@ public class FlowController {
 	public List<FlowCerere> findByCerereId(@PathVariable("id") int id){
 		Cerere cerere = repoCerere.findById(id).get();
 		return repoFlow.findByCerere(cerere);
+	}
+	
+	@GetMapping("/by-cerere-detailed-id/{id}")
+	public List<FlowCerere> findByDetailedCerereId(@PathVariable("id") int id){
+		CerereDetailed cerere = repoCerereDetailed.findById(id).get();
+		return repoFlow.findByCerereDetailed(cerere);
 	}
 	
 //	{

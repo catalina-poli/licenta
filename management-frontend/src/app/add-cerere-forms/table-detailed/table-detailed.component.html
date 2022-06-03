@@ -8,6 +8,8 @@
     </mat-select>
 
 </div>
+<button (click)="viewArchiveDocument(true)">View archive</button>
+<button (click)="viewArchiveDocument(false)">View current</button>
 
 <div class="example-container mat-elevation-z8">
 
@@ -43,7 +45,7 @@
                 <td mat-cell *matCellDef="let row">
 
 
-                    <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id]">View</a>
+                    <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id, 'CERERE_DETAILED']">View</a>
 
                 </td>
             </ng-container>

@@ -21,6 +21,7 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
 
   filtruTipCerere: string = 'all';
 
+  archived: boolean = false;
   cererileAfisate: Cerere[] = [];
   cererile: Cerere[] = [];
   cerereNoua: any = {
@@ -79,7 +80,7 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
 
 
             return this.cereriService.findAllMatTable(this.filtruTipCerere,
-              this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0)
+              this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0, this.archived)
               .pipe(catchError(() => observableOf(null)));
 
 
@@ -169,6 +170,8 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
 
   }
 
+
+
   saveCerere() {
     console.log('salvam o cerere')
 
@@ -225,6 +228,11 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
 
 
       })
+  }
+
+  viewArchiveDocument(statusArchived: boolean){
+    this.archived = statusArchived;
+    this.loadInitial();
   }
 
 }

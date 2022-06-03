@@ -36,7 +36,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'cerere-flow/:id',
+    path: 'cerere-flow/:id/:type',
     component: CereriFlowComponent
   },{
     path: 'cereri-flow-view/:id',

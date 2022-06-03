@@ -19,7 +19,7 @@ export class TableDetailedComponent implements OnInit, AfterViewInit {
   filtruTipCerere: string = 'all';
   tipuri: string[] = ['PERMISIE', 'INVOIRE', 'RESTANTA'];
 
-
+  archived: boolean = false;
   isLoadingResults = true;
   isRateLimitReached = false;
   resultsLength = 0;
@@ -61,7 +61,7 @@ export class TableDetailedComponent implements OnInit, AfterViewInit {
 
 
             return this.cereriService.findAllMatTableDetailed(this.filtruTipCerere,
-              this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0)
+              this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0, this.archived)
               .pipe(catchError(() => observableOf(null)));
 
 
@@ -96,6 +96,10 @@ export class TableDetailedComponent implements OnInit, AfterViewInit {
 
   selectOptiuneFiltru() {
     console.log('optiune curenta: ', this.filtruTipCerere);
+    this.loadInitialDetailed();
+  }
+  viewArchiveDocument(statusArchived: boolean){
+    this.archived = statusArchived;
     this.loadInitialDetailed();
   }
 

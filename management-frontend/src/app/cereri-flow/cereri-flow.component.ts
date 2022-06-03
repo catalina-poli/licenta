@@ -8,6 +8,7 @@ import { CereriService } from '../cereri.service';
 import { FlowService } from '../flow.service';
 import { GroupService } from '../group.service';
 import { Cerere } from '../model/cerere';
+import { CerereDetailed } from '../model/cerere-detailed';
 
 
 
@@ -16,7 +17,7 @@ export interface CereriFlowComponent2 {
   position: number;
   weight: number;
   symbol: string;
-  end:string;
+  end: string;
 }
 
 
@@ -31,11 +32,12 @@ export class CereriFlowComponent implements OnInit {
 
   idCerere!: number;
   cerere!: Cerere;
+  cerereDetailed!: CerereDetailed;
   flowItems: any[] = [];
   groups: any = [];
   dataSource: any[] = [];
   displayedColumns: string[] = ['typePropertyCol', 'valuePropertyCol'];
-  
+  cerereDocumentOrDetailed!: string;
 
   constructor(private serviceCerere: CereriService, private activatedRoute: ActivatedRoute,
     private flowService: FlowService, private groupService: GroupService,
@@ -46,34 +48,27 @@ export class CereriFlowComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.idCerere = params['id'];
 
- 
+      this.cerereDocumentOrDetailed = params['type'];
 
-      this.serviceCerere.findById(this.idCerere)
-        .subscribe(
-          rez => {
-            this.cerere = rez;
-            console.log('cerere: ', this.cerere);
+      if (this.cerereDocumentOrDetailed == 'CERERE_DOCUMENT') {
+        console.log('**CERERE DOCUMENT**');
+        this.serviceCerere.findById(this.idCerere)
+          .subscribe(
+            rez => {
+              this.cerere = rez;
+              console.log('cerere: ', this.cerere);
 
-//             idCerere
-// cerere.typeCerere
-// cerere.userAssociated.email
-
-// cerere.dateCreated | date : 'yyyy-MM-dd'
-// cerere.dateEnd | date : 'yyyy-MM-dd'
-
-
-
-            this.dataSource.push({type : 'ID', value: this.idCerere});
-            this.dataSource.push({type : 'Type cerere', value: this.cerere.typeCerere});
-            this.dataSource.push({type : 'Email', value: this.cerere.userAssociated.email});
-            this.dataSource.push({type : 'Date Created', value: this.datePipe.transform(this.cerere.dateCreated, 'yyyy-MM-dd') });
-            this.dataSource.push({type : 'Date End', value: this.datePipe.transform(this.cerere.dateEnd, 'yyyy-MM-dd')});
-          },
-          err => {
-            console.log('err: ', err);
-          }
-        );
-      this.flowService.findAllFlowByCerere(this.idCerere)
+              this.dataSource.push({ type: 'ID', value: this.idCerere });
+              this.dataSource.push({ type: 'Type cerere', value: this.cerere.typeCerere });
+              this.dataSource.push({ type: 'Email', value: this.cerere.userAssociated.email });
+              this.dataSource.push({ type: 'Date Created', value: this.datePipe.transform(this.cerere.dateCreated, 'yyyy-MM-dd') });
+              this.dataSource.push({ type: 'Date End', value: this.datePipe.transform(this.cerere.dateEnd, 'yyyy-MM-dd') });
+            },
+            err => {
+              console.log('err: ', err);
+            }
+          );
+        this.flowService.findAllFlowByCerere(this.idCerere)
           .subscribe(
             rez => {
               this.flowItems = rez;
@@ -81,7 +76,7 @@ export class CereriFlowComponent implements OnInit {
 
               this.serviceCerere.findAllGrupuriForCerere(this.idCerere)
                 .subscribe(
-                  groups=>{
+                  groups => {
                     console.log('groups: ', groups);
                     this.groups = groups;
                   },
@@ -94,17 +89,60 @@ export class CereriFlowComponent implements OnInit {
               console.log('err: ', err);
             }
           );
+      } else {
+        // cerere detailed
+        console.log('**CERERE DETAILED**');
+        this.serviceCerere.findDetailedById(this.idCerere)
+          .subscribe(
+            rez => {
+              this.cerereDetailed = rez;
+              console.log('cerere detailed: ', this.cerereDetailed);
+
+              this.dataSource.push({ type: 'ID', value: this.idCerere });
+              this.dataSource.push({ type: 'Type cerere', value: this.cerereDetailed.typeCerere });
+              this.dataSource.push({ type: 'Email', value: this.cerereDetailed.user.email });
+              this.dataSource.push({ type: 'Date Created', value: this.datePipe.transform(this.cerereDetailed.dateCreated, 'yyyy-MM-dd') });
+              this.dataSource.push({ type: 'Date End', value: this.datePipe.transform(this.cerereDetailed.dateEnd, 'yyyy-MM-dd') });
+            },
+            err => {
+              console.log('err: ', err);
+            }
+          );
+        this.flowService.findAllFlowByCerereDetailed(this.idCerere)
+          .subscribe(
+            rez => {
+              this.flowItems = rez;
+              console.log('FLOW ITEMS: ', this.flowItems);
+
+              this.serviceCerere.findAllGrupuriForCerere(this.idCerere)
+                .subscribe(
+                  groups => {
+                    console.log('groups: ', groups);
+                    this.groups = groups;
+                  },
+                  err => {
+                    console.log('could not load groups for cerere, err = ', err);
+                  }
+                );
+            },
+            err => {
+              console.log('err: ', err);
+            }
+          );
+      }
     });
+
+
   }
 
-  viewStatusDialog(){
+  viewStatusDialog() {
     this.openDialog();
   }
   openDialog(): Observable<any> {
 
     const dialogRef = this.dialog.open(CereriFlowViewDialogComponent, {
       width: '100%',
-      data: {id : this.idCerere}  //  rezultat : {}
+      data: { id: this.idCerere, cerereDocumentOrDetailed : this.cerereDocumentOrDetailed}  //  rezultat : {}
     });
 
     return dialogRef.afterClosed();

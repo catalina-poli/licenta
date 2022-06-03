@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AddCerereComponent } from './add-cerere/add-cerere.component';
 import { LoginService } from './login.service';
 import { Cerere } from './model/cerere';
+import { CerereDetailed } from './model/cerere-detailed';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +26,17 @@ export class CereriService {
 
 
   // document
-  findAllMatTable(type: string, sort: string, order: SortDirection, page: number): Observable<any> {
+  findAllMatTable(type: string, sort: string, order: SortDirection, page: number, archived: boolean): Observable<any> {
     console.log('cereri service - findAllMatTable with pagination')
-    const reqUrlLocal = `http://localhost:8080/rest/cerere/all-paginated/${type}/${page}/5/${sort}/${order}`;
+    const reqUrlLocal = `http://localhost:8080/rest/cerere/all-paginated/${type}/${page}/5/${sort}/${order}/${archived}`;
     return this.serviciuHttpClient.get<any>(reqUrlLocal, this.loginService.configureHeaderOptionsForOAuth());
   }
 
 
   // detailed
-  findAllMatTableDetailed(type: string, sort: string, order: SortDirection, page: number): Observable<any> {
+  findAllMatTableDetailed(type: string, sort: string, order: SortDirection, page: number, archived: boolean): Observable<any> {
     console.log('cereri service - findAllMatTable with pagination')
-    const reqUrlLocal = `http://localhost:8080/rest/cerere/all-paginated-detailed/${type}/${page}/5/${sort}/${order}`;
+    const reqUrlLocal = `http://localhost:8080/rest/cerere/all-paginated-detailed/${type}/${page}/5/${sort}/${order}/${archived}`;
     return this.serviciuHttpClient.get<any>(reqUrlLocal, this.loginService.configureHeaderOptionsForOAuth());
   }
 
@@ -48,6 +49,10 @@ export class CereriService {
 
   findById(id : number) : Observable<Cerere>{
     return this.serviciuHttpClient.get<Cerere>('http://localhost:8080/rest/cerere/by-id/'+id, this.loginService.configureHeaderOptionsForOAuth());
+
+  }
+  findDetailedById(id : number) : Observable<CerereDetailed>{
+    return this.serviciuHttpClient.get<CerereDetailed>('http://localhost:8080/rest/cerere/detailed/by-id/'+id, this.loginService.configureHeaderOptionsForOAuth());
 
   }
 

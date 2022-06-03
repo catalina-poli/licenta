@@ -7,8 +7,9 @@
         <div>
             <h2>Cererile</h2>
 
-
-
+            <h3>Cereri document</h3>
+            <button (click)="viewArchiveDocument(true)">View archive</button>
+            <button (click)="viewArchiveDocument(false)">View current</button>
             <div>
                 <mat-select [(ngModel)]="filtruTipCerere" (selectionChange)="selectOptiuneFiltru()">
                     <!-- <option [ngValue]="'all'">All</option> -->
@@ -54,7 +55,7 @@
                             <td mat-cell *matCellDef="let row">
 
 
-                                <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id]">View</a>
+                                <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id, 'CERERE_DOCUMENT']">View</a>
                                 <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
                                 <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
 
@@ -74,6 +75,7 @@
 
             </div>
 
+            <h3>Cereri detailed</h3>
 
             <app-table-detailed></app-table-detailed>
 

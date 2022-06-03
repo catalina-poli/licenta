@@ -92,10 +92,11 @@ public class CerereController {
 
 	
 	
-	@GetMapping("/all-paginated-detailed/{type}/{page}/{size}/{sort}/{order}")
+	@GetMapping("/all-paginated-detailed/{type}/{page}/{size}/{sort}/{order}/{archived}")
 	public Page<CerereDetailed> allCereriDetailedPaginated(Principal principal, @PathVariable("type") String type,
 			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
-			@PathVariable("order") String order) {
+			@PathVariable("order") String order,
+			@PathVariable("archived") boolean archived) {
 		
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		boolean admin = false;
@@ -112,22 +113,23 @@ public class CerereController {
 		System.out.println("TYPE: " + type);
 		if (type.equals("all")) {
 			if (admin) {
-				return repoCerereDetailed.findAllByOrderByDateCreatedDesc(pageCurrent);
+				return repoCerereDetailed.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived? 1 : 0);
 			}
-			return repoCerereDetailed.findAllByUserOrderByDateCreatedDesc(pageCurrent, userLogat);
+			return repoCerereDetailed.findAllByUserAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat, archived? 1:0);
 		} else {
 			if (admin) {
-				return repoCerereDetailed.findAllByTypeCerereOrderByDateCreatedDesc(pageCurrent, type);
+				return repoCerereDetailed.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type, archived? 1: 0);
 			}
-			return repoCerereDetailed.findAllByTypeCerereAndUserOrderByDateCreatedDesc(pageCurrent, type, userLogat);
+			return repoCerereDetailed.findAllByTypeCerereAndUserAndArchivedOrderByDateCreatedDesc(pageCurrent, type, userLogat, archived? 1:0);
 		}
 		
 	}	
 
-	@GetMapping("/all-paginated/{type}/{page}/{size}/{sort}/{order}")
+	@GetMapping("/all-paginated/{type}/{page}/{size}/{sort}/{order}/{archived}")
 	public Page<Cerere> allCereriPaginated(Principal principal, @PathVariable("type") String type,
 			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
-			@PathVariable("order") String order) {
+			@PathVariable("order") String order,
+			@PathVariable("archived") boolean archived) {
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		boolean admin = false;
 		Pageable pageCurrent = PageRequest.of(page, size,
@@ -143,20 +145,25 @@ public class CerereController {
 		System.out.println("TYPE: " + type);
 		if (type.equals("all")) {
 			if (admin) {
-				return repoCerere.findAllByOrderByDateCreatedDesc(pageCurrent);
+				return repoCerere.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived? 1:0);
 			}
-			return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(pageCurrent, userLogat);
+			return repoCerere.findAllByUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat, archived? 1:0);
 		} else {
 			if (admin) {
-				return repoCerere.findAllByTypeCerereOrderByDateCreatedDesc(pageCurrent, type);
+				return repoCerere.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type, archived? 1:0);
 			}
-			return repoCerere.findAllByTypeCerereAndUserAssociatedOrderByDateCreatedDesc(pageCurrent, type, userLogat);
+			return repoCerere.findAllByTypeCerereAndUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, type, userLogat, archived? 1:0);
 		}
 	}
 
 	@GetMapping("/by-id/{idCerere}")
 	public Cerere getCerereDupaId(@PathVariable("idCerere") int id) {
 		return repoCerere.findById(id).get();
+	}
+	
+	@GetMapping("/detailed/by-id/{idCerere}")
+	public CerereDetailed getCerereDetailedDupaId(@PathVariable("idCerere") int id) {
+		return repoCerereDetailed.findById(id).get();
 	}
 
 	@GetMapping("/by-user/{idUser}")
