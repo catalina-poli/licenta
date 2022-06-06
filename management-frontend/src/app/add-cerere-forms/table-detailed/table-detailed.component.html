@@ -8,8 +8,11 @@
     </mat-select>
 
 </div>
-<button (click)="viewArchiveDocument(true)">View archive</button>
-<button (click)="viewArchiveDocument(false)">View current</button>
+<!-- <button (click)="viewArchiveDocument(true)">View archive</button>
+<button (click)="viewArchiveDocument(false)">View current</button> -->
+<button mat-raised-button color="accent" (click)="viewArchiveDocument(true)"><mat-icon>archive</mat-icon>ARCHIEVED</button>
+<button mat-raised-button color="accent" (click)="viewArchiveDocument(false)"><mat-icon> present_to_all</mat-icon>CURRENT</button>
+
 
 <div class="example-container mat-elevation-z8">
 

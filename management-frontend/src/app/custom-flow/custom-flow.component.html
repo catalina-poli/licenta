@@ -1,0 +1,38 @@
+<div>
+    <h2>My Custom Flows</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Flow Name</th>
+                <th>Users in flow</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cf of myCustomFlows">
+                <td>
+                    {{cf.id}}
+                </td>
+                <td>
+                    {{cf.customFlowName}}
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+    <div>
+        <h2>Add new flow</h2>
+        <input type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName">
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Users associated with flow</mat-label>
+            <mat-select multiple [(ngModel)]="usersSelected">
+
+                <mat-option *ngFor="let u of users" [value]="u">{{u.email}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="saveMyCustomFlow()">Save</button>
+    </div>
+</div>

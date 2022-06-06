@@ -8,6 +8,7 @@ import { CereriFlowMyComponent } from './cereri-flow-my/cereri-flow-my.component
 import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.component';
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
+import { CustomFlowComponent } from './custom-flow/custom-flow.component';
 import { GroupComponent } from './group/group.component';
 import { LoginRegisterComponent } from './login-register/login-register.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -69,6 +70,10 @@ const routes: Routes = [
   {
     path: 'login-register',
     component: LoginRegisterComponent
+  },
+  {
+    path: 'my-custom-flows',
+    component: CustomFlowComponent
   }
 ];
 
