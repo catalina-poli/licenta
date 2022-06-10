@@ -1,10 +1,12 @@
 package ro.atm.management.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,18 @@ public class CustomFlowController {
 	public List<CustomFlow> findMyCustomFlow(Principal principal){
 		
 		return this.repoCustomFlow.findByUserOwnerFlow(this.userService.getUser(principal).get());
+	}
+	
+	
+	@GetMapping("/custom-flow-members/{customFlowId}")
+	public List<User> findMembersForCustomFlow(@PathVariable("customFlowId") int customFlowId){
+//		CustomFlow cf = this.repoCustomFlow.findById(customFlowId).get();
+		List<CustomFlowMember> cfmembers = this.repoCustomFlowMember.findByCustomFlowId(customFlowId);
+		List<User> memberUsers = new ArrayList<>();
+		for(CustomFlowMember cfmember : cfmembers) {
+			memberUsers.add(cfmember.getMember());
+		}
+		return memberUsers;
 	}
 	
 	
