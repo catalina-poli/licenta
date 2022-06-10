@@ -10,6 +10,8 @@ import { UserService } from '../user.service';
 
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { CustomFlowService } from '../custom-flow.service';
+import { CustomFlowModel } from '../model/custom-flow';
 
 
 @Component({
@@ -63,11 +65,11 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
   }
 
   // findAllMatTableDetailed
-  
+
 
   loadInitial() {
 
-    
+
     if (this.sort) {
       this.filtruTipCerere = this.filtruTipCerere.toLowerCase();
       this.sort.sortChange.subscribe(() => this.paginator ? this.paginator.pageIndex = 0 : 0);
@@ -114,8 +116,11 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
   constructor(private cereriService: CereriService,
     private usersService: UserService,
     private changeDetectorRefs: ChangeDetectorRef,
+    private fileService: FileService,
+    private customFlowService: CustomFlowService) { }
 
-    private fileService: FileService) { }
+  myCustomFlows: CustomFlowModel[] = [];
+  customFlowSelected: CustomFlowModel | null = null;
 
   selectOptiuneFiltru() {
     console.log('optiune curenta: ', this.filtruTipCerere);
@@ -123,6 +128,18 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+
+    this.customFlowService.findAllMyCustomFlow()
+      .subscribe(
+        rez => {
+          this.myCustomFlows = rez;
+          console.log('my custom flows: ', this.myCustomFlows)
+        },
+        err => {
+          console.log('err: ', err);
+        }
+      );
 
     // this.cereriService.findAllCereri().subscribe(rez => {
     //   this.cererile = rez;
@@ -143,6 +160,24 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
           console.log('could not load users: ', err);
         }
 
+      );
+  }
+
+
+  customFlowSelect() {
+    console.log('user has selected a custom flow: ', this.customFlowSelected);
+    this.customFlowService.findCustomFlowMemberUsers(this.customFlowSelected ? this.customFlowSelected.id : -1)
+      .subscribe(
+        rezUsers => {
+          this.type = 'SPECIFIC_USERS';// this.defaultFlow ? 'DEFAULT_FLOW_USERS' : 'SPECIFIC_USERS';
+          this.usersSelected = rezUsers;
+          this.defaultFlow = false;
+          console.log('users selected: ', this.usersSelected);
+
+        },
+        err => {
+          console.log('err: ', err);
+        }
       );
   }
 
@@ -230,7 +265,7 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
       })
   }
 
-  viewArchiveDocument(statusArchived: boolean){
+  viewArchiveDocument(statusArchived: boolean) {
     this.archived = statusArchived;
     this.loadInitial();
   }

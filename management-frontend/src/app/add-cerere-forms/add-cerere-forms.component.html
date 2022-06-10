@@ -10,8 +10,12 @@
             <h3>Cereri document</h3>
             <!-- <button (click)="viewArchiveDocument(true)">View archive</button>
             <button (click)="viewArchiveDocument(false)">View current</button> -->
-            <button mat-raised-button color="accent" (click)="viewArchiveDocument(true)"><mat-icon>archive</mat-icon>ARCHIEVED</button>
-            <button mat-raised-button color="accent" (click)="viewArchiveDocument(false)"><mat-icon> present_to_all</mat-icon>CURRENT</button>
+            <button mat-raised-button color="accent" (click)="viewArchiveDocument(true)">
+                <mat-icon>archive</mat-icon>ARCHIEVED
+            </button>
+            <button mat-raised-button color="accent" (click)="viewArchiveDocument(false)">
+                <mat-icon> present_to_all</mat-icon>CURRENT
+            </button>
             <div>
                 <mat-select [(ngModel)]="filtruTipCerere" (selectionChange)="selectOptiuneFiltru()">
                     <!-- <option [ngValue]="'all'">All</option> -->
@@ -57,7 +61,8 @@
                             <td mat-cell *matCellDef="let row">
 
 
-                                <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id, 'CERERE_DOCUMENT']">View</a>
+                                <a mat-button mat-raised-button
+                                    [routerLink]="['/cerere-flow', row.id, 'CERERE_DOCUMENT']">View</a>
                                 <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
                                 <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
 
@@ -81,7 +86,7 @@
 
             <app-table-detailed></app-table-detailed>
 
-            
+
         </div>
     </mat-tab>
 
@@ -265,6 +270,20 @@
                         <mat-checkbox [(ngModel)]="defaultFlow" (ngModelChange)="userSwitchedOption()">
                             {{type}}
                         </mat-checkbox>
+                    </div>
+
+                    <div>
+                        <h2></h2>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>My Custom Flows</mat-label>
+                            <mat-select [(ngModel)]="customFlowSelected" (selectionChange)="customFlowSelect()">
+                                <mat-option [value]="null">None</mat-option>
+                                <mat-option *ngFor="let mcf of myCustomFlows" [value]="mcf">
+                                    {{mcf.customFlowName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
                     <button mat-button color="primary" (click)="saveCerere()">Save

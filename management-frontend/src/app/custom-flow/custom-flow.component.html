@@ -16,6 +16,9 @@
                 <td>
                     {{cf.customFlowName}}
                 </td>
+                <td>
+                    <button (click)="viewUsersDialog(cf)">View users</button>
+                </td>
 
             </tr>
         </tbody>
@@ -24,7 +27,11 @@
     <hr>
     <div>
         <h2>Add new flow</h2>
-        <input type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName">
+        <!-- <input type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName"> -->
+
+        <div>
+        <input matInput type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName">
+    </div>
         <br>
         <mat-form-field appearance="fill">
             <mat-label>Users associated with flow</mat-label>
@@ -33,6 +40,9 @@
                 <mat-option *ngFor="let u of users" [value]="u">{{u.email}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <button (click)="saveMyCustomFlow()">Save</button>
+        <!-- <button (click)="saveMyCustomFlow()">Save</button> -->
+        <div>
+        <button mat-raised-button color="primary" (click)="saveMyCustomFlow()"><mat-icon>check_circle_outline</mat-icon>SALVARE FLUX</button>
+        </div>
     </div>
 </div>

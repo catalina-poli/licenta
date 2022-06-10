@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Utilizatori custom flow</h1>
+<div mat-dialog-content>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let u of users">
+            <td>{{u.id}}</td>
+            <td>{{u.email}}</td>
+        </tbody>
+    </table>
+</div>
+
+
+<div mat-dialog-actions>
+    <button [mat-dialog-close]="data">Ok</button>
+</div>

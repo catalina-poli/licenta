@@ -19,6 +19,10 @@ export class CustomFlowService {
 
   saveCustomFlow(customFlowDto: DtoSaveCustomFlow): Observable<CustomFlowModel>{
     return this.serviciuHttpClient.post<CustomFlowModel>(`http://localhost:8080/rest/custom-flow/save-flow`, customFlowDto, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
+  findCustomFlowMemberUsers(customFlowId : number): Observable<any[]>{
+    return this.serviciuHttpClient.get<CustomFlowModel[]>(`http://localhost:8080/rest/custom-flow/custom-flow-members/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
 
   }
 

@@ -63,6 +63,7 @@ import { DatePipe } from '@angular/common';
 import { ViewStudentsDialogComponent } from './group/view-students-dialog/view-students-dialog.component';
 import { EditAnuntDialogComponent } from './anunturi-student-view/edit-anunt-dialog/edit-anunt-dialog.component';
 import { CustomFlowComponent } from './custom-flow/custom-flow.component';
+import { ViewUsersDialogComponent } from './custom-flow/view-users-dialog/view-users-dialog.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { CustomFlowComponent } from './custom-flow/custom-flow.component';
     ViewStudentsDialogComponent,
     EditAnuntDialogComponent,
     CustomFlowComponent,
+    ViewUsersDialogComponent,
   ],
   imports: [
     BrowserModule,

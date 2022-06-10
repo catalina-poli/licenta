@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomFlowService } from '../custom-flow.service';
 import { DtoSaveCustomFlow } from '../model-dto/dto-save-custom-flow';
 import { CustomFlowModel } from '../model/custom-flow';
 import { UserService } from '../user.service';
+import { ViewUsersDialogComponent } from './view-users-dialog/view-users-dialog.component';
 
 @Component({
   selector: 'app-custom-flow',
@@ -17,7 +19,8 @@ export class CustomFlowComponent implements OnInit {
   users: any[] = [];
   usersSelected: any[] = [];
   constructor(private customFlowService: CustomFlowService,
-    private userService: UserService) { }
+    private userService: UserService,
+    public dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.userService.findAllUsers()
@@ -32,12 +35,20 @@ export class CustomFlowComponent implements OnInit {
     this.customFlowService.findAllMyCustomFlow()
       .subscribe(
         rez => {
-          this.myCustomFlows = this.myCustomFlows;
+          this.myCustomFlows = rez;
+          console.log('my custom flows: ', this.myCustomFlows)
         },
         err => {
           console.log('err: ', err);
         }
       );
+  }
+
+  viewUsersDialog(cf : CustomFlowModel){
+    this.dialog.open(ViewUsersDialogComponent, {
+      width: '650px',
+      data: cf
+    });
   }
 
 
