@@ -17,14 +17,15 @@
                     {{cf.customFlowName}}
                 </td>
                 <td>
-                    <button (click)="viewUsersDialog(cf)">View users</button>
+                    <!-- <button (click)="viewUsersDialog(cf)">View users</button> -->
+                    <button mat-button color="accent"(click)="viewUsersDialog(cf)"><mat-icon>supervisor_account</mat-icon>VIEW USERS</button>
+
                 </td>
 
             </tr>
         </tbody>
     </table>
 
-    <hr>
     <div>
         <h2>Add new flow</h2>
         <!-- <input type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName"> -->
