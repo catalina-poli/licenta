@@ -51,7 +51,7 @@
 			<version>5.5.8</version>
 		</dependency>
 
-	<!-- spring security dependencies -->
+		<!-- spring security dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -78,6 +78,12 @@
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
 			<version>2.3.3.RELEASE</version>
+		</dependency>
+		<!-- elastic search -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+			<!-- <version>4.0.0.RELEASE</version> -->
 		</dependency>
 
 	</dependencies>
