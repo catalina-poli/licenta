@@ -26,8 +26,9 @@ import ro.atm.data.es.repository.CerereESRepository;
 		"ro.atm.management.security", 
 		"ro.atm.management.converters",
 		"ro.atm.data.es.config"})
-public class ManagementApplication implements CommandLineRunner{
+public class ManagementApplication {
 
+	//implements CommandLineRunner
 	
 	@Autowired
 	private ArticleRepository articleRepository;
@@ -37,12 +38,12 @@ public class ManagementApplication implements CommandLineRunner{
 	
 	public static void main(String[] args) {
 		
-		SpringApplication.run(ManagementApplication.class, args);
+		//SpringApplication.run(ManagementApplication.class, args);
 		
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
+//	@Override
+//	public void run(String... args) throws Exception {
 		
 //		Article article = new Article();
 //		article.setTags("TAG 1");
@@ -55,16 +56,16 @@ public class ManagementApplication implements CommandLineRunner{
 //		article.setAuthors(authors);
 //		
 //		this.articleRepository.save(article);
-		
-		CerereESModel cm = new CerereESModel();
-		cm.setDocumentOrDetailed("CERERE_DETAILED");
-		cm.setMotiv("Doresc vacanta");
-		cm.setUserEmail("someuser@gmail.com");
-		
-		
-		this.cerereESRepository.save(cm);
-		
-		System.out.println("SAVED ARTICLE");
-	}
+//		
+//		CerereESModel cm = new CerereESModel();
+//		cm.setDocumentOrDetailed("CERERE_DETAILED2");
+//		cm.setMotiv("Vreau sa iau licenta :(");
+//		cm.setUserEmail("someuser@gmail.com");
+//		
+//		
+//		this.cerereESRepository.save(cm);
+//		
+//		System.out.println("SAVED ARTICLE");
+//	}
 
 }
