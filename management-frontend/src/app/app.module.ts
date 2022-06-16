@@ -64,6 +64,7 @@ import { ViewStudentsDialogComponent } from './group/view-students-dialog/view-s
 import { EditAnuntDialogComponent } from './anunturi-student-view/edit-anunt-dialog/edit-anunt-dialog.component';
 import { CustomFlowComponent } from './custom-flow/custom-flow.component';
 import { ViewUsersDialogComponent } from './custom-flow/view-users-dialog/view-users-dialog.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { ViewUsersDialogComponent } from './custom-flow/view-users-dialog/view-u
     MatExpansionModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomFlowService } from '../custom-flow.service';
 import { DtoSaveCustomFlow } from '../model-dto/dto-save-custom-flow';
 import { CustomFlowModel } from '../model/custom-flow';
@@ -20,7 +21,8 @@ export class CustomFlowComponent implements OnInit {
   usersSelected: any[] = [];
   constructor(private customFlowService: CustomFlowService,
     private userService: UserService,
-    public dialog:MatDialog) { }
+    public dialog:MatDialog,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userService.findAllUsers()
@@ -51,7 +53,9 @@ export class CustomFlowComponent implements OnInit {
     });
   }
 
-
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
 
   saveMyCustomFlow(){
     
@@ -66,6 +70,7 @@ export class CustomFlowComponent implements OnInit {
         console.log('saved: ', rez);
       }, err => {
         console.log('err saving custom flow: ', err);
+        this.openSnackBar("Could not save custom flow, make sure all fields are set", "Close");
       })
   }
 }

@@ -175,6 +175,18 @@
                             </mat-form-field>
                         </div>
 
+                        <div>
+                                
+                            <mat-form-field appearance="fill">
+                                <mat-label>My Custom Flows</mat-label>
+                                <mat-select [(ngModel)]="customFlowSelected" (selectionChange)="customFlowSelect()">
+                                    <mat-option [value]="null">None</mat-option>
+                                    <mat-option *ngFor="let mcf of myCustomFlows" [value]="mcf">
+                                        {{mcf.customFlowName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                         <div *ngIf="!defaultFlow">
                             <mat-form-field appearance="fill">
                                 <mat-label>Users to receive cerere</mat-label>
@@ -194,6 +206,7 @@
                                     </li>
                                 </ul>
                             </div>
+                          
                         </div>
                     </div>
 
@@ -246,9 +259,16 @@
                                 <h3>Users selected</h3>
                                 <ul>
                                     <li *ngFor="let userSelected of usersSelected">
-                                        <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
-                                        {{userSelected.email}} <button
-                                            (click)="removeFromCerere(userSelected)">Remove</button>
+                                        <div>
+                                        {{userSelected.email}} 
+                                    </div>           
+                                        <!-- <input type="checkbox" [(ngModel)]="userSelected.canInterrupt"> -->
+                                        <mat-checkbox class="example-margin" [(ngModel)]="userSelected.canInterrupt">CAN INTERRUPT</mat-checkbox>
+
+                                        <!-- <button (click)="removeFromCerere(userSelected)">REMOVE USER</button> -->
+                                        <div>
+                                            <button mat-raised-button color="warn" (click)="removeFromCerere(userSelected)"><mat-icon>delete_forever</mat-icon>REMOVE USER</button>
+                                        </div>        
                                     </li>
                                 </ul>
                             </div>

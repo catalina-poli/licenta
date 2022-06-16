@@ -171,6 +171,7 @@ export class AddCerereFormsComponent implements OnInit, AfterViewInit {
         rezUsers => {
           this.type = 'SPECIFIC_USERS';// this.defaultFlow ? 'DEFAULT_FLOW_USERS' : 'SPECIFIC_USERS';
           this.usersSelected = rezUsers;
+          this.usersSelectedCerereDetailed = rezUsers;
           this.defaultFlow = false;
           console.log('users selected: ', this.usersSelected);
 

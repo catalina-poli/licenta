@@ -1,22 +1,44 @@
-<h1 mat-dialog-title>Utilizatori custom flow</h1>
+<h1 mat-dialog-title>MY CUSTOM FLOW</h1>
 <div mat-dialog-content>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let u of users">
-            <td>{{u.id}}</td>
-            <td>{{u.email}}</td>
-        </tbody>
-    </table>
+    
+
+    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let u of users" cdkDrag>{{u.id}} {{u.email}}</div>
+    </div>
 </div>
 
-
-<div mat-dialog-actions>
+<div>
+    <br>
+    <div>
+        <button mat-raised-button color="accent">
+            <mat-icon>add</mat-icon>ADD USER TO CUSTOM FLOW
+        </button>
+        &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp;
+        <button mat-raised-button color="warn">
+            <mat-icon>delete_forever</mat-icon>REMOVE USER
+        </button>
+    </div>
+</div>
+<div mat-dialog-actions style="align-items: center;">
     <!-- <button [mat-dialog-close]="data">Ok</button> -->
-    <button mat-button color="accent"[mat-dialog-close]="data"><mat-icon>close</mat-icon>CLOSE</button>
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
+
+
+    <button mat-button color="accent" [mat-dialog-close]="data">
+        <mat-icon>close</mat-icon>CLOSE
+    </button>
 
 </div>

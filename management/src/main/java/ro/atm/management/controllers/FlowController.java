@@ -58,12 +58,7 @@ public class FlowController {
 		return repoFlow.findByCerereDetailed(cerere);
 	}
 	
-//	{
-//	    "idCerere" : 3,
-//	    "idSuperior" : 2,
-//	    "motiv" : "Da, este okay",
-//	    "status" : 1
-//	}
+
 	
 	@PostMapping("/save")
 	public FlowCerere save(@RequestBody DtoFlow dtoFlow) {

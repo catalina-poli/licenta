@@ -1,5 +1,6 @@
 package ro.atm.management.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,9 @@ public class CustomFlowMember {
 	@ManyToOne
 	@JoinColumn(name="member_id")
 	private User member;
+	
+	@Column(name="order_index")
+	private Integer orderIndex;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +52,14 @@ public class CustomFlowMember {
 
 	public void setMember(User member) {
 		this.member = member;
+	}
+
+	public Integer getOrderIndex() {
+		return orderIndex;
+	}
+
+	public void setOrderIndex(Integer orderIndex) {
+		this.orderIndex = orderIndex;
 	}
 	
 	

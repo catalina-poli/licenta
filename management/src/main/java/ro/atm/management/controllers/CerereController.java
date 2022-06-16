@@ -212,6 +212,7 @@ public class CerereController {
 		CerereDetailed cerereNouaDetailed = cerereNouaDto.getCerereDetailed();
 		cerereNouaDetailed.setDateCreated(new Date());
 		cerereNouaDetailed.setUser(userLogat);
+		cerereNouaDetailed.setArchived(0);
 		CerereDetailed saved = this.repoCerereDetailed.save(cerereNouaDetailed);
 		for (UserCerere uc : cerereNouaDto.getUsersSelected()) {
 			FlowCerere flowCerere = new FlowCerere();
@@ -260,6 +261,7 @@ public class CerereController {
 			cerereNoua = cerereNouaDto.getCerere();
 			cerereNoua.setUserAssociated(userLogat);
 			cerereNoua.setDateCreated(new Date());
+			cerereNoua.setArchived(0);
 			CerereType cerereType = this.repoCerereType.findByTypeCerere(cerereNoua.getTypeCerere());
 			cerereNoua.setCerereType(cerereType);
 

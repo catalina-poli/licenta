@@ -23,7 +23,10 @@ export class CustomFlowService {
 
   findCustomFlowMemberUsers(customFlowId : number): Observable<any[]>{
     return this.serviciuHttpClient.get<CustomFlowModel[]>(`http://localhost:8080/rest/custom-flow/custom-flow-members/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
+  }
 
+  editMemberOrder(userIds: number[], customFlowId: number): Observable<CustomFlowModel>{
+    return this.serviciuHttpClient.put<CustomFlowModel>(`http://localhost:8080/rest/custom-flow/edit-custom-flow-member-order/${customFlowId}`, userIds, this.loginService.configureHeaderOptionsForOAuth());
   }
 
   // openDialog(message : string, flowItem: any, status: boolean): Observable<any> {
