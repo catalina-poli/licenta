@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { LoginService } from './login.service';
 import { DtoSaveCustomFlow } from './model-dto/dto-save-custom-flow';
 import { CustomFlowModel } from './model/custom-flow';
+import {environment} from './../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,19 @@ export class CustomFlowService {
   constructor(private serviciuHttpClient: HttpClient, private loginService : LoginService, public dialog: MatDialog) { }
 
   findAllMyCustomFlow() : Observable<CustomFlowModel[]>{
-    return this.serviciuHttpClient.get<CustomFlowModel[]>(`http://localhost:8080/rest/custom-flow/my-custom-flows`, this.loginService.configureHeaderOptionsForOAuth());
+    return this.serviciuHttpClient.get<CustomFlowModel[]>(`${environment.serverPath}/rest/custom-flow/my-custom-flows`, this.loginService.configureHeaderOptionsForOAuth());
   }
 
   saveCustomFlow(customFlowDto: DtoSaveCustomFlow): Observable<CustomFlowModel>{
-    return this.serviciuHttpClient.post<CustomFlowModel>(`http://localhost:8080/rest/custom-flow/save-flow`, customFlowDto, this.loginService.configureHeaderOptionsForOAuth());
+    return this.serviciuHttpClient.post<CustomFlowModel>(`${environment.serverPath}/rest/custom-flow/save-flow`, customFlowDto, this.loginService.configureHeaderOptionsForOAuth());
   }
 
   findCustomFlowMemberUsers(customFlowId : number): Observable<any[]>{
-    return this.serviciuHttpClient.get<CustomFlowModel[]>(`http://localhost:8080/rest/custom-flow/custom-flow-members/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
+    return this.serviciuHttpClient.get<CustomFlowModel[]>(`${environment.serverPath}/rest/custom-flow/custom-flow-members/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
   }
 
   editMemberOrder(userIds: number[], customFlowId: number): Observable<CustomFlowModel>{
-    return this.serviciuHttpClient.put<CustomFlowModel>(`http://localhost:8080/rest/custom-flow/edit-custom-flow-member-order/${customFlowId}`, userIds, this.loginService.configureHeaderOptionsForOAuth());
+    return this.serviciuHttpClient.put<CustomFlowModel>(`${environment.serverPath}/rest/custom-flow/edit-custom-flow-member-order/${customFlowId}`, userIds, this.loginService.configureHeaderOptionsForOAuth());
   }
 
   // openDialog(message : string, flowItem: any, status: boolean): Observable<any> {

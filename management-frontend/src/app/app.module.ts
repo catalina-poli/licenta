@@ -65,6 +65,7 @@ import { EditAnuntDialogComponent } from './anunturi-student-view/edit-anunt-dia
 import { CustomFlowComponent } from './custom-flow/custom-flow.component';
 import { ViewUsersDialogComponent } from './custom-flow/view-users-dialog/view-users-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CereriAdminSearchComponent } from './cereri-admin-search/cereri-admin-search.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     EditAnuntDialogComponent,
     CustomFlowComponent,
     ViewUsersDialogComponent,
+    CereriAdminSearchComponent,
   ],
   imports: [
     BrowserModule,

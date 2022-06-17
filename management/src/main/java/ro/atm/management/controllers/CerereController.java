@@ -42,6 +42,7 @@ import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
 import ro.atm.management.repo.RepoMessage;
 import ro.atm.management.repo.RepoUser;
+import ro.atm.management.service.ESCerereService;
 import ro.atm.management.service.MessageService;
 import ro.atm.management.service.MessageService.MessageType;
 
@@ -73,6 +74,9 @@ public class CerereController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private ESCerereService esCerereService;
 
 	@GetMapping("/all")
 	public List<Cerere> allCereri(Principal principal) {
@@ -223,6 +227,7 @@ public class CerereController {
 			flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
 			this.repoFlow.save(flowCerere);
 		}
+		
 		return saved;
 	}
 
@@ -237,13 +242,16 @@ public class CerereController {
 			//CerereDocument cerereDocument = this.repoCerere
 			Cerere cerereDocument = this.repoCerere.findById(idCerere).get();
 			cerereDocument.setArchived(1);
-			this.repoCerere.save(cerereDocument);
+			Cerere cerereDocumentSaved = this.repoCerere.save(cerereDocument);
+			this.esCerereService.saveCerere(cerereDocumentSaved);
+			
 		}else {
 			CerereDetailed cerereDetailed = this.repoCerereDetailed.findById(idCerere).get();
 			cerereDetailed.setArchived(1);
-			this.repoCerereDetailed.save(cerereDetailed);
+			CerereDetailed cerereDetailedSaved = this.repoCerereDetailed.save(cerereDetailed);
+			this.esCerereService.saveCerere(cerereDetailedSaved);
 		}
-		}catch(Exception e) {
+	} catch (Exception e) {
 			e.printStackTrace();
 			result.put("result", false);
 		}

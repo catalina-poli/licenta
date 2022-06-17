@@ -17,6 +17,8 @@ public class CerereESModel {
 	@Id
 	private String id;
 
+	
+	private String idCerereSalvataDocumentOrDetailed;
 	// private Integer userId;
 
 	private String userEmail;
@@ -77,12 +79,22 @@ public class CerereESModel {
 	public void setJudet(String judet) {
 		this.judet = judet;
 	}
+	
+	
+	
+	public String getIdCerereSalvataDocumentOrDetailed() {
+		return idCerereSalvataDocumentOrDetailed;
+	}
+	public void setIdCerereSalvataDocumentOrDetailed(String idCerereSalvataDocumentOrDetailed) {
+		this.idCerereSalvataDocumentOrDetailed = idCerereSalvataDocumentOrDetailed;
+	}
 	@Override
 	public String toString() {
-		return "CerereESModel [id=" + id + ", userEmail=" + userEmail + ", typeCerere=" + typeCerere
-				+ ", documentOrDetailed=" + documentOrDetailed + ", localitate=" + localitate + ", motiv=" + motiv
-				+ ", judet=" + judet + "]";
+		return "CerereESModel [id=" + id + ", idCerereSalvataDocumentOrDetailed=" + idCerereSalvataDocumentOrDetailed
+				+ ", userEmail=" + userEmail + ", typeCerere=" + typeCerere + ", documentOrDetailed="
+				+ documentOrDetailed + ", localitate=" + localitate + ", motiv=" + motiv + ", judet=" + judet + "]";
 	}
+	
 	
 	
 }
