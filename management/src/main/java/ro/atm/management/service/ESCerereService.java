@@ -20,11 +20,12 @@ public class ESCerereService {
 	}
 	
 	public CerereESModel saveCerere(CerereDetailed cerereDetailed) {
+		System.out.println("ES SAVING CERERE: " + cerereDetailed);
 		CerereESModel model = new CerereESModel();
 		model.setDocumentOrDetailed("CERERE_DETAILED");
 		model.setMotiv(cerereDetailed.getMotiv());
 		model.setJudet(cerereDetailed.getJudet());
-		model.setLocalitate(cerereDetailed.getLocalitate());
+		model.setLocation(cerereDetailed.getLocalitate());
 		model.setUserEmail(cerereDetailed.getUser().getEmail());
 		model.setIdCerereSalvataDocumentOrDetailed(""+ cerereDetailed.getId());
 		

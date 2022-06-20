@@ -287,6 +287,7 @@ public class CerereController {
 			cerereSalvata = this.repoCerere.save(cerereNoua);
 		}
 
+		cerereDetailed.setArchived(0);
 		CerereDetailed cerereDetailedSalvata = null;
 		if (cerereDetailed != null) {
 			cerereDetailedSalvata = this.repoCerereDetailed.save(cerereDetailed);

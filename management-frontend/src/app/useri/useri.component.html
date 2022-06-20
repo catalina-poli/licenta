@@ -4,24 +4,24 @@
     <input type="password" placeholder="Password" [(ngModel)]="userNou.password"><br>
     <button (click)="register()">Register</button> -->
 
-    <table border="1">
+    <table>
         <thead>
             <tr>
-                <th></th>
+                <th>Id</th>
                 <th>Email</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let u of useri">
                 <td>
-                    
-                    <div class="example-button-row">
-                        <button mat-raised-button color="accent">
-                          <mat-icon>visibility</mat-icon> PROFILE DETAILS
-                        </button></div>
+                   {{u.id}}
                 </td>
                 <td>
-                    {{u.email}}
+                    <h2>{{u.email}}</h2>
+                </td>
+                <td>
+                    <button mat-raised-button color="accent"><mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE</button>
                 </td>
             </tr>
         </tbody>

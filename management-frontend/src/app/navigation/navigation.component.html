@@ -10,9 +10,9 @@
 
     <!-- <span>Document Flow Management</span> -->
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon> favorite_border </mat-icon>
-    </button>
+    </button> -->
     <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon [routerLink]="['/messages']"> notifications_none </mat-icon>
     </button>
@@ -26,9 +26,9 @@
       <mat-icon  (mouseenter)="isOpen = !isOpen" (mouseout)="isOpen = false" [routerLink]="['/messages']" [matBadgeHidden]="hidden" (click)="toggleBadgeVisibility()" [matBadge]="numberOfNotifications" matBadgeColor="primary"> notifications_none </mat-icon>
     </button>
 
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
       <mat-icon [matBadgeHidden]="hidden" (click)="toggleBadgeVisibility()" matBadge="30" matBadgeColor="primary"> account_circle </mat-icon>
-    </button>
+    </button> -->
 
 
     <!-- This template displays the overlay content and is connected to the button -->
@@ -62,6 +62,9 @@
       <a mat-list-item *ngIf="canSee('grupuri')" class="nav-item nav-link" [routerLink]="['/groups']">Grupurile</a>
       <a mat-list-item *ngIf="canSee('decizii')" class="nav-item nav-link" [routerLink]="['/my-flow-items']">Decizii</a>
       <a mat-list-item class="nav-item nav-link" [routerLink]="['/sabloane']">Sabloane</a>
+      <a mat-list-item  class="nav-item nav-link" [routerLink]="['/my-custom-flows']">My Custom Flows</a>
+      <a mat-list-item  class="nav-item nav-link" [routerLink]="['/archieved']">Arhivate</a>
+
       <button mat-raised-button color="pink" *ngIf="isUserLoggedIn()" (click)="logout()">Logout</button>
       <button mat-raised-button color="pink" *ngIf="!isUserLoggedIn()" (click)="login()">Login</button>
 

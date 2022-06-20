@@ -177,21 +177,23 @@ export class SabloaneComponent implements OnInit {
 
     this.fileToUpload = event.target.files[0];
 
-
   }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action);
   }
+  
   saveSablonNou() {
     if(!this.categorieNoua.categoryName){
-      this.openSnackBar('Cannot add empty category node', 'Close');
+      this.openSnackBar('Completati datele pentru a adauga o noua CATEGORIE!', 'Close');
       return;
     }
     this.categoriiSablonService.saveSablonNou(this.categorieNoua)
       .subscribe(
         rez => {
           console.log('saved: ', rez);
+          this.openSnackBar('Categorie adaugata cu succes!', 'Close');
+
         },
         err => {
           console.log(err);
@@ -203,15 +205,23 @@ export class SabloaneComponent implements OnInit {
   // upload sablon (ADMIN)
 
   uploadFile() {
+   
 
-
+    console.log('save file');
     this.fileService.uploadFile(this.fileToUpload, `http://localhost:8080/uploadFile-sablon/${this.newCategoryName}/${this.parentId}`)
 
   }
 
   saveSablon() {
+   
+    if(!this.newCategoryName){
+      this.openSnackBar('Completati datele pentru a adauga un nou SABLON!', 'Close');
+      return;
+    }
     console.log('saving sablon: ', this.fileToUpload);
     this.uploadFile();
+    //this.openSnackBar('Salvare cu succes a sablonului!', 'Close');
+
   }
 
 
@@ -223,10 +233,8 @@ export class SabloaneComponent implements OnInit {
     this.dataSource = new DynamicDataSource(this.treeControl, database, categoriiSablonService);
     
     // this.dataSource.data = database.initialData();
-
-
-
   }
+
   ngOnInit(): void {
 
     this.categoriiSablonService.findAllCategoriiDropdown()

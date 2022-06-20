@@ -17,84 +17,100 @@ public class CerereESModel {
 	@Id
 	private String id;
 
-	
 	private String idCerereSalvataDocumentOrDetailed;
 	// private Integer userId;
-
+	@Field(type = Text)
 	private String userEmail;
 
+	@Field(type = Text)
 	private String typeCerere; // invoire, permisie, restanta
 
+	@Field(type = Text)
 	private String documentOrDetailed;
 
-	// TODO: add date start, end
 
-	private String localitate;
+	@Field(type = Text)
+	private String location;
+
 	@MultiField(mainField = @Field(type = Text, fielddata = true), otherFields = {
 			@InnerField(suffix = "verbatim", type = Keyword) })
 	private String motiv;
 	@Field(type = Keyword)
 	private String judet;
+
 	// TODO: add ora plecare, ora sosire
 	//
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getUserEmail() {
 		return userEmail;
 	}
+
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+
 	public String getTypeCerere() {
 		return typeCerere;
 	}
+
 	public void setTypeCerere(String typeCerere) {
 		this.typeCerere = typeCerere;
 	}
+
 	public String getDocumentOrDetailed() {
 		return documentOrDetailed;
 	}
+
 	public void setDocumentOrDetailed(String documentOrDetailed) {
 		this.documentOrDetailed = documentOrDetailed;
 	}
-	public String getLocalitate() {
-		return localitate;
+
+
+
+	public String getLocation() {
+		return location;
 	}
-	public void setLocalitate(String localitate) {
-		this.localitate = localitate;
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
+
 	public String getMotiv() {
 		return motiv;
 	}
+
 	public void setMotiv(String motiv) {
 		this.motiv = motiv;
 	}
+
 	public String getJudet() {
 		return judet;
 	}
+
 	public void setJudet(String judet) {
 		this.judet = judet;
 	}
-	
-	
-	
+
 	public String getIdCerereSalvataDocumentOrDetailed() {
 		return idCerereSalvataDocumentOrDetailed;
 	}
+
 	public void setIdCerereSalvataDocumentOrDetailed(String idCerereSalvataDocumentOrDetailed) {
 		this.idCerereSalvataDocumentOrDetailed = idCerereSalvataDocumentOrDetailed;
 	}
+
 	@Override
 	public String toString() {
 		return "CerereESModel [id=" + id + ", idCerereSalvataDocumentOrDetailed=" + idCerereSalvataDocumentOrDetailed
 				+ ", userEmail=" + userEmail + ", typeCerere=" + typeCerere + ", documentOrDetailed="
-				+ documentOrDetailed + ", localitate=" + localitate + ", motiv=" + motiv + ", judet=" + judet + "]";
+				+ documentOrDetailed + ", localitate=" + location + ", motiv=" + motiv + ", judet=" + judet + "]";
 	}
-	
-	
-	
+
 }

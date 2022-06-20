@@ -9,6 +9,7 @@ import { CereriFlowViewComponent } from './cereri-flow-view/cereri-flow-view.com
 import { CereriFlowComponent } from './cereri-flow/cereri-flow.component';
 import { CereriComponent } from './cereri/cereri.component';
 import { CustomFlowComponent } from './custom-flow/custom-flow.component';
+import { EsArchievedComponent } from './es-archieved/es-archieved.component';
 import { GroupComponent } from './group/group.component';
 import { LoginRegisterComponent } from './login-register/login-register.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -74,6 +75,10 @@ const routes: Routes = [
   {
     path: 'my-custom-flows',
     component: CustomFlowComponent
+  },
+  {
+    path: "archieved",
+    component:EsArchievedComponent
   }
 ];
 

@@ -9,6 +9,7 @@ import { CategorieSablonModel } from './model/categorie-sablon';
   providedIn: 'root'
 })
 export class CategorieSablonService {
+  saveCategorieNoua: any;
 
   constructor(
     private serviciuHttpClient: HttpClient,

@@ -20,6 +20,6 @@ public interface ArticleRepository extends ElasticsearchRepository<Article, Stri
     @Query("{\"bool\": {\"must\": {\"match_all\": {}}, \"filter\": {\"term\": {\"tags\": \"?0\" }}}}")
     Page<Article> findByFilteredTagQuery(String tag, Pageable pageable);
 
-    @Query("{\"bool\": {\"must\": {\"match\": {\"authors.name\": \"?0\"}}, \"filter\": {\"term\": {\"tags\": \"?1\" }}}}")
+    @Query("{\"bool\": {\"must\": {\"match\": {\"authors.name\": \"?0\"}}, \"filter\": {\"term\": {\"tags\": \"?1\" }}, sort : [\"id:desc\"] }}")
     Page<Article> findByAuthorsNameAndFilteredTagQuery(String name, String tag, Pageable pageable);
 }

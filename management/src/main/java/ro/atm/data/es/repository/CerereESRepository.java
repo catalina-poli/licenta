@@ -18,8 +18,11 @@ public interface CerereESRepository extends ElasticsearchRepository<CerereESMode
 	Page<CerereESModel> findByMotiv(String motiv, Pageable pageable);
 	Page<CerereESModel> findByTypeCerere(String typeCerere, Pageable pageable);
 	
+	
+	
+	// cereri
 	 @Query("{\"bool\": {\"must\": [{\"match\": {\"motiv\": \"?0\"}}]}}")
-	List<CerereESModel> findByMotivCustomQuery(String motiv); 
+	Page<CerereESModel> searchCustomQuery(String motiv, Pageable pageable); 
 	
 //    Page<Article> findByAuthorsName(String name, Pageable pageable);
 //
