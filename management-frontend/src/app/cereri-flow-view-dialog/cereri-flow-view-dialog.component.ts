@@ -31,6 +31,7 @@ export class CereriFlowViewDialogComponent implements OnInit {
   cerereDetailed!: CerereDetailed;
   flowItems: any[] = [];
   grupuriUtilizatorCerere: any[] = [];
+  isArchived: boolean = false;
 
 
   constructor(private serviceCerere: CereriService,
@@ -90,7 +91,8 @@ export class CereriFlowViewDialogComponent implements OnInit {
         .subscribe(
           rez => {
             this.cerere = rez;
-            console.log('cerere: ', this.cerere);
+            this.isArchived = this.cerere.archived == 1;
+            console.log('cerere x ', this.cerere);
           },
           err => {
             console.log('err: ', err);
@@ -123,6 +125,8 @@ export class CereriFlowViewDialogComponent implements OnInit {
           rez => {
             this.cerereDetailed = rez;
             console.log('cerere detailed: ', this.cerereDetailed);
+            this.isArchived = this.cerereDetailed.archived == 1;
+            console.log('cerere x ', this.cerere);
           },
           err => {
             console.log('err: ', err);

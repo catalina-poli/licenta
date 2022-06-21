@@ -29,15 +29,31 @@ public class RestControllerElasticSearch {
 		return cerereESRepository.findAll();
 	}
 
-	@GetMapping("/cereri/search-by/{cuvantCautat}/{page}/{size}/{sort}/{order}")
+	@GetMapping("/cereri-pagination/{page}/{size}/{sort}/{order}")
+	public Page<CerereESModel> getCereriArchivedPaginated(@PathVariable("page") int page,
+			@PathVariable("size") int size, @PathVariable("sort") String sort, @PathVariable("order") String order) {
+		Pageable pageCurrent = PageRequest.of(page, size,
+				order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+		return this.cerereESRepository.findAll(pageCurrent);
+	}
+
+	@GetMapping("/cereri/search-by/{categorySearch}/{cuvantCautat}/{page}/{size}/{sort}/{order}")
 	public Page<CerereESModel> searchCriteriuAndCuvantCautat(@PathVariable("cuvantCautat") String cuvantCautat,
-			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
-			@PathVariable("order") String order) {
+			@PathVariable("categorySearch") String categorySearch, @PathVariable("page") int page,
+			@PathVariable("size") int size, @PathVariable("sort") String sort, @PathVariable("order") String order) {
 
 		Pageable pageCurrent = PageRequest.of(page, size,
 				order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
-		return cerereESRepository.searchCustomQuery(cuvantCautat, pageCurrent);
+		Page<CerereESModel> result = null;
+		if (categorySearch.equals("motiv")) {
+			result = cerereESRepository.searchCustomQueryMotiv(cuvantCautat, pageCurrent);
+		} else if (categorySearch.equals("email")) {
+			result = cerereESRepository.searchCustomQueryEmail(cuvantCautat, pageCurrent);
+		} else if (categorySearch.equals("judet")) {
+			result = cerereESRepository.searchCustomQueryJudet(cuvantCautat, pageCurrent);
+		}
 
+		return result;
 	}
 
 }

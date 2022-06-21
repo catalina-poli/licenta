@@ -3,6 +3,16 @@
 
     <!-- <input type="text" (keyup)="loadInitial()" [(ngModel)]="cuvantCautat" placeholder="Search"> -->
 
+
+    <mat-form-field appearance="fill">
+        <mat-label>Categorie cautare</mat-label>
+        <mat-select [(ngModel)]="categorySearch" (selectionChange)="loadInitial()">
+          <mat-option *ngFor="let so of categorySearchOptions" [value]="so">
+            {{so}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
     <div>
         <mat-form-field appearance="fill">
             <mat-label></mat-label>

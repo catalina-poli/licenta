@@ -11,6 +11,8 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
   templateUrl: './es-archieved.component.html',
   styleUrls: ['./es-archieved.component.css']
 })
+
+
 export class EsArchievedComponent implements OnInit, AfterViewInit {
 
   
@@ -32,6 +34,8 @@ export class EsArchievedComponent implements OnInit, AfterViewInit {
   // "localitate": null,
   // "motiv": "Doresc vacanta",
   // "judet": null
+  categorySearch: string = 'motiv';
+  categorySearchOptions: string[] = ['motiv', 'email', 'judet']
 
   
   constructor(private esService: EsSearchService,
@@ -45,20 +49,22 @@ export class EsArchievedComponent implements OnInit, AfterViewInit {
 
 
   // ---- paginare 
-  categorieSearch: string = 'MOTIV';
   cuvantCautat: string = '';
   data: EsSearchResultDto[] = [];
 
   isLoadingResults = true;
   isRateLimitReached = false;
   resultsLength = 0;
+  minLengthForSearchWord = 2;
 
-
+ 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   loadInitial() {
+  
 
+  
     if (this.sort) {
       console.log('sort ok')
 
@@ -68,7 +74,11 @@ export class EsArchievedComponent implements OnInit, AfterViewInit {
           startWith({}),
           switchMap(() => {
             this.isLoadingResults = true;
-            return this.esService.searchMatTable(
+            if(!this.cuvantCautat || this.cuvantCautat.length < this.minLengthForSearchWord){
+              return this.esService.searchMatTableNoFilter(this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0)
+              .pipe(catchError(() => observableOf(null)));
+            }
+            return this.esService.searchMatTable(this.categorySearch,
               this.cuvantCautat,
               this.sort ? this.sort.active : '', this.sort ? this.sort.direction : 'asc', this.paginator ? this.paginator.pageIndex : 0)
               .pipe(catchError(() => observableOf(null)));

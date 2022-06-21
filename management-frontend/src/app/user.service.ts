@@ -20,6 +20,10 @@ export class UserService {
   findAllUsersForCerere(): Observable<any[]> {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-cerere`, this.loginService.configureHeaderOptionsForOAuth());
   }
+
+  findAllUsersForCustomFlowAddMember(customFlowId: number): Observable<any[]> {
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-users-for-add-to-flow/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
+  }
   
 
   registerUser(username: string, password: string): Observable<any> {

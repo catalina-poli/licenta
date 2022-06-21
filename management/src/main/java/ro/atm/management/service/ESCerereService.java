@@ -15,8 +15,15 @@ public class ESCerereService {
 	private CerereESRepository cerereESRepository;
 	
 	public CerereESModel saveCerere(Cerere cerereDocument) {
-		// TODO: implement later
-		throw new UnsupportedOperationException();
+		CerereESModel model = new CerereESModel();
+		model.setDocumentOrDetailed("CERERE_DOCUMENT");
+		// model.setMotiv(cerereDocument.getMotiv());
+		// model.setJudet(cerereDocument.getJudet());
+		// model.setLocation(cerereDocument.getLocalitate());
+		model.setUserEmail(cerereDocument.getUserAssociated().getEmail());
+		model.setIdCerereSalvataDocumentOrDetailed(""+ cerereDocument.getId());
+		
+		return this.cerereESRepository.save(model);
 	}
 	
 	public CerereESModel saveCerere(CerereDetailed cerereDetailed) {

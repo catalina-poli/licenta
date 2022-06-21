@@ -3,23 +3,32 @@
     
 
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let u of users" cdkDrag>{{u.id}} {{u.email}}</div>
+        <div class="example-box" *ngFor="let u of users" cdkDrag>{{u.id}} {{u.email}}
+
+            <button mat-raised-button color="warn" (click)="removeUser(u)">
+                <mat-icon>delete_forever</mat-icon>REMOVE USER
+            </button>
+        </div>
     </div>
 </div>
 
 <div>
     <br>
     <div>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Users associated with flow</mat-label>
+            <mat-select multiple [(ngModel)]="allUsersSelectedFromPotential">
+
+                <mat-option *ngFor="let u of allUsersPotential" [value]="u">{{u.email}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>
         <button mat-raised-button color="accent">
             <mat-icon>add</mat-icon>ADD USER TO CUSTOM FLOW
         </button>
-        &nbsp; &nbsp; &nbsp;
-        &nbsp; &nbsp; &nbsp;
-        &nbsp; &nbsp; &nbsp;
-        &nbsp; &nbsp; &nbsp;
-        <button mat-raised-button color="warn">
-            <mat-icon>delete_forever</mat-icon>REMOVE USER
-        </button>
+        </div>
+      
     </div>
 </div>
 <div mat-dialog-actions style="align-items: center;">

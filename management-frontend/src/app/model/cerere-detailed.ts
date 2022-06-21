@@ -11,6 +11,6 @@ export class CerereDetailed{
     oraSosire!: number;
     motiv!: string;
     modalitateDeplasare!: string;
-
+    archived!: number;
 
 }

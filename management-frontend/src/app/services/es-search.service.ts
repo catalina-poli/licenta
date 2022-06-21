@@ -14,14 +14,27 @@ export class EsSearchService {
   
   constructor(private serviciuHttpClient: HttpClient, private loginService : LoginService, public dialog: MatDialog) { }
 
-  // TODO: add un enum pentru categorii
-  // search(categorieSearch: string, cuvantCautat: string) : Observable<any[]>{
-  //   return this.serviciuHttpClient.get<any[]>(`${environment.serverPath}/es/cereri/search-by/${categorieSearch}/${cuvantCautat}`, this.loginService.configureHeaderOptionsForOAuth());
-  // }
 
-  searchMatTable( cuvantCautat: string,sort: string, order: SortDirection, page: number): Observable<any> {
+
+  /**
+   * 
+   * @param categorySearch enum motiv|judet|email
+   * @param cuvantCautat 
+   * @param sort 
+   * @param order 
+   * @param page 
+   * @returns 
+   */
+  searchMatTable(categorySearch: string, cuvantCautat: string,sort: string, order: SortDirection, page: number): Observable<any> {
     console.log('cereri service - findAllMatTable with pagination')
-    const reqUrlLocal = `${environment.serverPath}/es/cereri/search-by/${cuvantCautat}/${page}/5/${sort}/${order}`;
+    const reqUrlLocal = `${environment.serverPath}/es/cereri/search-by/${categorySearch}/${cuvantCautat}/${page}/5/${sort}/${order}`;
+    return this.serviciuHttpClient.get<any>(reqUrlLocal, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
+  searchMatTableNoFilter(sort: string, order: SortDirection, page: number): Observable<any> {
+    console.log('cereri service - findAllMatTable with pagination')
+    // cereri-pagination/{page}/{size}/{sort}/{order}
+    const reqUrlLocal = `${environment.serverPath}/es/cereri-pagination/${page}/5/${sort}/${order}`;
     return this.serviciuHttpClient.get<any>(reqUrlLocal, this.loginService.configureHeaderOptionsForOAuth());
   }
 

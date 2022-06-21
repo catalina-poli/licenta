@@ -5,4 +5,5 @@ export class Cerere{
     userAssociated!: any;
     dateStart!: Date;
     dateEnd!: Date;
+    archived!: number;
 }

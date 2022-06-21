@@ -57,11 +57,17 @@ public class CustomFlowController {
 	
 	@PutMapping("/edit-custom-flow-member-order/{customFlowId}")
 	public CustomFlow editCustomFlow(@RequestBody List<Integer> userIds, @PathVariable("customFlowId") int customFlowId) {
+		System.out.println("USER IDS FROM FRONTEND: " + userIds);
 		CustomFlow cf = this.repoCustomFlow.findById(customFlowId).get();
 		List<CustomFlowMember> members = this.repoCustomFlowMember.findByCustomFlow(cf);
 		for(CustomFlowMember cfm : members) {
-			cfm.setOrderIndex(userIds.indexOf(cfm.getMember().getId()));
-			this.repoCustomFlowMember.save(cfm);
+			int index = userIds.indexOf(cfm.getMember().getId());
+			cfm.setOrderIndex(index);
+			if(index == -1) {
+				this.repoCustomFlowMember.delete(cfm);
+			}else {
+				this.repoCustomFlowMember.save(cfm);
+			}
 		}
 		return cf;
 	}
