@@ -84,6 +84,41 @@
                                     <mat-icon matSuffix>vpn_key</mat-icon>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select [(ngModel)]="registerStatusTypeSelected">
+                                        <mat-option *ngFor="let regType of registerStatusTypes" [value]="regType">
+                                            {{regType}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Nume</mat-label>
+                                    <input type="email" matInput placeholder="Nume" 
+                                        [(ngModel)]="registerNume">
+                                </mat-form-field>
+
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Prenume</mat-label>
+                                    <input type="email" matInput placeholder="Prenume"
+                                        [(ngModel)]="registerPrenume">
+                                </mat-form-field>
+
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Telefon</mat-label>
+                                    <input type="email" matInput placeholder="Telefon"
+                                        [(ngModel)]="registerPhone">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select [(ngModel)]="selectedRoles"  multiple>
+                                   
+                                      <mat-option *ngFor="let role of roles" [value]="role">{{role.roleName}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+
                                 <div class="form-group">
                                     <button mat-raised-button color="primary" (click)="register()">Register</button>
                                 </div>

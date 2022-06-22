@@ -284,13 +284,15 @@ public class CerereController {
 
 		Cerere cerereSalvata = null;
 		if (cerereNoua != null) {
+			cerereNoua.setArchived(0);
 			cerereSalvata = this.repoCerere.save(cerereNoua);
 		}
 
-		cerereDetailed.setArchived(0);
+		
 		CerereDetailed cerereDetailedSalvata = null;
 		if (cerereDetailed != null) {
 			cerereDetailedSalvata = this.repoCerereDetailed.save(cerereDetailed);
+			cerereDetailed.setArchived(0);
 
 		}
 		if (type.equals("SPECIFIC_USERS")) {

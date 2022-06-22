@@ -88,6 +88,7 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public User saveUser(@RequestBody User user) {
+		
 		return repoUser.save(user);
 	}
 	

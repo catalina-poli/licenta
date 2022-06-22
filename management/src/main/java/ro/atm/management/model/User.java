@@ -54,6 +54,10 @@ public class User {
 			@JoinColumn(name = "id_anunt") })
 	private Set<Anunt> anunturi;
 	
+	private String nume;
+	private String prenume;
+	private String phone;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -120,6 +124,32 @@ public class User {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	
+	
+
+	public String getNume() {
+		return nume;
+	}
+
+	public void setNume(String nume) {
+		this.nume = nume;
+	}
+
+	public String getPrenume() {
+		return prenume;
+	}
+
+	public void setPrenume(String prenume) {
+		this.prenume = prenume;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	@Override

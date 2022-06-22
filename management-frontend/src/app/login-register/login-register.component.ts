@@ -10,12 +10,13 @@ import {FormControl, Validators} from '@angular/forms';
 
 })
 export class LoginRegisterComponent  {
-    title = 'demoApp';
     email:string | undefined;
     password:string | undefined;
     remail:string| undefined;
     rpassword:string| undefined;
     rcpassword:string| undefined;
+
+    
 
   constructor(private snackBar:MatSnackBar){
 

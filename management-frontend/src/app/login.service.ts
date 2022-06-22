@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +22,9 @@ export class LoginService {
     return options;
   }
 
+  findAllRoles() : Observable<any[]>{
+    return this.httpClient.get<any[]>(`${environment.serverPath}/security/useri/all-roles`);
+  }
   // configureHeaderOptionsForOAuthPOST() {
   //   let headers =
   //     new HttpHeaders({

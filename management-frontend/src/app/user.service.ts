@@ -26,10 +26,15 @@ export class UserService {
   }
   
 
-  registerUser(username: string, password: string): Observable<any> {
+  registerUser(username: string, password: string, type: string, nume: string, prenume: string, phone: string, selectedRoles: any[]): Observable<any> {
     const userObj = {
       "email": username,
-      "password": password
+      "password": password,
+      status: type,
+      nume: nume, 
+      prenume: prenume, 
+      phone: phone,
+      selectedRoles : selectedRoles
     };
     return this.serviciuHttpClient.post(`http://localhost:8080/security/useri/register`, userObj);
   }

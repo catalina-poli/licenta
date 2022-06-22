@@ -16,6 +16,18 @@ export class ViewUsersDialogComponent implements OnInit {
   allUsersPotential: any[] = [];
   allUsersSelectedFromPotential: any[] = [];
 
+  addUsersToCustomFlow(){
+    console.log('adding users: ', this.allUsersSelectedFromPotential);
+    this.customFlowService.addUsersToCustomFlow(this.allUsersSelectedFromPotential.map(x => x.id),  this.data ? this.data.id : -1)
+      .subscribe(
+        rez => {
+          this.refreshCustomFlowMembers();
+        },
+        err => {
+          console.log('err: ', err);
+        }
+      );
+  }
 
   rearangeOrderRequest(){
     console.log('users to rearange: ', this.users);
@@ -37,6 +49,20 @@ export class ViewUsersDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: CustomFlowModel, 
     private userService: UserService) { }
 
+
+refreshCustomFlowMembers(){
+  this.customFlowService.findCustomFlowMemberUsers(this.data ? this.data.id : -1)
+  .subscribe(
+    rezUsers => {
+
+      this.users = rezUsers;
+    },
+    err => {
+      console.log('err: ', err);
+    }
+  );
+}
+
   ngOnInit(): void {
     this.userService.findAllUsersForCustomFlowAddMember(this.data ? this.data.id : -1)
       .subscribe(
@@ -48,16 +74,8 @@ export class ViewUsersDialogComponent implements OnInit {
           console.log('err: ', err);
         }
       );
-    this.customFlowService.findCustomFlowMemberUsers(this.data ? this.data.id : -1)
-      .subscribe(
-        rezUsers => {
-
-          this.users = rezUsers;
-        },
-        err => {
-          console.log('err: ', err);
-        }
-      );
+      this.refreshCustomFlowMembers();
+   
   }
 
   removeUser(user: any){

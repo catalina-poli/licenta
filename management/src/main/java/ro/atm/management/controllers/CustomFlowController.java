@@ -21,6 +21,7 @@ import ro.atm.management.model.CustomFlowMember;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCustomFlow;
 import ro.atm.management.repo.RepoCustomFlowMember;
+import ro.atm.management.repo.RepoUser;
 import ro.atm.management.service.UserService;
 
 @RestController
@@ -35,6 +36,9 @@ public class CustomFlowController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RepoUser repoUser;
 	
 	@GetMapping("/my-custom-flows")
 	public List<CustomFlow> findMyCustomFlow(Principal principal){
@@ -53,6 +57,24 @@ public class CustomFlowController {
 			memberUsers.add(cfmember.getMember());
 		}
 		return memberUsers;
+	}
+	
+	@PostMapping("/add-users-to-custom-flow-members/{customFlowId}")
+	public CustomFlow addUsersToCustomFlow(@RequestBody List<Integer> userIds, @PathVariable("customFlowId") int customFlowId) {
+		CustomFlow cf = this.repoCustomFlow.findById(customFlowId).get();
+		List<CustomFlowMember> members = this.repoCustomFlowMember.findByCustomFlow(cf);
+		Iterable<User> newUsers = this.repoUser.findAllById(userIds);
+		
+		int index = 0;
+		for(User user: newUsers) {
+			CustomFlowMember newCfm = new CustomFlowMember();
+			newCfm.setCustomFlow(cf);
+			newCfm.setOrderIndex(members.size() + index);
+			index++;
+			newCfm.setMember(user);
+			this.repoCustomFlowMember.save(newCfm);
+		}
+		return cf;
 	}
 	
 	@PutMapping("/edit-custom-flow-member-order/{customFlowId}")

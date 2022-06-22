@@ -26,6 +26,10 @@ export class CustomFlowService {
     return this.serviciuHttpClient.get<CustomFlowModel[]>(`${environment.serverPath}/rest/custom-flow/custom-flow-members/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  addUsersToCustomFlow(userIds: number[], customFlowId: number): Observable<CustomFlowModel>{
+    return this.serviciuHttpClient.post<CustomFlowModel>(`${environment.serverPath}/rest/custom-flow/add-users-to-custom-flow-members/${customFlowId}`, userIds, this.loginService.configureHeaderOptionsForOAuth());
+  }
+
   editMemberOrder(userIds: number[], customFlowId: number): Observable<CustomFlowModel>{
     return this.serviciuHttpClient.put<CustomFlowModel>(`${environment.serverPath}/rest/custom-flow/edit-custom-flow-member-order/${customFlowId}`, userIds, this.loginService.configureHeaderOptionsForOAuth());
   }
