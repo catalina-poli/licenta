@@ -40,7 +40,9 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     	if(optional.isPresent()){
     		ro.atm.management.model.User theUser = optional.get();
     		
-    		
+    		if(theUser.getIsActive().equals(0)) {
+    			throw new RuntimeException("User account not active yet");
+    		}
     		
     		UserDetails springSecurityUser = User.withDefaultPasswordEncoder()
 	                .username(theUser.getEmail())
