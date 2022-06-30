@@ -133,6 +133,7 @@
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <button (click)="rezolva(element, true)">Admite</button> -->
+                    <button mat-raised-button (click)="verificaSemnatura(element)">	<mat-icon>check</mat-icon>VERIFICA SEMNATURA</button>
                     <button mat-raised-button (click)="rezolva(element, true)">	<mat-icon>check</mat-icon>ADMITE</button>
 
                     <!-- <button (click)="rezolva(element, false)">Respinge</button> -->
@@ -147,127 +148,7 @@
         <!-- ./Cereri ALL material table -->
 
 
-        <!-- <h2>Cereri document</h2>
-        <div *ngFor="let cfi of cereriDocumentAndFlowItems | keyvalue">
-            <div *ngIf="shouldDisplayCerereDetailed(cfi.key, 'document')">
-                <h3>Cerere: {{cfi.key}}</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID CERERE DOC</th>
-                            <th>ID</th>
-                            <th>Tip cerere</th>
-                            <th>Utilizator</th>
-                            <th>Date start</th>
-                            <th>Date end</th>
-                            <th>Motiv</th>
-                            <th>Status curent</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let fi of cfi.value">
-                            <td>
-                                {{fi.cerere.id}}
-                            </td>
-                            <td>
-                                {{fi.id}}
-                            </td>
-                            <td>
-                                {{fi.cerere.typeCerere}}
-                            </td>
-                            <td>
-                                <span *ngIf="fi.cerere.userAssociated; else noUserAssociated">
-                                    {{fi.cerere.userAssociated.email}}
-                                </span>
-                                <ng-template #noUserAssociated>
-                                    <span>No user associated</span>
-                                </ng-template>
-                            </td>
-                            <td>
-                                {{fi.cerere.dateStart}}
-                            </td>
-                            <td>
-                                {{fi.cerere.dateEnd}}
-                            </td>
-                            <td>
-                                {{fi.motiv}}
-                            </td>
-                            <td>
-                                <span>
-                                    {{fi.status == 2 ? 'PENDING' : fi.status == 1 ? 'ACCEPTATA' : 'RESPINSA'}}
-                                </span>
-                            </td>
-                            <td>
-                                <button (click)="rezolva(fi, true)">Admite</button>
-                                <button (click)="rezolva(fi, false)">Respinge</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <hr>
-        <h2> Cereri detailed</h2>
-        <div *ngFor="let cfi of cereriDetailedAndFlowItems | keyvalue">
-            <div *ngIf="shouldDisplayCerereDetailed(cfi.key, 'detailed')">
-              
-                <h3>Cerere detailed: {{cfi.key}}</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID CERERE DETAILED</th>
-                            <th>ID</th>
-                            <th>Tip cerere</th>
-                            <th>Utilizator</th>
-                            <th>Date start</th>
-                            <th>Date end</th>
-                            <th>Motiv</th>
-                            <th>Status curent</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let fi of cfi.value">
-                            <td>
-                                {{fi.cerereDetailed.id}}
-                            </td>
-                            <td>
-                                {{fi.id}}
-                            </td>
-                            <td>
-                                {{fi.cerereDetailed.typeCerere}}
-                            </td>
-                            <td>
-                                <span *ngIf="fi.cerereDetailed.user; else noUserAssociated">
-                                    {{fi.cerereDetailed.user.email}}
-                                </span>
-                                <ng-template #noUserAssociated>
-                                    <span>No user associated</span>
-                                </ng-template>
-                            </td>
-                            <td>
-                                {{fi.cerereDetailed.dateStart | date : 'yyyy-MM-dd'}}
-                            </td>
-                            <td>
-                                {{fi.cerereDetailed.dateEnd | date : 'yyyy-MM-dd'}}
-                            </td>
-                            <td>
-                                {{fi.motiv}}
-                            </td>
-                            <td>
-                                <span>
-                                    {{fi.status == 2 ? 'PENDING' : fi.status == 1 ? 'ACCEPTATA' : 'RESPINSA'}}
-                                </span>
-                            </td>
-                            <td>
-                                <button (click)="rezolva(fi, true)">Admite</button>
-                                <button (click)="rezolva(fi, false)">Respinge</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
+     
     </div>
 
 </div>

@@ -7,6 +7,7 @@ import { saveAs as importedSaveAs } from "file-saver";
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogTableFlowItemsComponent } from './dialog-table-flow-items/dialog-table-flow-items.component';
 import { DataTableFlowItemAdmiteRespinge } from '../model/data-table-flow-item-admite-respinge';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -29,7 +30,8 @@ export class CereriFlowMyComponent implements OnInit {
   flowItems: any[] = [];
   constructor(private flowService: FlowService,
     private fileUploadDownloadService: FileUploadDownloadService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
   cereriAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
   cereriDetailedAndFlowItems: Map<number, any[]> = new Map<number, any[]>();
@@ -217,6 +219,25 @@ export class CereriFlowMyComponent implements OnInit {
       });
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
+  verificaSemnatura(flowItem: any){
+    console.log('verifica: ', flowItem);
+    this.flowService.verificaDocumentSemnatura(flowItem.idCerereDetailedOrDocument)
+      .subscribe(
+        rez => {
+          console.log('rez: ', rez);
+          this.openSnackBar('Verificare: ' + rez.verificationStatus, 'Close')
+        },
+        err => {
+          console.log('err', err);
+          this.openSnackBar('Verificare esuata', 'Close')
+
+        }
+      )
+  }
 
   rezolva(flowItem: any, status: boolean) {
     if (status) {

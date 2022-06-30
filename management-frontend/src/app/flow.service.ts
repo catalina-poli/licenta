@@ -26,6 +26,10 @@ export class FlowService {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/cerere/flow/to-be-seen-by-me`, this.loginService.configureHeaderOptionsForOAuth());
   }
 
+  verificaDocumentSemnatura(idDoc: number): Observable<any>{
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/cerere/verify-signature/${idDoc}`, this.loginService.configureHeaderOptionsForOAuth());
+
+  }
 
   modifyFlowItemStatus(dto: any){
     return this.serviciuHttpClient.put(`http://localhost:8080/rest/flow/update-status`, dto, this.loginService.configureHeaderOptionsForOAuth());

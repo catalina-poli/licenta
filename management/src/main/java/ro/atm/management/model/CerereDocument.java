@@ -32,6 +32,9 @@ public class CerereDocument {
 	@Lob
 	private byte[] contents;
 	
+	@Lob
+	private byte[] signature;
+	
 	@OneToOne
     @MapsId
     @JoinColumn(name = "id_cerere")
@@ -76,6 +79,16 @@ public class CerereDocument {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+
+	public byte[] getSignature() {
+		return signature;
+	}
+
+	public void setSignature(byte[] signature) {
+		this.signature = signature;
+	}
+	
+	
 	
 	
 }

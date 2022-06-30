@@ -6,6 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +46,13 @@ public class FileStorageService {
 
 	@Autowired
 	private RepoCerere repoCerere;
-	
+
 	@Autowired
 	private RepoAnunt repoAnunt;
-	
+
 	@Autowired
 	private RepoCategorieSablon repoCategorieSablon;
-	
+
 	@Autowired
 	private RepoMessage repoMessage;
 
@@ -60,7 +66,8 @@ public class FileStorageService {
 		}
 	}
 
-	public CategorieSablon storeFileSablon(MultipartFile file, String sablonLeafCategoryNodeName, int categorieParinteId) {
+	public CategorieSablon storeFileSablon(MultipartFile file, String sablonLeafCategoryNodeName,
+			int categorieParinteId) {
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -87,9 +94,9 @@ public class FileStorageService {
 		} catch (IOException ex) {
 			throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
 		}
-		
+
 	}
-	
+
 	public Anunt storeFileAnunt(MultipartFile file, String title) {
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -107,7 +114,7 @@ public class FileStorageService {
 			Anunt anuntDocument = new Anunt();
 			anuntDocument.setTitlu(title);
 			anuntDocument.setContents(file.getInputStream().readAllBytes());
-			anuntDocument.setDocumentType(file.getContentType());			
+			anuntDocument.setDocumentType(file.getContentType());
 			anuntDocument.setFilename(fileName);
 			Anunt saved = this.repoAnunt.save(anuntDocument);
 
@@ -115,7 +122,7 @@ public class FileStorageService {
 		} catch (IOException ex) {
 			throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
 		}
-		
+
 	}
 
 	public String storeFile(MultipartFile file, String documentType, Integer idCerere) {
@@ -144,14 +151,38 @@ public class FileStorageService {
 //					doc.setIdCerere(idCerere);
 					doc.setCerere(cerere);
 					doc.setFilename(fileName);
+
+					try {
+
+						KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+						
+						X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(//pub key
+								cerere.getUserAssociated().getPublicKey());
+						PKCS8EncodedKeySpec bobPrivKeySpec = new PKCS8EncodedKeySpec(//prv key
+								cerere.getUserAssociated().getPrivateKey());
+						
+						PrivateKey bobPrivKey = keyFactory.generatePrivate(bobPrivKeySpec);
+
+						Signature sig = Signature.getInstance("SHA1WithRSA");
+						sig.initSign(bobPrivKey);
+						sig.update(doc.getContents());
+						byte[] signatureBytes = sig.sign();
+						doc.setSignature(signatureBytes);
+
+					} catch (Exception e) {
+						System.out.println("ERR GENERATING KEYS");
+						e.printStackTrace();
+					}
+
+					// doc.setContents(null);
 					this.repoCerereDocument.save(doc);
-					
+
 					Message message = new Message();
 					message.setContents("New cerere added");
 					message.setDatePosted(new Date());
 					message.setMessageType("system");
 					message.setReceiver(cerere.getUserAssociated());
-				
+
 					this.repoMessage.save(message);
 				}
 			}

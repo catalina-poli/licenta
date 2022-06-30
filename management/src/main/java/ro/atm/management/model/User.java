@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -38,26 +39,37 @@ public class User {
 	private String userType;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, 
-	inverseJoinColumns = {
+	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private Set<Role> userRoles;
 
-	
-	@Column(name="status")
+	@JsonIgnore
+	@Column(name = "email_confirmation_token")
+	private String emailConfirmationToken;
+
+	@Column(name = "status")
 	@Convert(converter = StatusAttributeConverter.class)
 	private Status status;
-	
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "anunturi_users", joinColumns = { @JoinColumn(name = "id_user") }, 
-	inverseJoinColumns = {
+	@JoinTable(name = "anunturi_users", joinColumns = { @JoinColumn(name = "id_user") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_anunt") })
 	private Set<Anunt> anunturi;
-	
+
+	@JsonIgnore
+	@Lob
+	@Column(name = "private_key")
+	private byte[] privateKey;
+
+	@JsonIgnore
+	@Lob
+	@Column(name = "public_key")
+	private byte[] publicKey;
+
 	private String nume;
 	private String prenume;
 	private String phone;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -105,10 +117,6 @@ public class User {
 	public void setUserRoles(Set<Role> userRoles) {
 		this.userRoles = userRoles;
 	}
-	
-	
-	
-	
 
 	public Set<Anunt> getAnunturi() {
 		return anunturi;
@@ -125,8 +133,6 @@ public class User {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
-	
 
 	public String getNume() {
 		return nume;
@@ -150,6 +156,30 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmailConfirmationToken() {
+		return emailConfirmationToken;
+	}
+
+	public void setEmailConfirmationToken(String emailConfirmationToken) {
+		this.emailConfirmationToken = emailConfirmationToken;
+	}
+
+	public byte[] getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(byte[] privateKey) {
+		this.privateKey = privateKey;
+	}
+
+	public byte[] getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(byte[] publicKey) {
+		this.publicKey = publicKey;
 	}
 
 	@Override

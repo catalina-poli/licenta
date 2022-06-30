@@ -1,6 +1,16 @@
 package ro.atm.management.controllers;
 
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +39,7 @@ import ro.atm.management.dto.UserCerere;
 import ro.atm.management.exceptions.InexistingUserException;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.CerereDetailed;
+import ro.atm.management.model.CerereDocument;
 import ro.atm.management.model.CerereType;
 import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.Group;
@@ -37,6 +48,7 @@ import ro.atm.management.model.Role;
 import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoCerere;
 import ro.atm.management.repo.RepoCerereDetailed;
+import ro.atm.management.repo.RepoCerereDocument;
 import ro.atm.management.repo.RepoCerereType;
 import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoGroup;
@@ -71,12 +83,15 @@ public class CerereController {
 
 	@Autowired
 	private RepoMessage repoMessage;
-	
+
 	@Autowired
 	private MessageService messageService;
-	
+
 	@Autowired
 	private ESCerereService esCerereService;
+
+	@Autowired
+	private RepoCerereDocument repoCerereDocument;
 
 	@GetMapping("/all")
 	public List<Cerere> allCereri(Principal principal) {
@@ -94,19 +109,16 @@ public class CerereController {
 		return repoCerere.findAllByUserAssociatedOrderByDateCreatedDesc(userLogat);
 	}
 
-	
-	
 	@GetMapping("/all-paginated-detailed/{type}/{page}/{size}/{sort}/{order}/{archived}")
 	public Page<CerereDetailed> allCereriDetailedPaginated(Principal principal, @PathVariable("type") String type,
 			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
-			@PathVariable("order") String order,
-			@PathVariable("archived") boolean archived) {
-		
+			@PathVariable("order") String order, @PathVariable("archived") boolean archived) {
+
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		boolean admin = false;
 		Pageable pageCurrent = PageRequest.of(page, size,
 				order.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
-		
+
 		for (Role role : userLogat.getUserRoles()) {
 			if (role.getRoleName().equals("ADMIN")) {
 				admin = true;
@@ -117,23 +129,25 @@ public class CerereController {
 		System.out.println("TYPE: " + type);
 		if (type.equals("all")) {
 			if (admin) {
-				return repoCerereDetailed.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived? 1 : 0);
+				return repoCerereDetailed.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived ? 1 : 0);
 			}
-			return repoCerereDetailed.findAllByUserAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat, archived? 1:0);
+			return repoCerereDetailed.findAllByUserAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat,
+					archived ? 1 : 0);
 		} else {
 			if (admin) {
-				return repoCerereDetailed.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type, archived? 1: 0);
+				return repoCerereDetailed.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type,
+						archived ? 1 : 0);
 			}
-			return repoCerereDetailed.findAllByTypeCerereAndUserAndArchivedOrderByDateCreatedDesc(pageCurrent, type, userLogat, archived? 1:0);
+			return repoCerereDetailed.findAllByTypeCerereAndUserAndArchivedOrderByDateCreatedDesc(pageCurrent, type,
+					userLogat, archived ? 1 : 0);
 		}
-		
-	}	
+
+	}
 
 	@GetMapping("/all-paginated/{type}/{page}/{size}/{sort}/{order}/{archived}")
 	public Page<Cerere> allCereriPaginated(Principal principal, @PathVariable("type") String type,
 			@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sort") String sort,
-			@PathVariable("order") String order,
-			@PathVariable("archived") boolean archived) {
+			@PathVariable("order") String order, @PathVariable("archived") boolean archived) {
 		User userLogat = this.repoUser.findByEmail(principal.getName()).get();
 		boolean admin = false;
 		Pageable pageCurrent = PageRequest.of(page, size,
@@ -149,14 +163,17 @@ public class CerereController {
 		System.out.println("TYPE: " + type);
 		if (type.equals("all")) {
 			if (admin) {
-				return repoCerere.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived? 1:0);
+				return repoCerere.findAllByArchivedOrderByDateCreatedDesc(pageCurrent, archived ? 1 : 0);
 			}
-			return repoCerere.findAllByUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat, archived? 1:0);
+			return repoCerere.findAllByUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, userLogat,
+					archived ? 1 : 0);
 		} else {
 			if (admin) {
-				return repoCerere.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type, archived? 1:0);
+				return repoCerere.findAllByTypeCerereAndArchivedOrderByDateCreatedDesc(pageCurrent, type,
+						archived ? 1 : 0);
 			}
-			return repoCerere.findAllByTypeCerereAndUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, type, userLogat, archived? 1:0);
+			return repoCerere.findAllByTypeCerereAndUserAssociatedAndArchivedOrderByDateCreatedDesc(pageCurrent, type,
+					userLogat, archived ? 1 : 0);
 		}
 	}
 
@@ -164,7 +181,7 @@ public class CerereController {
 	public Cerere getCerereDupaId(@PathVariable("idCerere") int id) {
 		return repoCerere.findById(id).get();
 	}
-	
+
 	@GetMapping("/detailed/by-id/{idCerere}")
 	public CerereDetailed getCerereDetailedDupaId(@PathVariable("idCerere") int id) {
 		return repoCerereDetailed.findById(id).get();
@@ -181,6 +198,39 @@ public class CerereController {
 	@GetMapping("/all-restanta")
 	public List<Cerere> getRestante() {
 		return this.repoCerere.findByTypeCerere("restanta");
+	}
+
+	@GetMapping("/verify-signature/{id}")
+	public Map<String, Boolean> verifySignature(@PathVariable("id") int id)
+			throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+		Map<String, Boolean> result = new HashMap<>();
+
+		// FlowCerere flowCerere = this.repoFlow.findById(idFlow).get();
+		
+		CerereDocument doc = this.repoCerereDocument.findById(id).get();
+
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+		User userAssociated = doc.getCerere().getUserAssociated();
+		System.out.println("USER ASSOCIATED: " + userAssociated.getEmail());
+		X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(// pub key
+				doc.getCerere().getUserAssociated().getPublicKey());		
+		PublicKey bobPubKey = keyFactory.generatePublic(bobPubKeySpec);
+		
+
+		Signature publicSignature = Signature.getInstance("SHA1WithRSA");
+
+//		 Signature publicSignature = Signature.getInstance("SHA256withRSA");
+		publicSignature.initVerify(bobPubKey);
+		publicSignature.update(doc.getContents());
+		boolean verificationStatus = publicSignature.verify(doc.getSignature());
+
+//			byte[] signatureBytes = Base64.getDecoder().decode(signature);
+
+//		    boolean verificationStatus = publicSignature.verify(signatureBytes);
+
+		result.put("verificationStatus", verificationStatus);
+		return result;
 	}
 
 	private void saveCerereFlowForCerereAndUserStatus2Pending(Cerere cerereSalvata,
@@ -227,38 +277,37 @@ public class CerereController {
 			flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
 			this.repoFlow.save(flowCerere);
 		}
-		
+
 		return saved;
 	}
 
-	
 	@PostMapping("/archive/{cerereType}/{idCerere}")
 	public Map<String, Boolean> archiveCerere(@PathVariable("cerereType") String cerereType,
-			@PathVariable("idCerere") int idCerere){
+			@PathVariable("idCerere") int idCerere) {
 		Map<String, Boolean> result = new HashMap<>();
 		result.put("result", true);
 		try {
-		if(cerereType.equals("CERERE_DOCUMENT")) {
-			//CerereDocument cerereDocument = this.repoCerere
-			Cerere cerereDocument = this.repoCerere.findById(idCerere).get();
-			cerereDocument.setArchived(1);
-			Cerere cerereDocumentSaved = this.repoCerere.save(cerereDocument);
-			this.esCerereService.saveCerere(cerereDocumentSaved);
-			
-		}else {
-			CerereDetailed cerereDetailed = this.repoCerereDetailed.findById(idCerere).get();
-			cerereDetailed.setArchived(1);
-			CerereDetailed cerereDetailedSaved = this.repoCerereDetailed.save(cerereDetailed);
-			this.esCerereService.saveCerere(cerereDetailedSaved);
-		}
-	} catch (Exception e) {
+			if (cerereType.equals("CERERE_DOCUMENT")) {
+				// CerereDocument cerereDocument = this.repoCerere
+				Cerere cerereDocument = this.repoCerere.findById(idCerere).get();
+				cerereDocument.setArchived(1);
+				Cerere cerereDocumentSaved = this.repoCerere.save(cerereDocument);
+				this.esCerereService.saveCerere(cerereDocumentSaved);
+
+			} else {
+				CerereDetailed cerereDetailed = this.repoCerereDetailed.findById(idCerere).get();
+				cerereDetailed.setArchived(1);
+				CerereDetailed cerereDetailedSaved = this.repoCerereDetailed.save(cerereDetailed);
+				this.esCerereService.saveCerere(cerereDetailedSaved);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("result", false);
 		}
-		
+
 		return result;
 	}
-	
+
 	@PostMapping("/save-with-users/{type}")
 	public Cerere saveCerereWithUsers(@RequestBody DtoCerereWithUsers cerereNouaDto, Principal principal,
 			@PathVariable("type") String type) throws InexistingUserException {
@@ -288,7 +337,6 @@ public class CerereController {
 			cerereSalvata = this.repoCerere.save(cerereNoua);
 		}
 
-		
 		CerereDetailed cerereDetailedSalvata = null;
 		if (cerereDetailed != null) {
 			cerereDetailedSalvata = this.repoCerereDetailed.save(cerereDetailed);
@@ -304,7 +352,8 @@ public class CerereController {
 				flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
 				flowCerere.setCanInterrupt(uc.getCanInterrupt());
 				flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
-				this.messageService.sendMessage(principal, uc.getId(), MessageService.NEW_MESSAGE_ANUNT, MessageType.CHAT);
+				this.messageService.sendMessage(principal, uc.getId(), MessageService.NEW_MESSAGE_ANUNT,
+						MessageType.CHAT);
 				this.repoFlow.save(flowCerere);
 			}
 		} else if (type.equals("DEFAULT_FLOW_USERS")) {

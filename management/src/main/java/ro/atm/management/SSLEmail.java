@@ -13,7 +13,7 @@ public class SSLEmail {
 	 * Outgoing Mail (SMTP) Server requires TLS or SSL: smtp.gmail.com (use
 	 * authentication) Use Authentication: Yes Port for SSL: 465
 	 */
-	public static void sendTheEmailForActivation(String toEmail, int userId){
+	public static void sendTheEmailForActivation(String toEmail, int userId, String emailToken){
 		final String fromEmail = "manag@localhost.com"; // requires valid gmail id
 		final String password = "1234"; // correct password for gmail id
 //		final String toEmail = "jim@localhost.com";//  "spirescualex@gmail.com"; // can be any email id
@@ -35,7 +35,7 @@ public class SSLEmail {
 
 		Session session = Session.getDefaultInstance(props, auth);
 		System.out.println("Session created");
-		EmailUtil.sendEmail(session, toEmail, "SSLEmail Testing Subject", "To confirm account click <a href=\"http://localhost:8080/security/useri/confirm-account/"+userId+"\">Here</a>");
+		EmailUtil.sendEmail(session, toEmail, "SSLEmail Testing Subject", "To confirm account click <a href=\"http://localhost:8080/security/useri/confirm-account/"+userId+ "/" + emailToken+"\">Here</a>");
 
 		
 
