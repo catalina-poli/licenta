@@ -16,4 +16,5 @@ public interface RepoUser extends CrudRepository<User, Integer>{
 	public Optional<User> findByEmail(String email);
 	public List<User> findByUserType(String userType);
 	public List<User> findByUserRolesIn(Iterable<Role> userRoles);
+	public List<User> findByIsConfirmed(Integer isConfirmed);
 }

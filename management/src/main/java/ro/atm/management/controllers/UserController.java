@@ -3,13 +3,12 @@ package ro.atm.management.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ro.atm.management.SSLEmail;
+import ro.atm.management.dto.DtoConfirmUser;
 import ro.atm.management.dto.UserDetailsDto;
 import ro.atm.management.model.CustomFlow;
 import ro.atm.management.model.CustomFlowMember;
@@ -51,9 +52,20 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/all")
-	public Iterable<User> getUsers(){
-		return repoUser.findAll();
+	public List<User> getUsers(){
+		return repoUser.findByIsConfirmed(1);
 	}
+	
+	@GetMapping("/all-by-status-confirmed/{confirmedStatus}")
+	public List<User> getUsersByStatus(@PathVariable("confirmedStatus") Integer confirmedStatus){
+		return repoUser.findByIsConfirmed(confirmedStatus);
+	}
+	
+	@GetMapping("/all-by-status-not-yet")
+	public List<User> getUsersByStatus(){
+		return repoUser.findByIsConfirmed(null);
+	}
+	
 	
 	@GetMapping("/all-cerere")
 	public List<User> getUsersForCerere(){
@@ -64,6 +76,21 @@ public class UserController {
 		return usersWithRoles;
 	}
 	
+	
+	@PostMapping("/confirm-user")
+	public ResponseEntity<User> confirmUser(@RequestBody DtoConfirmUser dto, Principal principal) {
+		User user = this.repoUser.findById(dto.getUserId()).get();
+		User loggedIn = this.userService.getUser(principal).get();
+		
+		if(!this.userService.isAdmin(loggedIn)) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		user.setIsConfirmed(dto.getConfirmationStatus());
+		this.repoUser.save(user);
+		SSLEmail.sendConfirmationEmail(user.getEmail(), dto.getConfirmationStatus());
+		return ResponseEntity.ok(user);
+	}
 	
 	
 	@GetMapping("/all-users-for-add-to-flow/{customFlowId}")

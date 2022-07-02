@@ -209,19 +209,19 @@ public class CerereController {
 		
 		CerereDocument doc = this.repoCerereDocument.findById(id).get();
 
-		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");//gen pereche de chei
 
 		User userAssociated = doc.getCerere().getUserAssociated();
 		System.out.println("USER ASSOCIATED: " + userAssociated.getEmail());
-		X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(// pub key
+		X509EncodedKeySpec cheiePublica = new X509EncodedKeySpec(// pub key
 				doc.getCerere().getUserAssociated().getPublicKey());		
-		PublicKey bobPubKey = keyFactory.generatePublic(bobPubKeySpec);
+		PublicKey userPubKey = keyFactory.generatePublic(cheiePublica);
 		
 
 		Signature publicSignature = Signature.getInstance("SHA1WithRSA");
 
 //		 Signature publicSignature = Signature.getInstance("SHA256withRSA");
-		publicSignature.initVerify(bobPubKey);
+		publicSignature.initVerify(userPubKey);
 		publicSignature.update(doc.getContents());
 		boolean verificationStatus = publicSignature.verify(doc.getSignature());
 

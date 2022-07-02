@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { LoginService } from './login.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,12 @@ export class UserService {
   findAllUsers(): Observable<any[]> {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all`, this.loginService.configureHeaderOptionsForOAuth());
   }
+  findAllUsersByStatus(status:number): Observable<any[]> {
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-by-status-confirmed/${status}`, this.loginService.configureHeaderOptionsForOAuth());
+  }
+  findAllUsersByStatusNotYet(): Observable<any[]> {
+    return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-by-status-not-yet`, this.loginService.configureHeaderOptionsForOAuth());
+  }
 
   findAllUsersForCerere(): Observable<any[]> {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-cerere`, this.loginService.configureHeaderOptionsForOAuth());
@@ -25,6 +32,14 @@ export class UserService {
     return this.serviciuHttpClient.get<any[]>(`http://localhost:8080/rest/useri/all-users-for-add-to-flow/${customFlowId}`, this.loginService.configureHeaderOptionsForOAuth());
   }
   
+  confirmUserAccount(idUser: number, status: number):Observable<any>{
+    const dto = {
+      userId: idUser,
+      confirmationStatus : status
+    };
+    return this.serviciuHttpClient.post<any>(`${environment.serverPath}/rest/useri/confirm-user`, dto, this.loginService.configureHeaderOptionsForOAuth());
+
+  }
 
   registerUser(username: string, password: string, type: string, nume: string, prenume: string, phone: string, selectedRoles: any[]): Observable<any> {
     const userObj = {

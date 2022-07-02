@@ -44,6 +44,11 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     			throw new RuntimeException("User account not active yet");
     		}
     		
+    		
+    		if(theUser.getIsConfirmed() == null || theUser.getIsConfirmed().equals(0)) {
+    			throw new RuntimeException("User account is not confirmed");
+    		}
+    		
     		UserDetails springSecurityUser = User.withDefaultPasswordEncoder()
 	                .username(theUser.getEmail())
 	                .password(theUser.getPassword())

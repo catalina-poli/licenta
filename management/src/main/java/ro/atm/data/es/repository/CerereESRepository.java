@@ -1,7 +1,5 @@
 package ro.atm.data.es.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -27,14 +25,5 @@ public interface CerereESRepository extends ElasticsearchRepository<CerereESMode
 	@Query("{\"bool\": {\"must\": [{\"match\": {\"judet\": \"?0\"}}]}}")
 	Page<CerereESModel> searchCustomQueryJudet(String judet, Pageable pageable);
 
-//    Page<Article> findByAuthorsName(String name, Pageable pageable);
-//
-//    @Query("{\"bool\": {\"must\": [{\"match\": {\"authors.name\": \"?0\"}}]}}")
-//    Page<Article> findByAuthorsNameUsingCustomQuery(String name, Pageable pageable);
-//
-//    @Query("{\"bool\": {\"must\": {\"match_all\": {}}, \"filter\": {\"term\": {\"tags\": \"?0\" }}}}")
-//    Page<Article> findByFilteredTagQuery(String tag, Pageable pageable);
-//
-//    @Query("{\"bool\": {\"must\": {\"match\": {\"authors.name\": \"?0\"}}, \"filter\": {\"term\": {\"tags\": \"?1\" }}}}")
-//    Page<Article> findByAuthorsNameAndFilteredTagQuery(String name, String tag, Pageable pageable);
+
 }

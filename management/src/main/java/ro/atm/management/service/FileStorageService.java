@@ -156,15 +156,15 @@ public class FileStorageService {
 
 						KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 						
-						X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(//pub key
-								cerere.getUserAssociated().getPublicKey());
-						PKCS8EncodedKeySpec bobPrivKeySpec = new PKCS8EncodedKeySpec(//prv key
+//						X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(//pub key
+//								cerere.getUserAssociated().getPublicKey());
+						PKCS8EncodedKeySpec cheiePrivata = new PKCS8EncodedKeySpec(//prv key
 								cerere.getUserAssociated().getPrivateKey());
 						
-						PrivateKey bobPrivKey = keyFactory.generatePrivate(bobPrivKeySpec);
+						PrivateKey userPrivKey = keyFactory.generatePrivate(cheiePrivata);
 
 						Signature sig = Signature.getInstance("SHA1WithRSA");
-						sig.initSign(bobPrivKey);
+						sig.initSign(userPrivKey);
 						sig.update(doc.getContents());
 						byte[] signatureBytes = sig.sign();
 						doc.setSignature(signatureBytes);

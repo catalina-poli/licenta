@@ -72,20 +72,6 @@ public class UnsecuredUserController {
 		PublicKey publicKey = kp.getPublic();
 		PrivateKey privateKey = kp.getPrivate();
 		
-		
-		
-		
-		
-		
-		
-//		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DSA");
-//		
-//		keyPairGen.initialize(2048);
-//		KeyPair pair = keyPairGen.generateKeyPair();
-
-		// Getting the private key from the key pair
-//		PrivateKey privKey = pair.getPrivate();
-//	      PublicKey publicKey = pair.getPublic(); 
 
 		user.setPrivateKey(privateKey.getEncoded());
 		user.setPublicKey(publicKey.getEncoded());

@@ -69,6 +69,9 @@ public class User {
 	private String nume;
 	private String prenume;
 	private String phone;
+	
+	@Column(name="is_confirmed")
+	private Integer isConfirmed;
 
 	public Integer getId() {
 		return id;
@@ -180,6 +183,16 @@ public class User {
 
 	public void setPublicKey(byte[] publicKey) {
 		this.publicKey = publicKey;
+	}
+	
+	
+
+	public Integer getIsConfirmed() {
+		return isConfirmed;
+	}
+
+	public void setIsConfirmed(Integer isConfirmed) {
+		this.isConfirmed = isConfirmed;
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 <div class="example-container mat-elevation-z8">
-   
+
     <!-- <input type="text" placeholder="Email" [(ngModel)]="userNou.email"> <br>
     <input type="password" placeholder="Password" [(ngModel)]="userNou.password"><br>
     <button (click)="register()">Register</button> -->
@@ -15,18 +15,52 @@
         <tbody>
             <tr *ngFor="let u of useri">
                 <td>
-                   {{u.id}}
+                    {{u.id}}
                 </td>
                 <td>
                     <h2>{{u.email}}</h2>
                 </td>
                 <td>
-                    <button mat-raised-button color="accent"><mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE</button>
+                    <button mat-raised-button color="accent">
+                        <mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE
+                    </button>
                 </td>
             </tr>
         </tbody>
     </table>
 
+
+
 </div>
 
 
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let u of useriNotConfirmed">
+            <td>
+                {{u.id}}
+            </td>
+            <td>
+                <h2>{{u.email}}</h2>
+            </td>
+            <td>
+                <button mat-raised-button color="accent">
+                    <mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE
+                </button>
+                <button (click)="confirmUser(u.id ? u.id : -1, 1)" mat-raised-button color="accent">
+                    <mat-icon>supervised_user_circle</mat-icon>CONFIRM ACCOUNT
+                </button>
+                <button (click)="confirmUser(u.id ? u.id : -1, 0)" mat-raised-button color="accent">
+                    <mat-icon>supervised_user_circle</mat-icon>DENY ACCOUNT
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
