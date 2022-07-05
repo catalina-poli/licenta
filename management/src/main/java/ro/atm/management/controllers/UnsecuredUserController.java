@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ro.atm.management.SSLEmail;
+import ro.atm.management.SenderEmail;
 import ro.atm.management.dto.RegisterUserDto;
 import ro.atm.management.model.Role;
 import ro.atm.management.model.Status;
@@ -104,7 +103,11 @@ public class UnsecuredUserController {
 
 		User userSaved = repoUser.save(user);
 
-		SSLEmail.sendTheEmailForActivation(userSaved.getEmail(), userSaved.getId(), emailToken);
+		//  let userId = url.searchParams.get("userId");
+  		 // let token =  url.searchParams.get("token");
+		String contentText = "To confirm account click <a href=\"http://localhost:8080/account-confirmation?userId="+userSaved.getId()+ "&token=" + emailToken+"\">Here</a>";
+		SenderEmail.sendEmail("New account created", userSaved.getEmail(), contentText);
+		//  SSLEmail.sendTheEmailForActivation(userSaved.getEmail(), userSaved.getId(), emailToken);
 		return userSaved;
 	}
 

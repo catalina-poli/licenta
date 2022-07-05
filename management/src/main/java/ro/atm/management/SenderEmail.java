@@ -3,12 +3,19 @@ package ro.atm.management;
 import com.sendgrid.*;
 import java.io.IOException;
 
-public class Example {
-	public static void main(String[] args) throws IOException {
+public class SenderEmail {
+	
+	/**
+	 * 
+	 * @param subjectText
+	 * @param toAddress
+	 * @param contentText
+	 */
+	public static void sendEmail(String subjectText, String toAddress, String contentText) {
 		Email from = new Email("stroe242@gmail.com");
-		String subject = "Sending with SendGrid is Fun";
-		Email to = new Email("spirescualex@gmail.com");
-		Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+		String subject = subjectText;
+		Email to = new Email(toAddress);
+		Content content = new Content("text/html", contentText);
 		Mail mail = new Mail(from, subject, to, content);
 
 		SendGrid sg = new SendGrid("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"); // System.getenv("SENDGRID_API_KEY")
@@ -22,7 +29,8 @@ public class Example {
 			System.out.println(response.getBody());
 			System.out.println(response.getHeaders());
 		} catch (IOException ex) {
-			throw ex;
+			ex.printStackTrace();
 		}
 	}
+	
 }

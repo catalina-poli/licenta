@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ro.atm.management.SSLEmail;
+import ro.atm.management.SenderEmail;
 import ro.atm.management.dto.DtoConfirmUser;
 import ro.atm.management.dto.UserDetailsDto;
 import ro.atm.management.model.CustomFlow;
@@ -88,7 +88,8 @@ public class UserController {
 		
 		user.setIsConfirmed(dto.getConfirmationStatus());
 		this.repoUser.save(user);
-		SSLEmail.sendConfirmationEmail(user.getEmail(), dto.getConfirmationStatus());
+		SenderEmail.sendEmail("Your account registration", user.getEmail(), "Status: " + dto.getConfirmationStatus());
+		
 		return ResponseEntity.ok(user);
 	}
 	
