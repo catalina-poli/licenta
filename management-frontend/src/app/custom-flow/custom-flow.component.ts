@@ -70,7 +70,7 @@ export class CustomFlowComponent implements OnInit {
         console.log('saved: ', rez);
       }, err => {
         console.log('err saving custom flow: ', err);
-        this.openSnackBar("Could not save custom flow, make sure all fields are set", "Close");
+        this.openSnackBar("Completează toate câmpurile pentru a salva fluxul personalizat!", "Close");
       })
   }
 }

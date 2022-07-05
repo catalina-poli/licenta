@@ -5,9 +5,9 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>User id</th>
-                <th>User email</th>
-                <th>Actions</th>
+                <th>Cod Identificare</th>
+                <th>Adresă de email</th>
+                <th>Acțiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -21,14 +21,14 @@
                 <td>
                     <!-- <button (click)="removeUserFromGroups(s)">Remove</button> -->
                     <button mat-raised-button color="warn" (click)="removeUserFromGroups(s)">
-                        <mat-icon>delete</mat-icon>REMOVE STUDENT
+                        <mat-icon>delete</mat-icon>ELIMINĂ 
                     </button>
                 </td>
             </tr>
         </tbody>
     </table>
     <mat-form-field appearance="fill">
-        <mat-label>Add student to group</mat-label>
+        <mat-label>Adaugă utilizator în acest grup!</mat-label>
         <mat-select [(ngModel)]="selectedStudent">
             <mat-option [value]="u" *ngFor="let u of users">{{u.email}}</mat-option>
         </mat-select>
@@ -36,7 +36,7 @@
 
     <div style="justify-content: flex-end;">
         <button mat-raised-button color="accent" (click)="addUserToGroup()">
-            <mat-icon>add</mat-icon>ADD USER
+            <mat-icon>add</mat-icon>ADAUGĂ
         </button>
     </div>
 
@@ -44,5 +44,5 @@
 
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">CLOSE</button>
+    <button mat-button (click)="onNoClick()">ÎNCHIDE</button>
 </div>

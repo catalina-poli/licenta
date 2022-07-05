@@ -8,11 +8,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -25,11 +24,14 @@ import ro.atm.management.model.Anunt;
 import ro.atm.management.model.CategorieSablon;
 import ro.atm.management.model.Cerere;
 import ro.atm.management.model.CerereDocument;
+import ro.atm.management.model.FlowCerere;
 import ro.atm.management.model.Message;
+import ro.atm.management.model.User;
 import ro.atm.management.repo.RepoAnunt;
 import ro.atm.management.repo.RepoCategorieSablon;
 import ro.atm.management.repo.RepoCerere;
 import ro.atm.management.repo.RepoCerereDocument;
+import ro.atm.management.repo.RepoFlowCerere;
 import ro.atm.management.repo.RepoMessage;
 
 @Service
@@ -55,6 +57,9 @@ public class FileStorageService {
 
 	@Autowired
 	private RepoMessage repoMessage;
+
+	@Autowired
+	private RepoFlowCerere repoFlowCerere;
 
 	public FileStorageService() {
 		this.fileStorageLocation = Paths.get(IDetail.uploadPath).toAbsolutePath().normalize();
@@ -155,12 +160,10 @@ public class FileStorageService {
 					try {
 
 						KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-						
-//						X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(//pub key
-//								cerere.getUserAssociated().getPublicKey());
-						PKCS8EncodedKeySpec cheiePrivata = new PKCS8EncodedKeySpec(//prv key
+
+						PKCS8EncodedKeySpec cheiePrivata = new PKCS8EncodedKeySpec(
 								cerere.getUserAssociated().getPrivateKey());
-						
+
 						PrivateKey userPrivKey = keyFactory.generatePrivate(cheiePrivata);
 
 						Signature sig = Signature.getInstance("SHA1WithRSA");
@@ -169,12 +172,28 @@ public class FileStorageService {
 						byte[] signatureBytes = sig.sign();
 						doc.setSignature(signatureBytes);
 
+						List<FlowCerere> flows = this.repoFlowCerere.findByCerere(cerere);
+						for (FlowCerere flow : flows) {
+							// KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+							User superior = flow.getSuperior();
+							PKCS8EncodedKeySpec cheiePrivataSuperior = new PKCS8EncodedKeySpec(superior.getPrivateKey());
+
+							PrivateKey userPrivKeySuperior = keyFactory.generatePrivate(cheiePrivataSuperior);
+
+							Signature sigSuperior = Signature.getInstance("SHA1WithRSA");
+							sigSuperior.initSign(userPrivKeySuperior);
+							sigSuperior.update(doc.getContents());
+							byte[] signatureBytesSuperior = sig.sign();
+							flow.setSignature(signatureBytesSuperior);
+							this.repoFlowCerere.save(flow);
+						}
+
 					} catch (Exception e) {
 						System.out.println("ERR GENERATING KEYS");
 						e.printStackTrace();
 					}
 
-					// doc.setContents(null);
 					this.repoCerereDocument.save(doc);
 
 					Message message = new Message();

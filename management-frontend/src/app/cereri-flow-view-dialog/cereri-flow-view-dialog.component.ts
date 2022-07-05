@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
 import { CereriService } from '../cereri.service';
@@ -37,15 +38,34 @@ export class CereriFlowViewDialogComponent implements OnInit {
   constructor(private serviceCerere: CereriService,
     private flowService: FlowService,
     public dialogRef: MatDialogRef<CereriFlowViewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _snackBar: MatSnackBar) { }
+
+
+    openSnackBar(message: string, action: string) {
+      this._snackBar.open(message, action);
+    }
+
+  verifySign(flowItem: any) {
+    this.flowService.verificaDocumentSemnaturaFlowRespondent(flowItem.id)
+      .subscribe(
+        rez =>{
+          console.log('rez: ', rez);
+          this.openSnackBar('Rezultat verificare: ' + rez.verificationStatus, 'Inchide');
+        },
+        err =>{
+          console.log('error verifying signature: ', err);
+        }
+      );
+  }
 
   calculAdmisRespinsPending(): string {
     let cerereAsAny = this.cerere ? this.cerere as any : this.cerereDetailed as any;
-    
+
     // let intrerupere = cerereAsAny['cerereType']['intrerupere'];
     // let intrerupere = false;
     for (let fi of this.flowItems) {
-      if(fi['canInterrupt'] == 1 && fi['status'] == 0){
+      if (fi['canInterrupt'] == 1 && fi['status'] == 0) {
         // intrerupere = true;
         return 'RESPINS';
       }
@@ -119,7 +139,7 @@ export class CereriFlowViewDialogComponent implements OnInit {
             console.log('err: ', err);
           }
         );
-    }else{
+    } else {
       this.serviceCerere.findDetailedById(this.idCerere)
         .subscribe(
           rez => {
@@ -134,7 +154,7 @@ export class CereriFlowViewDialogComponent implements OnInit {
         );
 
 
-        // TODO: edit!!!! merge pentru cerere document nu pentru detailed
+      // TODO: edit!!!! merge pentru cerere document nu pentru detailed
       this.serviceCerere.findAllGrupuriForCerere(this.idCerere)
         .subscribe(
           rez => {
@@ -162,26 +182,26 @@ export class CereriFlowViewDialogComponent implements OnInit {
   arhivare() {
     // archiveCerere
     // TODO: pentru document SAU detailed
-    if(this.cerere){
-    this.serviceCerere.archiveCerere('CERERE_DOCUMENT', this.cerere.id)
-      .subscribe(
-        rez => {
-          console.log('arhivare:', rez);
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }else{
+    if (this.cerere) {
+      this.serviceCerere.archiveCerere('CERERE_DOCUMENT', this.cerere.id)
+        .subscribe(
+          rez => {
+            console.log('arhivare:', rez);
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    } else {
       this.serviceCerere.archiveCerere('CERERE_DETAILED', this.cerereDetailed.id)
-      .subscribe(
-        rez => {
-          console.log('arhivare:', rez);
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        .subscribe(
+          rez => {
+            console.log('arhivare:', rez);
+          },
+          err => {
+            console.log(err);
+          }
+        );
     }
   }
 

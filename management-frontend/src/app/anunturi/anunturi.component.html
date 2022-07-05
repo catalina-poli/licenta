@@ -6,8 +6,8 @@
   
 
   <div *ngIf="canISeeAnuntButton()">
-    <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addAnunt()">Completeaza anunt</button>
-    <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addAnuntDocument()">Add anunt document</button>
+    <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addAnunt()">Completare</button>
+    <button style="margin-bottom: 30px;" mat-raised-button color="primary" (click)="addAnuntDocument()">Încărcare</button>
   </div>
 
   <!-- tabel cu paginare -->
@@ -22,30 +22,30 @@
         matSortDirection="desc">
         <!-- Number Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Identificare</th>
           <td mat-cell *matCellDef="let row">{{row.id}}</td>
         </ng-container>
 
         <!-- Title Column -->
         <ng-container matColumnDef="titlu">
-          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <th mat-header-cell *matHeaderCellDef>Titlu</th>
           <td mat-cell *matCellDef="let row">{{row.titlu}}</td>
         </ng-container>
 
         <ng-container matColumnDef="continut">
-          <th mat-header-cell *matHeaderCellDef>Continut</th>
+          <th mat-header-cell *matHeaderCellDef>Conținut</th>
           <td mat-cell *matCellDef="let row">{{row.continut}}</td>
         </ng-container>
 
         <ng-container matColumnDef="actionsCol">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef>Acțiuni posibile</th>
           <td mat-cell *matCellDef="let row">
 
-            <button (click)="delAnunt(row)" mat-button mat-raised-button color="warn">Delete</button>
+            <button (click)="delAnunt(row)" mat-button mat-raised-button color="warn">Ștergere</button>
             &nbsp;
             <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
-            <a *ngIf="!row.filename" mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a>
-            <button *ngIf="row.filename" mat-button mat-raised-button (click)="downloadAnunt(row)">Download</button>
+            <a *ngIf="!row.filename" mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>Vizualizare</a>
+            <button *ngIf="row.filename" mat-button mat-raised-button (click)="downloadAnunt(row)">Descărcare</button>
 
 
             <!-- <button (click)="updateSetSelected(row.id)" mat-button mat-raised-button>Update</button> -->

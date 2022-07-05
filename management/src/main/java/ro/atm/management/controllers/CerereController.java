@@ -205,29 +205,21 @@ public class CerereController {
 			throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 		Map<String, Boolean> result = new HashMap<>();
 
-		// FlowCerere flowCerere = this.repoFlow.findById(idFlow).get();
-		
 		CerereDocument doc = this.repoCerereDocument.findById(id).get();
 
-		KeyFactory keyFactory = KeyFactory.getInstance("RSA");//gen pereche de chei
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
 		User userAssociated = doc.getCerere().getUserAssociated();
 		System.out.println("USER ASSOCIATED: " + userAssociated.getEmail());
 		X509EncodedKeySpec cheiePublica = new X509EncodedKeySpec(// pub key
-				doc.getCerere().getUserAssociated().getPublicKey());		
+				doc.getCerere().getUserAssociated().getPublicKey());
 		PublicKey userPubKey = keyFactory.generatePublic(cheiePublica);
-		
 
 		Signature publicSignature = Signature.getInstance("SHA1WithRSA");
 
-//		 Signature publicSignature = Signature.getInstance("SHA256withRSA");
 		publicSignature.initVerify(userPubKey);
 		publicSignature.update(doc.getContents());
 		boolean verificationStatus = publicSignature.verify(doc.getSignature());
-
-//			byte[] signatureBytes = Base64.getDecoder().decode(signature);
-
-//		    boolean verificationStatus = publicSignature.verify(signatureBytes);
 
 		result.put("verificationStatus", verificationStatus);
 		return result;
@@ -349,11 +341,15 @@ public class CerereController {
 				flowCerere.setCerere(cerereSalvata);
 				flowCerere.setCerereDetailed(cerereDetailed);
 				flowCerere.setStatus(2); // PENDING
-				flowCerere.setSuperior(this.repoUser.findById(uc.getId()).get());
+
+				User superior = this.repoUser.findById(uc.getId()).get();
+				flowCerere.setSuperior(superior);
 				flowCerere.setCanInterrupt(uc.getCanInterrupt());
 				flowCerere.setPriority(cerereNouaDto.getUsersSelected().indexOf(uc));
 				this.messageService.sendMessage(principal, uc.getId(), MessageService.NEW_MESSAGE_ANUNT,
 						MessageType.CHAT);
+
+				
 				this.repoFlow.save(flowCerere);
 			}
 		} else if (type.equals("DEFAULT_FLOW_USERS")) {

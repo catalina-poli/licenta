@@ -7,9 +7,9 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <th>Cod Identificare</th>
+                <th>Adresă de email</th>
+                <th>Acțiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                 </td>
                 <td>
                     <button mat-raised-button color="accent">
-                        <mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE
+                        <mat-icon>supervised_user_circle</mat-icon>PROFIL UTILIZATOR
                     </button>
                 </td>
             </tr>
@@ -37,9 +37,9 @@
 <table>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Email</th>
-            <th>Actions</th>
+            <th>Cod Identificare</th>
+            <th>Adresă de email</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -52,13 +52,13 @@
             </td>
             <td>
                 <button mat-raised-button color="accent">
-                    <mat-icon>supervised_user_circle</mat-icon>VIEW USER PROFILE
+                    <mat-icon>supervised_user_circle</mat-icon>PROFIL UTILIZATOR
                 </button>
                 <button (click)="confirmUser(u.id ? u.id : -1, 1)" mat-raised-button color="accent">
-                    <mat-icon>supervised_user_circle</mat-icon>CONFIRM ACCOUNT
+                    <mat-icon>supervised_user_circle</mat-icon>CONFIRMĂ CONT
                 </button>
                 <button (click)="confirmUser(u.id ? u.id : -1, 0)" mat-raised-button color="accent">
-                    <mat-icon>supervised_user_circle</mat-icon>DENY ACCOUNT
+                    <mat-icon>supervised_user_circle</mat-icon>REFUZĂ
                 </button>
             </td>
         </tr>

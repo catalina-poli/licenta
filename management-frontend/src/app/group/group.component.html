@@ -1,12 +1,12 @@
 <div>
-    <h2>Groups</h2>
+    <h2>Grupuri</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Group name</th>
-                <th>In charge</th>
-                <th>Actions</th>
+                <th>Cod Identificare</th>
+                <th>Grupul de apartenență</th>
+                <!-- <th>In charge</th> -->
+                <th>Acțiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
                 <td>
                     {{g.numeGrup}}
                 </td>
-                <td>
+                <!-- <td>
                     <span *ngIf="g.userInCharge; else noUserInCharge">
                         {{g.userInCharge.email}}
                     </span>
@@ -27,11 +27,11 @@
                         </span>
                     </ng-template>
 
-                </td>
+                </td> -->
                 <td>
                     <!-- <button (click)="viewStudents(g)">View students</button> -->
                     <!-- <button mat-raised-button color="accent" (click)="viewStudents(g)"><mat-icon>contacts</mat-icon>VIEW STUDENTS</button> -->
-                    <button mat-raised-button color="accent" (click)="viewStudentsDialog(g)"><mat-icon>contacts</mat-icon>VIEW STUDENTS DIALOG</button>
+                    <button mat-raised-button color="accent" (click)="viewStudentsDialog(g)"><mat-icon>contacts</mat-icon>Utilizatori </button>
                 </td>
             </tr>
         </tbody>

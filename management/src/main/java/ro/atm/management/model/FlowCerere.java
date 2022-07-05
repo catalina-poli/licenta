@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -35,6 +36,10 @@ public class FlowCerere {
 	
 	@Column(name="priority")
 	private Integer priority;
+	
+	
+	@Lob
+	private byte[] signature;
 	
 	private Integer status;
 	
@@ -112,6 +117,17 @@ public class FlowCerere {
 
 	public void setCerereDetailed(CerereDetailed cerereDetailed) {
 		this.cerereDetailed = cerereDetailed;
+	}
+	
+	
+	
+
+	public byte[] getSignature() {
+		return signature;
+	}
+
+	public void setSignature(byte[] signature) {
+		this.signature = signature;
 	}
 
 	@Override

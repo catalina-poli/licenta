@@ -1,27 +1,27 @@
 <div>
-    <h2>Flow cereri - admite / respinge</h2>
+    <!-- <h2>Flow cereri - admite / respinge</h2> -->
 
 
     <div>
-        <h3>Decizii anterioare</h3>
+        <h3>FLUX CURENT</h3>
 
-        <h4>Cereri document</h4>
+        <h4>DOCUMENTE</h4>
 
 
 
         <table mat-table [dataSource]="dataSource_dtosFlowItemsPreviousCereriDocument" class="mat-elevation-z8">
             <ng-container matColumnDef="idCerereDocument">
-                <th mat-header-cell *matHeaderCellDef> ID. </th>
+                <th mat-header-cell *matHeaderCellDef> Cod de identificare </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerere.id}} </td>
             </ng-container>
 
             <ng-container matColumnDef="typeCerereDocument">
-                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <th mat-header-cell *matHeaderCellDef> Tipul documentului </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerere.typeCerere}} </td>
             </ng-container>
 
             <ng-container matColumnDef="emailCerereDocument">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <th mat-header-cell *matHeaderCellDef>Adresă de email </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerere.userAssociated?.email}} </td>
             </ng-container>
 
@@ -29,9 +29,9 @@
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <button (click)="openDialogFlowItems(element)">Open dialog flow items</button> -->
-                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> Open dialog flow items</button>
+                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> FLUX CURENT</button>
                     <!-- <button (click)="downloadCerere(element)">Download</button> -->
-                    <button mat-raised-button (click)="downloadCerere(element)"><mat-icon>get_app</mat-icon>DOWNLOAD</button>
+                    <button mat-raised-button (click)="downloadCerere(element)"><mat-icon>get_app</mat-icon>DESCĂRCARE</button>
                 </td>
             </ng-container>
 
@@ -40,30 +40,30 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
         </table>
 
-        <h4>Cereri detailed</h4>
+        <h4>CERERI</h4>
 
         <!-- cereri detailed new -->
         <table mat-table [dataSource]="dataSource_dtosFlowItemsPreviousCereriDetailed" class="mat-elevation-z8">
             <ng-container matColumnDef="idCerereDetailed">
-                <th mat-header-cell *matHeaderCellDef> ID. </th>
+                <th mat-header-cell *matHeaderCellDef> Cod de identificare </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerereDetailed.id}} </td>
             </ng-container>
 
             <ng-container matColumnDef="typeCerereDetailed">
-                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <th mat-header-cell *matHeaderCellDef> Tipul documentului </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerereDetailed.typeCerere}} </td>
             </ng-container>
 
             <ng-container matColumnDef="emailCerereDetailed">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <th mat-header-cell *matHeaderCellDef>Adresă de email </th>
                 <td mat-cell *matCellDef="let element"> {{element.cerereDetailed.user?.email}} </td>
             </ng-container>
 
             <ng-container matColumnDef="actionsCerereDetailed">
-                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <th mat-header-cell *matHeaderCellDef> Acțiuni posibile </th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <button (click)="openDialogFlowItems(element)">Open dialog flow items</button> -->
-                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> Open dialog flow items</button>
+                    <button mat-raised-button color="accent" (click)="openDialogFlowItems(element)"><mat-icon>visibility</mat-icon> FLUX CURENT</button>
 
                     <!-- <button (click)="downloadCerere(element)">Download</button>  -->
                 </td>
@@ -96,26 +96,26 @@
 
         <table mat-table [dataSource]="dataSource_tableAllCereriDocumentAndDetailed" class="mat-elevation-z8">
             <ng-container matColumnDef="idAll">
-                <th mat-header-cell *matHeaderCellDef> ID. </th>
+                <th mat-header-cell *matHeaderCellDef> Cod Identificare </th>
                 <td mat-cell *matCellDef="let element"> {{element.idCerereDetailedOrDocument}} </td>
             </ng-container>
 
             <ng-container matColumnDef="typeCerereAll">
-                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <th mat-header-cell *matHeaderCellDef> Tipul cererii </th>
                 <td mat-cell *matCellDef="let element"> {{element.tipCerere}} </td>
             </ng-container>
 
             <ng-container matColumnDef="emailCerereAll">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <th mat-header-cell *matHeaderCellDef> Adresă de email </th>
                 <td mat-cell *matCellDef="let element"> {{element.utilizator.email}} </td>
             </ng-container>
 
             <ng-container matColumnDef="dateStartAll">
-                <th mat-header-cell *matHeaderCellDef> Date Start </th>
+                <th mat-header-cell *matHeaderCellDef> Date plecare </th>
                 <td mat-cell *matCellDef="let element"> {{element.dateStart | date :'yyyy-MM-dd'}} </td>
             </ng-container>
             <ng-container matColumnDef="dateEndAll">
-                <th mat-header-cell *matHeaderCellDef> Date End </th>
+                <th mat-header-cell *matHeaderCellDef> Date întoarcere </th>
                 <td mat-cell *matCellDef="let element"> {{element.dateEnd | date :'yyyy-MM-dd'}} </td>
             </ng-container>
 
@@ -130,10 +130,10 @@
             </ng-container>
 
             <ng-container matColumnDef="actionsAll">
-                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <th mat-header-cell *matHeaderCellDef> Acțiuni posibile </th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <button (click)="rezolva(element, true)">Admite</button> -->
-                    <button mat-raised-button (click)="verificaSemnatura(element)">	<mat-icon>check</mat-icon>VERIFICA SEMNATURA</button>
+                    <button mat-raised-button (click)="verificaSemnatura(element)">	<mat-icon>check</mat-icon>VERIFICA SEMNATURĂ</button>
                     <button mat-raised-button (click)="rezolva(element, true)">	<mat-icon>check</mat-icon>ADMITE</button>
 
                     <!-- <button (click)="rezolva(element, false)">Respinge</button> -->

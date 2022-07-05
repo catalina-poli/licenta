@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Admite / Respinge</h1>
+<!-- <h1 mat-dialog-title>Admite / Respinge</h1> -->
 <div mat-dialog-content>
     <mat-form-field appearance="fill">
         <mat-label>Motiv</mat-label>
@@ -9,7 +9,9 @@
 
 <div mat-dialog-actions>
 
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button color="primary" (click)="updateOkClicked()">Updateaza</button>
-    <button [mat-dialog-close]="data.rezultat">Ok</button>
+    <button mat-button (click)="onNoClick()">RENUNȚĂ</button>
+    <button mat-button color="primary" (click)="updateOkClicked()">ACTUALIZEAZĂ</button>
+    <!-- <button [mat-dialog-close]="data.rezultat">Ok</button> -->
+    <button mat-button [mat-dialog-close]="data.rezultat">OK</button>
+
 </div>

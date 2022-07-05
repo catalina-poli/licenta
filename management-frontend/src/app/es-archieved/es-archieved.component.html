@@ -33,11 +33,11 @@
                 matSortDirection="desc">
                 <!-- Number Column -->
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Elastic</th>
                     <td mat-cell *matCellDef="let row">{{row.id}}</td>
                 </ng-container>
                 <ng-container matColumnDef="idCerereSalvataDocumentOrDetailed">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>ID Initial</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Identificare</th>
                     <td mat-cell *matCellDef="let row">{{row.idCerereSalvataDocumentOrDetailed}}</td>
                 </ng-container>
                 <ng-container matColumnDef="userEmail">
@@ -45,11 +45,11 @@
                     <td mat-cell *matCellDef="let row">{{row.userEmail}}</td>
                 </ng-container>
                 <ng-container matColumnDef="typeCerere">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>typeCerere</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear></th>
                     <td mat-cell *matCellDef="let row">{{row.typeCerere}}</td>
                 </ng-container>
                 <ng-container matColumnDef="documentOrDetailed">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>documentOrDetailed</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Tip Cerere</th>
                     <td mat-cell *matCellDef="let row">{{row.documentOrDetailed}}</td>
                 </ng-container>
                 <ng-container matColumnDef="localitate">
@@ -67,7 +67,7 @@
 
 
                 <ng-container matColumnDef="actionsCol">
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <th mat-header-cell *matHeaderCellDef>Acțiuni posibile</th>
                     <td mat-cell *matCellDef="let row">
 
 
@@ -75,11 +75,11 @@
                         <div *ngIf="row.idCerereSalvataDocumentOrDetailed">
                             <a *ngIf="row.documentOrDetailed != 'CERERE_DETAILED'" mat-button mat-raised-button
                                 [routerLink]='["/cerere-flow", row.idCerereSalvataDocumentOrDetailed, "CERERE_DOCUMENT"]'>
-                                View
-                                Document</a>
+                                VIZUALIZARE
+                                </a>
                             <a *ngIf="row.documentOrDetailed == 'CERERE_DETAILED'" mat-button mat-raised-button
                                 [routerLink]='["/cerere-flow", row.idCerereSalvataDocumentOrDetailed, "CERERE_DETAILED"]'>
-                                View Detailed</a>
+                                VIZUALIZARE</a>
 
                         </div>
                     </td>

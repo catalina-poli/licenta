@@ -1,11 +1,11 @@
 <div>
-    <h2>My Custom Flows</h2>
+    <h2>Fluxurile mele Personalizate</h2>
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Flow Name</th>
-                <th>Users in flow</th>
+                <th>Cod identificare</th>
+                <th>Titlul fluxului</th>
+                <th>Utilizatori</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +18,7 @@
                 </td>
                 <td>
                     <!-- <button (click)="viewUsersDialog(cf)">View users</button> -->
-                    <button mat-button color="accent"(click)="viewUsersDialog(cf)"><mat-icon>supervisor_account</mat-icon>VIEW USERS</button>
+                    <button mat-button color="accent"(click)="viewUsersDialog(cf)"><mat-icon>supervisor_account</mat-icon>UTILIZATORI</button>
 
                 </td>
 
@@ -27,15 +27,15 @@
     </table>
 
     <div>
-        <h2>Add new flow</h2>
+        <h2>Generare flux personalizat:</h2>
         <!-- <input type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName"> -->
 
         <div>
-        <input matInput type="text" placeholder="New Flow Name" [(ngModel)]="newCustomFlow.customFlowName">
+        <input matInput type="text" placeholder="Titlu Flux Personalizat" [(ngModel)]="newCustomFlow.customFlowName">
     </div>
         <br>
         <mat-form-field appearance="fill">
-            <mat-label>Users associated with flow</mat-label>
+            <mat-label>Utilizatori</mat-label>
             <mat-select multiple [(ngModel)]="usersSelected">
 
                 <mat-option *ngFor="let u of users" [value]="u">{{u.email}}</mat-option>

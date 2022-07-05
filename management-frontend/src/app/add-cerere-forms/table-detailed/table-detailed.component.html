@@ -10,8 +10,8 @@
 </div>
 <!-- <button (click)="viewArchiveDocument(true)">View archive</button>
 <button (click)="viewArchiveDocument(false)">View current</button> -->
-<button mat-raised-button color="accent" (click)="viewArchiveDocument(true)"><mat-icon>archive</mat-icon>ARCHIEVED</button>
-<button mat-raised-button color="accent" (click)="viewArchiveDocument(false)"><mat-icon> present_to_all</mat-icon>CURRENT</button>
+<button mat-raised-button color="accent" (click)="viewArchiveDocument(true)"><mat-icon>archive</mat-icon>ARHIVATE</button>
+<button mat-raised-button color="accent" (click)="viewArchiveDocument(false)"><mat-icon> present_to_all</mat-icon>CURENTE</button>
 
 
 <div class="example-container mat-elevation-z8">
@@ -22,33 +22,33 @@
             matSortDisableClear matSortDirection="desc">
             <!-- Number Column -->
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Identificare</th>
                 <td mat-cell *matCellDef="let row">{{row.id}}</td>
             </ng-container>
 
             <!-- Title Column -->
             <ng-container matColumnDef="datePosted">
-                <th mat-header-cell *matHeaderCellDef>Date Posted</th>
+                <th mat-header-cell *matHeaderCellDef>Data creării</th>
                 <td mat-cell *matCellDef="let row">{{row.dateCreated | date: 'yyyy-MM-dd'}}</td>
             </ng-container>
 
             <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <th mat-header-cell *matHeaderCellDef>Tip</th>
                 <td mat-cell *matCellDef="let row">{{row.typeCerere}}</td>
             </ng-container>
 
             <ng-container matColumnDef="userAssociated">
-                <th mat-header-cell *matHeaderCellDef>User Associated</th>
+                <th mat-header-cell *matHeaderCellDef>Utilizator</th>
                 <td mat-cell *matCellDef="let row">{{row.user?.email}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <th mat-header-cell *matHeaderCellDef>Acțiuni posibile</th>
                 <td mat-cell *matCellDef="let row">
 
 
-                    <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id, 'CERERE_DETAILED']">View</a>
+                    <a mat-button mat-raised-button [routerLink]="['/cerere-flow', row.id, 'CERERE_DETAILED']">VIZUALIZARE</a>
 
                 </td>
             </ng-container>

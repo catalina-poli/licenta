@@ -9,25 +9,25 @@
             matSortDirection="desc">
             <!-- Number Column -->
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Identificare</th>
                 <td mat-cell *matCellDef="let row">{{row.id}}</td>
             </ng-container>
 
             <!-- Title Column -->
             <ng-container matColumnDef="titlu">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <th mat-header-cell *matHeaderCellDef>Titlu</th>
                 <td mat-cell *matCellDef="let row">{{row.titlu}}</td>
             </ng-container>
 
             <ng-container matColumnDef="continut">
-                <th mat-header-cell *matHeaderCellDef>Continut</th>
+                <th mat-header-cell *matHeaderCellDef>Conținut</th>
                 <td mat-cell *matCellDef="let row">{{row.continut}}</td>
             </ng-container>
 
             <ng-container matColumnDef="actionsCol">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <th mat-header-cell *matHeaderCellDef>Acțiuni posibile</th>
                 <td mat-cell *matCellDef="let row">
-                    <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a>
+                    <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>Vizualizare</a>
                 </td>
             </ng-container>
 

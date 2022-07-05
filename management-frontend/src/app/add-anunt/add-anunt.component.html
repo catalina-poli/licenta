@@ -1,24 +1,24 @@
-<h1 mat-dialog-title>Add Anunt</h1>
+<h1 mat-dialog-title>Completare anunț:</h1>
 <div mat-dialog-content>
 
 
     <div *ngIf="!hasAnuntBeenSaved; else anuntSaved">
         <div>
-            <p *ngIf="errors_titlu_required">Eroare titlu required</p>
+            <p *ngIf="errors_titlu_required">Titlul trebuie completat!</p>
             <mat-form-field appearance="fill">
-                <mat-label>Titlu anunt</mat-label>
+                <mat-label>Titlu anunț</mat-label>
                 <input matInput type="text" [(ngModel)]="anuntNou.titlu">
             </mat-form-field>
         </div>
         <div>
             <mat-form-field appearance="fill">
-                <mat-label>Continut anunt</mat-label>
+                <mat-label>Conținutul anunțului</mat-label>
                 <input matInput type="text" [(ngModel)]="anuntNou.continut">
             </mat-form-field>
         </div>
         <div *ngIf="userWantsToSelectSpecificUsers">
             <mat-form-field appearance="fill">
-                <mat-label>User-ii destinatari</mat-label>
+                <mat-label>Destinatari</mat-label>
                 <mat-select multiple [(ngModel)]="usersSelected">
 
                     <mat-option *ngFor="let u of users" [value]="u.id">{{u.email}}</mat-option>
@@ -39,22 +39,24 @@
 
         <div>
             <mat-checkbox [(ngModel)]="userWantsToSelectSpecificUsers" (ngModelChange)="userSwitchedOption()">
-                Select individual users
+                Selectează destinatari:
             </mat-checkbox>
         </div>
 
     </div>
     <ng-template #anuntSaved>
         <div>
-            Anuntul a fost salvat
+            Anunțul a fost salvat cu succes!
         </div>
     </ng-template>
 
 </div>
 <div mat-dialog-actions>
 
-    <button *ngIf="!hasAnuntBeenSaved" mat-button (click)="onNoClick()">Cancel</button>
+    <button *ngIf="!hasAnuntBeenSaved" mat-button (click)="onNoClick()">RENUNȚĂ</button>
     <!-- [mat-dialog-close]="data.animal" -->
-    <button *ngIf="!hasAnuntBeenSaved" mat-button color="primary" (click)="saveAnunt()">Save anunt</button>
-    <button *ngIf="hasAnuntBeenSaved" [mat-dialog-close]="data.rezultat">Ok</button>
+    <button *ngIf="!hasAnuntBeenSaved" mat-button color="primary" (click)="saveAnunt()">SALVARE</button>
+    <!-- <button *ngIf="hasAnuntBeenSaved" [mat-dialog-close]="data.rezultat">Ok</button> -->
+    <button mat-button *ngIf="hasAnuntBeenSaved" [mat-dialog-close]="data.rezultat">OK</button>
+
 </div>

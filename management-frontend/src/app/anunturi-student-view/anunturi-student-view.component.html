@@ -1,14 +1,14 @@
 <div>
 
     <div *ngIf="anunt; else loadingScreen">
-        <h2>Anunt: {{anunt.titlu}}</h2>
+        <h2>Anunț: {{anunt.titlu}}</h2>
 
         <!-- <button (click)="editAnunt(anunt)"><mat-icon> border_color</mat-icon>Editare</button> -->
         <button mat-raised-button color="accent"(click)="editAnunt(anunt)"><mat-icon> border_color</mat-icon>Editare</button>
 
         <!-- <button (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button> -->
-        <button mat-raised-button color="accent" (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generate PDF</button>
-        <button mat-raised-button color="accent" (click)="shouldLoadPdfFromServer = true"><mat-icon>pageview</mat-icon>PREVIEW</button>
+        <button mat-raised-button color="accent" (click)="sendPdfRequestServer(anunt)"><mat-icon>picture_as_pdf</mat-icon>Generare PDF</button>
+        <button mat-raised-button color="accent" (click)="shouldLoadPdfFromServer = true"><mat-icon>pageview</mat-icon>Previzualizare</button>
 
         <!-- http://localhost:8080/rest/anunturi/generate-anunt-pdf/32 -->
         <!-- LINK: {{sourceForPdf}} <br> -->
@@ -22,7 +22,7 @@
     </div>
     <ng-template #loadingScreen>
         <div>
-            Loading...
+            Încărcare pagină...
         </div>
     </ng-template>
 

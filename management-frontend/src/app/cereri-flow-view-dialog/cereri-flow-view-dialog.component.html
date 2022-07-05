@@ -13,6 +13,7 @@
             <th>
                 Motiv
             </th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,11 @@
             <td>{{f.superior.email}}</td>
             <td>{{f.status == 2 ? 'PENDING' : f.status == 1 ? 'ACCEPTAT' : 'RESPINS'}}</td>
             <td>{{f.motiv}}</td>
+            <td>
+                <button (click)="verifySign(f)" *ngIf="f.status != 2">
+                    Verifica semnatura
+                </button>
+            </td>
         </tr>
     </tbody>
     <p>

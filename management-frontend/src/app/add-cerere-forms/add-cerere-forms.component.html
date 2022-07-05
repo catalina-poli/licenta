@@ -7,14 +7,14 @@
         <div>
             <h2>Cererile</h2>
 
-            <h3>Cereri document</h3>
+            <h3>DOCUMENTE</h3>
             <!-- <button (click)="viewArchiveDocument(true)">View archive</button>
             <button (click)="viewArchiveDocument(false)">View current</button> -->
             <button mat-raised-button color="accent" (click)="viewArchiveDocument(true)">
-                <mat-icon>archive</mat-icon>ARCHIEVED
+                <mat-icon>archive</mat-icon>ARHIVATE
             </button>
             <button mat-raised-button color="accent" (click)="viewArchiveDocument(false)">
-                <mat-icon> present_to_all</mat-icon>CURRENT
+                <mat-icon> present_to_all</mat-icon>CURENTE
             </button>
             <div>
                 <mat-select [(ngModel)]="filtruTipCerere" (selectionChange)="selectOptiuneFiltru()">
@@ -35,34 +35,34 @@
                         matSortDisableClear matSortDirection="desc">
                         <!-- Number Column -->
                         <ng-container matColumnDef="id">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Id</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Cod Identificare</th>
                             <td mat-cell *matCellDef="let row">{{row.id}}</td>
                         </ng-container>
 
                         <!-- Title Column -->
                         <ng-container matColumnDef="datePosted">
-                            <th mat-header-cell *matHeaderCellDef>Date Posted</th>
+                            <th mat-header-cell *matHeaderCellDef>Data creării</th>
                             <td mat-cell *matCellDef="let row">{{row.dateCreated | date: 'yyyy-MM-dd'}}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="type">
-                            <th mat-header-cell *matHeaderCellDef>Type</th>
+                            <th mat-header-cell *matHeaderCellDef>Tip</th>
                             <td mat-cell *matCellDef="let row">{{row.typeCerere}}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="userAssociated">
-                            <th mat-header-cell *matHeaderCellDef>User Associated</th>
+                            <th mat-header-cell *matHeaderCellDef>Utilizator</th>
                             <td mat-cell *matCellDef="let row">{{row.userAssociated?.email}}</td>
                         </ng-container>
 
 
                         <ng-container matColumnDef="actions">
-                            <th mat-header-cell *matHeaderCellDef>Actions</th>
+                            <th mat-header-cell *matHeaderCellDef>Acțiuni posibile</th>
                             <td mat-cell *matCellDef="let row">
 
 
                                 <a mat-button mat-raised-button
-                                    [routerLink]="['/cerere-flow', row.id, 'CERERE_DOCUMENT']">View</a>
+                                    [routerLink]="['/cerere-flow', row.id, 'CERERE_DOCUMENT']">VIZUALIZARE</a>
                                 <!-- <button (click)="editAnunt(row)" mat-button mat-raised-button>Edit</button> -->
                                 <!-- <a mat-button mat-raised-button [routerLink]='["/anunturi-student", row.id]'>View</a> -->
 
@@ -82,7 +82,7 @@
 
             </div>
 
-            <h3>Cereri detailed</h3>
+            <h3>COMPLETATE</h3>
 
             <app-table-detailed></app-table-detailed>
 
@@ -93,7 +93,7 @@
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">playlist_add</mat-icon>
-            Cerere Noua
+            Cerere Nouă
         </ng-template>
 
         <!-- ADAUGARE CERERE -->
@@ -102,7 +102,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     <mat-icon class="example-tab-icon">description</mat-icon>
-                    Completare Cerere
+                    COMPLETARE
 
                 </ng-template>
 
@@ -115,7 +115,7 @@
 
 
                         <mat-form-field appearance="fill">
-                            <mat-label>Adaugare cerere detailed</mat-label>
+                            <mat-label>Completare cerere </mat-label>
                             <mat-select [(ngModel)]="cerereNouaDetailed.typeCerere">
                                 <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
                                     {{tipCerere}}
@@ -127,38 +127,38 @@
 
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>DateStart</mat-label>
+                                <mat-label>Data plecării</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.dateStart">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>DateEnd</mat-label>
+                                <mat-label>Data sosirii</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.dateEnd">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>Localitate</mat-label>
+                                <mat-label>Localitate deplasare</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.localitate">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>Judet</mat-label>
+                                <mat-label>Județ deplasare</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.judet">
                             </mat-form-field>
                         </div>
 
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>Ora Plecare</mat-label>
+                                <mat-label>Ora Plecării</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.oraPlecare">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="fill">
-                                <mat-label>Ora Sosire</mat-label>
+                                <mat-label>Ora Sosirii</mat-label>
                                 <input matInput type="text" [(ngModel)]="cerereNouaDetailed.oraSosire">
                             </mat-form-field>
                         </div>
@@ -178,7 +178,7 @@
                         <div>
                                 
                             <mat-form-field appearance="fill">
-                                <mat-label>My Custom Flows</mat-label>
+                                <mat-label>Fluxurile mele</mat-label>
                                 <mat-select [(ngModel)]="customFlowSelected" (selectionChange)="customFlowSelect()">
                                     <mat-option [value]="null">None</mat-option>
                                     <mat-option *ngFor="let mcf of myCustomFlows" [value]="mcf">
@@ -189,7 +189,7 @@
                         </div>
                         <div *ngIf="!defaultFlow">
                             <mat-form-field appearance="fill">
-                                <mat-label>Users to receive cerere</mat-label>
+                                <mat-label>UTILIZATORI DESTINATARI</mat-label>
                                 <mat-select multiple [(ngModel)]="usersSelectedCerereDetailed">
 
                                     <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
@@ -197,12 +197,12 @@
                                 </mat-select>
                             </mat-form-field>
                             <div>
-                                <h3>Users selected</h3>
+                                <!-- <h3>Utilizatori selectați</h3> -->
                                 <ul>
                                     <li *ngFor="let userSelected of usersSelectedCerereDetailed">
                                         <input type="checkbox" [(ngModel)]="userSelected.canInterrupt">
                                         {{userSelected.email}} <button
-                                            (click)="removeFromCerereDetailed(userSelected)">Remove</button>
+                                            (click)="removeFromCerereDetailed(userSelected)">ELIMINARE</button>
                                     </li>
                                 </ul>
                             </div>
@@ -215,8 +215,8 @@
                             {{type}}
                         </mat-checkbox>
                     </div>
-                    <button mat-button color="primary" (click)="saveCerereDetailed()">Save
-                        cerere detailed</button>
+                    <button mat-button color="primary" (click)="saveCerereDetailed()">SALVARE
+                        </button>
                 </div>
                 <!-- ./add cerere detailed -->
 
@@ -225,7 +225,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     <mat-icon class="example-tab-icon">attach_file</mat-icon>
-                    Incarcare Cerere
+                    INCĂRCARE 
                 </ng-template>
 
                 <!-- Upload cerere -->
@@ -237,7 +237,7 @@
 
 
                             <mat-form-field appearance="fill">
-                                <mat-label>Adaugare cerere</mat-label>
+                                <mat-label>Adăugare cerere</mat-label>
                                 <mat-select [(ngModel)]="cerereNoua.typeCerere">
                                     <mat-option *ngFor="let tipCerere of tipuri" [value]="tipCerere">
                                         {{tipCerere}}
@@ -248,7 +248,7 @@
 
                             <div *ngIf="!defaultFlow">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Users to receive cerere</mat-label>
+                                    <mat-label>Utilizatori destinatari</mat-label>
                                     <mat-select multiple [(ngModel)]="usersSelected">
 
                                         <mat-option *ngFor="let user of usersList" [value]="user">{{user.email}}
@@ -256,18 +256,18 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <h3>Users selected</h3>
+                                <!-- <h3>Users selected</h3> -->
                                 <ul>
                                     <li *ngFor="let userSelected of usersSelected">
                                         <div>
                                         {{userSelected.email}} 
                                     </div>           
                                         <!-- <input type="checkbox" [(ngModel)]="userSelected.canInterrupt"> -->
-                                        <mat-checkbox class="example-margin" [(ngModel)]="userSelected.canInterrupt">CAN INTERRUPT</mat-checkbox>
+                                        <mat-checkbox class="example-margin" [(ngModel)]="userSelected.canInterrupt">POSIBILITATE ÎNTRERUPERE FLUX</mat-checkbox>
 
                                         <!-- <button (click)="removeFromCerere(userSelected)">REMOVE USER</button> -->
                                         <div>
-                                            <button mat-raised-button color="warn" (click)="removeFromCerere(userSelected)"><mat-icon>delete_forever</mat-icon>REMOVE USER</button>
+                                            <button mat-raised-button color="warn" (click)="removeFromCerere(userSelected)"><mat-icon>delete_forever</mat-icon>ELIMINĂ</button>
                                         </div>        
                                     </li>
                                 </ul>
@@ -281,7 +281,7 @@
                         </div>
                         <ng-template #anuntSaved>
                             <div>
-                                Cererea a fost salvata
+                                Cererea a fost salvată cu succes
                             </div>
                         </ng-template>
 
@@ -296,7 +296,7 @@
                         <h2></h2>
 
                         <mat-form-field appearance="fill">
-                            <mat-label>My Custom Flows</mat-label>
+                            <mat-label>Fluxurile mele personalizate</mat-label>
                             <mat-select [(ngModel)]="customFlowSelected" (selectionChange)="customFlowSelect()">
                                 <mat-option [value]="null">None</mat-option>
                                 <mat-option *ngFor="let mcf of myCustomFlows" [value]="mcf">
@@ -306,8 +306,8 @@
                         </mat-form-field>
                     </div>
 
-                    <button mat-button color="primary" (click)="saveCerere()">Save
-                        cerere</button>
+                    <button mat-button color="primary" (click)="saveCerere()">SALVARE
+                        </button>
                 </div>
 
             </mat-tab>

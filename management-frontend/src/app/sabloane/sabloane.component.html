@@ -6,7 +6,7 @@
     <span *ngIf="node.item.file">
 
       <button mat-raised-button (click)="downloadSablon(node.item.id)">
-        <mat-icon>get_app</mat-icon>DOWNLOAD TEMPLATE
+        <mat-icon>get_app</mat-icon>DESCĂRCARE
       </button>
 
     </span>
@@ -29,7 +29,7 @@
     <span *ngIf="node.item.file">
       <br>
 
-      <button mat-raised-button (click)="downloadSablon(node.item.id)"><mat-icon>get_app</mat-icon>DOWNLOAD</button>
+      <button mat-raised-button (click)="downloadSablon(node.item.id)"><mat-icon>get_app</mat-icon>DESCĂRCARE</button>
 
     </span>
     <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
@@ -51,16 +51,16 @@
 
 
         <mat-form-field appearance="fill">
-          <mat-label>TITLU SABLON NOU</mat-label>
+          <mat-label>TITLU ȘABLON NOU</mat-label>
           <input matInput [(ngModel)]="newCategoryName">
         </mat-form-field>
 
-        <h3>Selectati o categorie:</h3>
+        <h3>Selectați o categorie:</h3>
 
         <mat-form-field appearance="fill">
 
           <mat-select [(ngModel)]="parentId">
-            <mat-label>Parinte categorie</mat-label>
+            <mat-label>Subcategorie</mat-label>
             <mat-option *ngFor="let cat of allCategorii" [value]="cat.id">{{cat.categoryName}}</mat-option>
           </mat-select>
 
@@ -75,7 +75,7 @@
         <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
 
         <div> 
-          <button mat-raised-button color="primary" (click)="saveSablon()"><mat-icon>description</mat-icon>SAVE SABLON</button>
+          <button mat-raised-button color="primary" (click)="saveSablon()"><mat-icon>description</mat-icon>SALVARE</button>
         </div>
 
       </div>
@@ -84,14 +84,14 @@
     <mat-tab label="ADAUGARE CATEGORIE NOUA">
       
       <div>
-        <h3>Completati titlul noii categorii:</h3>
+        <h3>Completați titlul noii categorii:</h3>
 
         <mat-form-field appearance="fill">
-          <mat-label>TITLU CATEGORIE NOUA</mat-label>
+          <mat-label>TITLU CATEGORIE NOUĂ</mat-label>
           <input matInput [(ngModel)]="categorieNoua.categoryName">
         </mat-form-field>
        
-        <h3>Select subcategorie:</h3>
+        <h3>Selectare subcategorie:</h3>
 
         <mat-form-field appearance="fill">
 
@@ -102,7 +102,7 @@
 
         </mat-form-field>
         <div> 
-          <button mat-raised-button color="primary" (click)="saveSablonNou()"><mat-icon>description</mat-icon>SAVE CATEGORY</button>
+          <button mat-raised-button color="primary" (click)="saveSablonNou()"><mat-icon>description</mat-icon>SALVARE</button>
         </div>
         
       </div>
